@@ -10,7 +10,6 @@
 Lets map these three pathways. 
 
 ![](https://github.com/anrbn/blog/blob/main/images/1.jpg)
-![](https://github.com/anrbn/blog/blob/main/images/2.jpg)
 
 There are three different ways one can take to Google Cloud Functions:
 
@@ -20,4 +19,8 @@ There are three different ways one can take to Google Cloud Functions:
 
 - Deploy from a source repository: One can set up a continuous deployment pipeline that automatically deploys their Cloud Function whenever changes are pushed to a specific branch of their code repository.
 
+![](https://github.com/anrbn/blog/blob/main/images/1.jpg)
+
 Overall, each deployment option has different permission requirements. Let's map that as well.
+
+![](https://github.com/anrbn/blog/blob/main/images/2.jpg)
