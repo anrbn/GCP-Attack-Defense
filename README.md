@@ -8,3 +8,5 @@
 - REST API: You can also use the Cloud Functions REST API to create and manage functions programmatically. The REST API provides a set of HTTP endpoints that you can use to perform various operations on your functions, such as creating, deploying, updating, and deleting functions.
 
 Lets map these three pathways. 
+
+![](https://github.com/anrbn/blog/blob/main/images/1.jpg)
