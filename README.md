@@ -10,3 +10,14 @@
 Lets map these three pathways. 
 
 ![](https://github.com/anrbn/blog/blob/main/images/1.jpg)
+![](https://github.com/anrbn/blog/blob/main/images/2.jpg)
+
+There are three different ways one can take to Google Cloud Functions:
+
+- Deploy from a local machine: One can deploy Cloud Functions directly from their local development environment using the Cloud SDK command-line tool. This method requires the Cloud SDK to be installed on the user's computer.
+
+- Deploy from Cloud Storage: One can also deploy Cloud Functions by uploading the function's code as a ZIP archive to Cloud Storage. Once the code is uploaded, a Cloud Function can be created that points to the ZIP archive location in Cloud Storage.
+
+- Deploy from a source repository: One can set up a continuous deployment pipeline that automatically deploys their Cloud Function whenever changes are pushed to a specific branch of their code repository.
+
+Overall, each deployment option has different permission requirements. Let's map that as well.
