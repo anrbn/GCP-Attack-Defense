@@ -11,7 +11,7 @@ Lets map these three pathways.
 
 ![](https://github.com/anrbn/blog/blob/main/images/1.jpg)
 
-There are three different ways one can take to Google Cloud Functions:
+There are three different ways one can take to create Google Cloud Functions:
 
 - Deploy from a local machine: One can deploy Cloud Functions directly from their local development environment using the Cloud SDK command-line tool. This method requires the Cloud SDK to be installed on the user's computer.
 
