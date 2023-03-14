@@ -102,7 +102,8 @@ The format of the service account email for the Google Cloud Functions Service A
  
 Every permission mentioned in the list seems to do something which is quite clear from their name. But here's something I found really strange, why is there a need for  `cloudfunctions.functions.get` permission for creating a Cloud Function? As far as the documentation goes the description for the permission `cloudfunctions.functions.get` says view functions. ([Link](https://cloud.google.com/functions/docs/reference/iam/permissions))
 
-![](https://github.com/anrbn/blog/blob/main/images/1.jpg)
+
+![](https://github.com/anrbn/blog/blob/main/images/1.JPG)
 >fig.4
 
 Which means `cloudfunctions.functions.get` permission allows a user or service account to view metadata about a Cloud Function, such as its name, runtime, entry point, trigger settings, and other configuration details. What I guess is, it may be a default behavior of gCloud to include this permission when creating a function but it is not necessary for the creation of the function.
@@ -117,7 +118,7 @@ That being said let's look at how to "Deploy a Cloud Function via Cloud Function
 
 gRPC is an open-source Remote Procedure Call (RPC) framework developed by Google. While REST (Representational State Transfer) is an architectural style for building web-based software systems. REST APIs are commonly used to access and manage cloud resources. 
 
-Won't go into much details and step straight into the point. Here is the list of Permission required to successfully deploy a Cloud Function via Cloud Function API (gRPC & REST). 
+Won't go into much details and step straight into the point. Here is the list of least number of permission required to successfully deploy a Cloud Function via Cloud Function API (gRPC & REST). 
 
 <table>
   <tr>
@@ -174,16 +175,12 @@ Here's an image to understand it better.
 [Note: You might need additional permissions to successfully upload code from the two sources: Local Machine and Cloud Repository via Cloud Function API (gRPC & REST).  However, for the Source: Cloud Storage, the permissions listed are the least that's required. Since it's easier to do it via Cloud Storage, why even bother with the other two? :)] 
 
 
-If you take a look at the above figures (fig 3 & 5), it's clear that of the two methods for deploying a Cloud Function (using gCloud or the Cloud Function API), uploading the source code via Cloud Storage using the Cloud Function API requires the least amount of permissions and can easily be chosen over any other method. Here's a figure to understand it better. 
- 
-<Image 3>
+If you take a look at the above figures (fig 3 & 5), it's clear that of the two methods for deploying a Cloud Function (gCloud and Cloud Function API), uploading the source code via Cloud Storage using the Cloud Function API requires the least amount of permissions and can easily be chosen over any other method.
 
-<Image 4>
 
- 
 Let's call the Cloud Function API using both gRPC and REST to deploy a Cloud Function (Code Upload Source: Cloud Storage). 
 
-Below is a code that's calling the Cloud Function API via gRPC to deploy a Cloud Function in GCP. It's using the method being create_function() from the google.cloud.functions_v1.CloudFunctionsServiceClient class. Note that for uploading the Source Code we will be using Cloud Storage, simply because it requires less number of permission than any other method (Check <Figure> ).
+Below is a code that's calling the Cloud Function API via gRPC to deploy a Cloud Function in GCP. It's using the method `create_function()` from the `google.cloud.functions_v1.CloudFunctionsServiceClient` class. Note that for uploading the Source Code we will be using Cloud Storage, simply because it requires less number of permission than any other method (Check fig.3 & 5).
 
 ```python
 from google.cloud.functions_v1 import CloudFunctionsServiceClient, CloudFunction, CreateFunctionRequest
@@ -229,19 +226,16 @@ except Exception as e:
     else:
         print(f"[!] Error: {str(e)}")
 ```
+![](https://github.com/anrbn/blog/blob/main/images/3.JPG)
+>fig.6
 
-
-Even though a warning pops up that "Permission `cloudfunctions.operations.get` denied on resource" the Cloud Function will be successfully created. The warning is likely due to some internal operations being performed by the Cloud Function service during the creation process.  
+Even though a warning pops up that *Permission `cloudfunctions.operations.get` denied on resource* the Cloud Function will be successfully created. The warning is likely due to some internal operations being performed by the Cloud Function service during the creation process.  
  
 The Cloud Function however will be created with just the following permissions:
-* iam.serviceAccounts.actAs
-* cloudfunctions.functions.create
+* `iam.serviceAccounts.actAs`
+* `cloudfunctions.functions.create`
 
-Here's another way to call the Cloud Function API using REST. Below is a curl command which
-
-```shell
-curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d "{\"name\":\"projects/<project-id>/locations/<region>/functions/<function-name>\",\"entryPoint\":\"<function-entrypoint>\",\"runtime\":\"python38\",\"serviceAccountEmail\":\"<service-account-email>\",\"sourceArchiveUrl\":\"<gs-link-to-zipped-sourcecode>\",\"httpsTrigger\":{}}" https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions?alt=json
-```
+Here's another way to call the Cloud Function API using REST. Below is a curl command which makes HTTP POST request to the Google Cloud Functions API to create a new Cloud Function using required parameters. 
 
 ```shell
 curl -X POST \
@@ -251,11 +245,16 @@ curl -X POST \
   https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions?alt=json
 
 ```
+Here's the oneliner which can run in `cmd` without any errors.
 
+```shell
+curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d "{\"name\":\"projects/<project-id>/locations/<region>/functions/<function-name>\",\"entryPoint\":\"<function-entrypoint>\",\"runtime\":\"python38\",\"serviceAccountEmail\":\"<service-account-email>\",\"sourceArchiveUrl\":\"<gs-link-to-zipped-sourcecode>\",\"httpsTrigger\":{}}" https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions?alt=json
+```
 
-Let's breakdown each component required:
+![](https://github.com/anrbn/blog/blob/main/images/2.JPG)
+>fig.7
 
-
+Modify the parameters according to your need
 
 <table>
   <tr>
@@ -305,8 +304,13 @@ Choosing a Service Account with high privileges will help you Privilege Escalate
   </tr>
 </table>
 
+![](https://github.com/anrbn/blog/blob/main/images/4.JPG)
+>fig.8:Cloud Function Created using both gRPC and REST.
 
-Once 
+However, invoking the function will lead to the following error (fig.9): *Your client does not have permission to get URL.* The client doesn't have required role `Cloud Function Invoker` to invoke the function.
+
+![](https://github.com/anrbn/blog/blob/main/images/5.JPG)
+>fig.9
 
 **Permission Required for Invoking a Cloud Function**
 
