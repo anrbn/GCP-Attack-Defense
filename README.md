@@ -234,6 +234,89 @@ The Cloud Function however will be created with just the following permissions:
 * iam.serviceAccounts.actAs
 * cloudfunctions.functions.create
 
+Here’s another way to call the Cloud Function API using REST. Below is a curl command which
+
+```shell
+curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d "{\"name\":\"projects/<project-id>/locations/<region>/functions/<function-name>\",\"entryPoint\":\"<function-entrypoint>\",\"runtime\":\"python38\",\"serviceAccountEmail\":\"<service-account-email>\",\"sourceArchiveUrl\":\"<gs-link-to-zipped-sourcecode>\",\"httpsTrigger\":{}}" https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions?alt=json
+```
+
+```shell
+curl -X POST \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"projects/<project-id>/locations/<region>/functions/<function-name>","entryPoint":"<function-entrypoint>","runtime":"python38","serviceAccountEmail":"<service-account-email>","sourceArchiveUrl":"<gs-link-to-zipped-sourcecode>","httpsTrigger":{}}' \
+  https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions?alt=json
+
+```
 
 
+Let’s breakdown each component required:
 
+
+<table>
+  <tr>
+   <td>&lt;token> 
+   </td>
+   <td>&lt;token> is a placeholder for an actual authorization token that is required to authenticate and authorize the API request. Run the command
+“gcloud auth application-default print-access-token” to get the token.
+   </td>
+  </tr>
+  <tr>
+   <td>&lt;project-id>
+   </td>
+   <td>The ID of the Google Cloud project in which the Cloud Function will be created.
+   </td>
+  </tr>
+  <tr>
+   <td>&lt;region>
+   </td>
+   <td>The region where the Cloud Function will be deployed. For example, "us-central1".
+   </td>
+  </tr>
+  <tr>
+   <td>&lt;function-name>
+   </td>
+   <td>The name of the Cloud Function being created.
+   </td>
+  </tr>
+  <tr>
+   <td>&lt;function-entrypoint>
+   </td>
+   <td>The name of the entry point function for the Cloud Function. This is the function that will be executed when the Cloud Function is triggered.
+   </td>
+  </tr>
+  <tr>
+   <td>&lt;service-account-email>
+   </td>
+   <td>The email address of the service account that will be used to run the Cloud Function. 
+<p>
+
+Choosing a Service Account with high privileges will help you Privilege Escalate easier.
+   </td>
+  </tr>
+  <tr>
+   <td>&lt;gs-link-to-zipped-sourcecode>
+   </td>
+   <td>The URL of the Cloud Storage archive file that contains the source code for the Cloud Function. The archive file must be in ZIP format. Example: gs://bucket-name/code.zip
+   </td>
+  </tr>
+</table>
+
+
+Once 
+
+**Permission Required for Invoking a Cloud Function**
+
+Creating/Deploying a Cloud Function is just the first step in the process. Making it available for invocation is the second.
+
+When you create a Cloud Function in GCP, it is not immediately accessible for invocation. Before you can invoke the function, you need to set up the necessary IAM permissions to allow access to the function and control who has access to your Cloud Function and what they can do with it.
+
+To set up IAM permissions for your Cloud Function, you can add one or more members to a Cloud Function's IAM policy. Members can be individual user accounts, groups of users, or service accounts. You can assign roles to these members, which determine the actions they can perform on the function. 
+
+Now, there’s a special member called “allUsers” that represents anyone on the internet. We will be granting the member : “allUsers” the role : “Cloud Function Invoker” to to Invoke the function.This will allow anyone on the internet to invoke the Cloud Function without requiring authentication.
+[Note: Granting allUsers permissions to a Cloud Function, you are essentially making your Cloud Function publicly accessible to anyone who knows the URL].
+
+In order to grant the “allUsers” member the “Cloud Function Invoker” role, the user or service account performing the operation must have certain permissions. Let’s figure that out.
+
+
+The code will query the metadata server and retrieve an access token and then print that token to the logs and response body when a request is made to that specific endpoint.
