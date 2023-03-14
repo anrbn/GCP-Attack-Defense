@@ -121,47 +121,48 @@ Won't go into much details and step straight into the point. Here is the list of
 
 <table>
   <tr>
-   <td colspan="3" ><strong>Cloud Function Deploy via Cloud Function API (gRPC & REST)</strong>
+   <td>&lt;token> 
+   </td>
+   <td>&lt;token> is a placeholder for an actual authorization token that is required to authenticate and authorize the API request. Run the command 
+"gcloud auth application-default print-access-token" to get the token.
    </td>
   </tr>
   <tr>
-   <td><strong>Function Code Upload Source: Local Machine</strong>
+   <td>&lt;project-id>
    </td>
-   <td><strong>Function Code Upload Source: Cloud Storage</strong>
-   </td>
-   <td><strong>Function Code Upload Source: Cloud Repository</strong>
+   <td>The ID of the Google Cloud project in which the Cloud Function will be created.
    </td>
   </tr>
   <tr>
-   <td>iam.serviceAccounts.actAs
+   <td>&lt;region>
    </td>
-   <td>iam.serviceAccounts.actAs
-   </td>
-   <td>iam.serviceAccounts.actAs
+   <td>The region where the Cloud Function will be deployed. For example, "us-central1".
    </td>
   </tr>
   <tr>
-   <td>cloudfunctions.functions.create
+   <td>&lt;function-name>
    </td>
-   <td>cloudfunctions.functions.create
-   </td>
-   <td>cloudfunctions.functions.create
+   <td>The name of the Cloud Function being created.
    </td>
   </tr>
   <tr>
-   <td>cloudfunctions.functions.sourceCodeSet
+   <td>&lt;function-entrypoint>
    </td>
-   <td>
-   </td>
-   <td>source.repos.get (Google Cloud Functions Service Agent)
+   <td>The name of the entry point function for the Cloud Function. This is the function that will be executed when the Cloud Function is triggered.
    </td>
   </tr>
   <tr>
-   <td>
+   <td>&lt;service-account-email>
    </td>
-   <td>
+   <td>The email address of the service account that will be used to run the Cloud Function. 
+<p>
+Choosing a Service Account with high privileges will help you Privilege Escalate easier.
    </td>
-   <td>source.repos.list (Google Cloud Functions Service Agent)
+  </tr>
+  <tr>
+   <td>&lt;gs-link-to-zipped-sourcecode>
+   </td>
+   <td>The URL of the Cloud Storage archive file that contains the source code for the Cloud Function. The archive file must be in ZIP format. Example: gs://bucket-name/code.zip
    </td>
   </tr>
 </table>
