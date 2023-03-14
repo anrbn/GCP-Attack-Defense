@@ -8,11 +8,11 @@ There are three ways to create a Cloud Function in GCP:
 2. gCloud Command
 3. Cloud Function API (REST & gRPC)
 
-<image>
+![](https://github.com/anrbn/blog/blob/main/images/6.jpg)
 
 While Cloud Console may seem user-friendly for creating resources in GCP, we won't be using it. The reason being, creating resources in GCP often involves navigating through different pages, each with its own set of permissions. Depending on the user's level of access, they may not be able to view or access certain pages necessary to create a particular resource. It's important to have a number of permissions in place to ensure that a user can perform the actions they need to within the GCP environment. 
 
-Our focus in this blog is on creating a Cloud Function using the least privileges possible. That's also why attackers tend to use the gCloud command and REST API to create resources. Furthermore, attackers mainly gain access to a GCP environment using stolen or compromised authentication tokens (auth_tokens). Cloud Console doesn't support authentication via auth_tokens. As a result, attackers may prefer to use the gCloud command or REST API to create resources because they offer more flexibility in terms of authentication and control.
+Our focus in this blog is on creating a Cloud Function using the least privileges possible. That's also why attackers tend to use the gCloud command and Cloud Function API (via gRPC or REST) to create resources. Furthermore, attackers mainly gain access to a GCP environment using stolen or compromised authentication tokens (auth_tokens). Cloud Console doesn't support authentication via auth_tokens. As a result, attackers may prefer to use the gCloud command or directly call the Cloud Function API via gRPC or REST API to create resources because they offer more flexibility in terms of authentication and control.
 
 Now let's dig deeper into it.
 
@@ -22,13 +22,13 @@ If you're creating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
 2. Cloud Storage
 3. Cloud Repository
 
-<image>
+![](https://github.com/anrbn/blog/blob/main/images/7.jpg)
 
 **Permission Required for Deploying a Cloud Function**
 
 Let's start with the first step of deploying/creating a Cloud Function. As always every action in GCP requires you to have a certain amount of Permissions. Thus, let's try to find the least amount of permissions required for deploying/creating a Cloud Function. 
 
-Here's the list of Least number of Permissions I found that's required to "Deploy a Cloud Function via gCloud"
+Here's the list of least number of permissions I found that's required to "Deploy a Cloud Function via gCloud"
 
 <table>
   <tr>
@@ -88,10 +88,10 @@ Here's the list of Least number of Permissions I found that's required to "Deplo
 
 
 Note: 
-1. Different Project means the Source Code is uploaded to a Cloud Storage / Repository of a project different than the one being exploited. Project where the Attacker has full control.
-2. Last two permissions in bottom right (source.repos.get & source.repos.list) are required to be granted to the "Google Cloud Functions Service Agent" in Attacker's controlled project for it to be able to read the repository and upload the code in the Function. 
+1. Different Project means the Source Code is uploaded to a Cloud Storage / Repository of a project different than the one being exploited. It is the attacker controlled project where the attacker has full control.
+2. Last two permissions in bottom right (source.repos.get & source.repos.list) are required to be granted to the "Google Cloud Functions Service Agent" in Attacker's controlled project for it to be able to read the repository from attacker's project and upload the code in the Function. 
 
-The format of the service account email for the Google Cloud Functions Service Agent is service-{PROJECT_NUMBER}@gcf-admin-robot.iam.gserviceaccount.com. Figuring out the Google Cloud Functions Service Agent email requires one to know the Project Number, which might need additional permissions. 
+The format of the service account email for the Google Cloud Functions Service Agent is `service-{PROJECT_NUMBER}@gcf-admin-robot.iam.gserviceaccount.com`. Figuring out the Google Cloud Functions Service Agent email requires one to know the Project Number, which might need additional permissions. 
 
 For gCloud 
  
