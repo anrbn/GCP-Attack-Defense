@@ -8,9 +8,9 @@ There are three ways to create a Cloud Function in GCP:
 2. gCloud Command
 3. Cloud Function API (REST & gRPC)
 
-<p>
+<p align="center">
   <img src="https://github.com/anrbn/blog/blob/main/images/6.jpg">
-  <p align="center"><em>Image 1</em></p>
+  <em>Image 1</em>
 </p>
 
 While Cloud Console may seem user-friendly for creating resources in GCP, we won't be using it. The reason being, creating resources in GCP often involves navigating through different pages, each with its own set of permissions. Depending on the user's level of access, they may not be able to view or access certain pages necessary to create a particular resource. It's important to have a number of permissions in place to ensure that a user can perform the actions they need to within the GCP environment. 
@@ -25,9 +25,9 @@ If you're creating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
 2. Cloud Storage
 3. Cloud Repository
 
-<p>
+<p align="center">
   <img src="https://github.com/anrbn/blog/blob/main/images/7.jpg">
-  <p align="center"><em>Image 2</em></p>
+  <em>Image 2</em>
 </p>
 
 **Permission Required for Deploying a Cloud Function**
@@ -94,10 +94,10 @@ Here's the list of least number of permissions I found that's required to "Deplo
 
 Here's an image to understand it better.
 
-<p>
+<p align="center">
   <img src="https://github.com/anrbn/blog/blob/main/images/8.jpg">
   <br>
-  <p align="center"><em>Image 3</em></p>
+  <em>Image 3</em>
 </p>
 
 > Note: 
@@ -107,10 +107,10 @@ Here's an image to understand it better.
  
 Every permission mentioned in the list seems to do something which is quite clear from their name. But here's something I found really strange, why is there a need for  `cloudfunctions.functions.get` permission for creating a Cloud Function? As far as the documentation goes the description for the permission `cloudfunctions.functions.get` says view functions. ([Link](https://cloud.google.com/functions/docs/reference/iam/permissions))
 
-<p>
+<p align="center">
   <img src="https://github.com/anrbn/blog/blob/main/images/1.JPG">
   <br>
-  <p align="center"><em>Image 4</em></p>
+  <em>Image 4</em>
 </p>
 
 Which means `cloudfunctions.functions.get` permission allows a user or service account to view metadata about a Cloud Function, such as its name, runtime, entry point, trigger settings, and other configuration details. What I guess is, it may be a default behavior of gCloud to include this permission when creating a function but it is not necessary for the creation of the function.
@@ -176,10 +176,10 @@ Won't go into much details and step straight into the point. Here is the list of
 
 Here's an image to understand it better.
 
-<p>
+<p align="center">
   <img src="https://github.com/anrbn/blog/blob/main/images/9.jpg">
   <br>
-  <p align="center"><em>Image 5</em></p>
+  <em>Image 5</em>
 </p>
   
 >Note: You might need additional permissions to successfully upload code from the two sources: Local Machine and Cloud Repository via Cloud Function API (gRPC & REST).  However, for the Source: Cloud Storage, the permissions listed are the least that's required. Since it's easier to do it via Cloud Storage, why even bother with the other two? :)
@@ -234,10 +234,10 @@ except Exception as e:
     else:
         print(f"[!] Error: {str(e)}")
 ```
-<p>
+<p align="center">
   <img src="https://github.com/anrbn/blog/blob/main/images/3.JPG">
   <br>
-  <p align="center"><em>Image 6</em></p>
+  <em>Image 6</em>
 </p>
 
 Even though a warning pops up that *Permission cloudfunctions.operations.get denied on resource* the Cloud Function will be successfully created. The warning is likely due to some internal operations being performed by the Cloud Function service during the creation process.  
@@ -262,10 +262,10 @@ Here's the oneliner which can run in `cmd` without any errors.
 curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d "{\"name\":\"projects/<project-id>/locations/<region>/functions/<function-name>\",\"entryPoint\":\"<function-entrypoint>\",\"runtime\":\"python38\",\"serviceAccountEmail\":\"<service-account-email>\",\"sourceArchiveUrl\":\"<gs-link-to-zipped-sourcecode>\",\"httpsTrigger\":{}}" https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions?alt=json
 ```
 
-<p>
+<p align="center">
   <img src="https://github.com/anrbn/blog/blob/main/images/2.JPG">
   <br>
-  <p align="center"><em>Image 7</em></p>
+  <em>Image 7</em>
 </p>
 
 Modify the parameters according to your need
@@ -306,7 +306,7 @@ Modify the parameters according to your need
    <td>&lt;service-account-email>
    </td>
    <td>The email address of the service account that will be used to run the Cloud Function. 
-<p>
+<p align="center">
 Choosing a Service Account with high privileges will help you Privilege Escalate easier.
    </td>
   </tr>
@@ -318,18 +318,18 @@ Choosing a Service Account with high privileges will help you Privilege Escalate
   </tr>
 </table>
 
-<p>
+<p align="center">
   <img src="https://github.com/anrbn/blog/blob/main/images/4.JPG">
   <br>
-  <p align="center"><em>Image 8. Cloud Function Created using both gRPC and REST</em></p>
+  <em>Image 8. Cloud Function Created using both gRPC and REST</em>
 </p>
 
 However, invoking the function will lead to the following error (fig.9): *Your client does not have permission to get URL.* The client doesn't have required role `Cloud Function Invoker` to invoke the function.
 
-<p>
+<p align="center">
   <img src="https://github.com/anrbn/blog/blob/main/images/5.JPG">
   <br>
-  <p align="center"><em>Image 9</em></p>
+  <em>Image 9</em>
 </p>
 
 **Permission Required for Invoking a Cloud Function**
@@ -346,10 +346,10 @@ Now, there's a special member called `allUsers` that represents anyone on the in
 
 In order to grant the `allUsers` member the `Cloud Function Invoker` role, the user or service account performing the operation must have certain permissions. Let's image that out as well.
 
-<p>
+<p align="center">
   <img src="https://github.com/anrbn/blog/blob/main/images/10.jpg">
   <br>
-  <p align="center"><em>Image 10</em></p>
+  <em>Image 10</em>
 </p>
 
 The code will query the metadata server and retrieve an access token and then print that token to the logs and response body when a request is made to that specific endpoint.
