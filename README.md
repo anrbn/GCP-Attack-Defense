@@ -229,7 +229,7 @@ except Exception as e:
 ![](https://github.com/anrbn/blog/blob/main/images/3.JPG)
 >fig.6
 
-Even though a warning pops up that *Permission `cloudfunctions.operations.get` denied on resource* the Cloud Function will be successfully created. The warning is likely due to some internal operations being performed by the Cloud Function service during the creation process.  
+Even though a warning pops up that *Permission cloudfunctions.operations.get denied on resource* the Cloud Function will be successfully created. The warning is likely due to some internal operations being performed by the Cloud Function service during the creation process.  
  
 The Cloud Function however will be created with just the following permissions:
 * `iam.serviceAccounts.actAs`
@@ -261,7 +261,7 @@ Modify the parameters according to your need
    <td>&lt;token> 
    </td>
    <td>&lt;token> is a placeholder for an actual authorization token that is required to authenticate and authorize the API request. Run the command 
-"gcloud auth application-default print-access-token" to get the token.
+"**gcloud auth application-default print-access-token**" to get the token.
    </td>
   </tr>
   <tr>
