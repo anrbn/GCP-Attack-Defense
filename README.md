@@ -98,3 +98,142 @@ For gCloud
 &lt;image>
 
 Every permission mentioned in the list seems to do something which is quite clear from their name. But here’s something I found really strange, why is there a need for  “cloudfunctions.functions.get” permission for creating a Cloud Function? As far as the documentation goes the description for the permission “cloudfunctions.functions.get” says view functions. ([Link](https://cloud.google.com/functions/docs/reference/iam/permissions))
+
+Which means “cloudfunctions.functions.get” permission allows a user or service account to view metadata about a Cloud Function, such as its name, runtime, entry point, trigger settings, and other configuration details. What I guess is, it may be a default behavior of gCloud to include this permission when creating a function but it is not necessary for the creation of the function.
+
+Using tools like gCloud can be convenient, but sometimes gCloud requires additional permissions beyond what is actually needed for the task at hand. This can result in unnecessarily permission requirements for users. 
+
+One way to narrow down the permission requirements is to not rely on tools like gCloud at all, but to use the Cloud Function API yourself. Cloud Function API can be called via gRPC and REST APIs. Using gRPC or REST APIs can be more precise and efficient in terms of permissions to create resources like Cloud Functions. gRPC and REST API allows us to specify only the necessary permissions for the specific task.
+
+For Cloud Function API 
+
+&lt;image>
+
+That being said let’s look at how to“Deploy a Cloud Function via Cloud Function API (gRPC & REST)”
+
+**Deploying a Cloud Function via Cloud Function API (gRPC)**
+
+gRPC is an open-source Remote Procedure Call (RPC) framework developed by Google. While REST (Representational State Transfer) is an architectural style for building web-based software systems. REST APIs are commonly used to access and manage cloud resources. 
+
+Won't go into much details and step straight into the point. Here is the list of Permission required to successfully deploy a Cloud Function via Cloud Function API (gRPC & REST). 
+
+
+
+<table>
+  <tr>
+   <td colspan="3" ><strong>Cloud Function Deploy via Cloud Function API (gRPC & REST)</strong>
+   </td>
+  </tr>
+  <tr>
+   <td><strong>Function Code Upload Source: Local Machine</strong>
+   </td>
+   <td><strong>Function Code Upload Source: Cloud Storage</strong>
+   </td>
+   <td><strong>Function Code Upload Source: Cloud Repository</strong>
+   </td>
+  </tr>
+  <tr>
+   <td>iam.serviceAccounts.actAs
+   </td>
+   <td>iam.serviceAccounts.actAs
+   </td>
+   <td>iam.serviceAccounts.actAs
+   </td>
+  </tr>
+  <tr>
+   <td>cloudfunctions.functions.create
+   </td>
+   <td>cloudfunctions.functions.create
+   </td>
+   <td>cloudfunctions.functions.create
+   </td>
+  </tr>
+  <tr>
+   <td>cloudfunctions.functions.sourceCodeSet
+   </td>
+   <td>
+   </td>
+   <td>source.repos.get (Google Cloud Functions Service Agent)
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>source.repos.list (Google Cloud Functions Service Agent)
+   </td>
+  </tr>
+</table>
+
+
+
+[Note: You might need additional permissions to successfully upload code from the two sources: Local Machine and Cloud Repository via Cloud Function API (gRPC & REST).  However, for the Source: Cloud Storage, the permissions listed are the least that’s required. Since it’s easier to do it via Cloud Storage, why even bother with the other two? :)] 
+
+
+If you take a look at the above tables (Table 1 & 2), it's clear that of the two methods for deploying a Cloud Function (using gCloud or the Cloud Function API), uploading the source code via Cloud Storage using the Cloud Function API requires the least amount of permissions and can easily be chosen over any other method. Here’s a figure to understand it better. 
+ 
+&lt;Image 3>
+
+&lt;Image 4>
+
+ 
+Let’s call the Cloud Function API using both gRPC and REST to deploy a Cloud Function (Code Upload Source: Cloud Storage). 
+
+Below is a code that’s calling the Cloud Function API via gRPC to deploy a Cloud Function in GCP. It’s using the method being create_function() from the google.cloud.functions_v1.CloudFunctionsServiceClient class. Note that for uploading the Source Code we will be using Cloud Storage, simply because it requires less number of permission than any other method (Check &lt;Figure> ).
+
+```python
+from google.cloud.functions_v1 import CloudFunctionsServiceClient, CloudFunction, CreateFunctionRequest
+import google.auth
+import time
+
+credentials, project_id = google.auth.default()
+
+location = "us-east1"
+function_name = "exfil11"
+bucket_name = "anirb"
+source_zip = "function.zip"
+function_entry_point = "exfil"
+
+client = CloudFunctionsServiceClient(credentials=credentials)
+
+url = "https://{}-{}.cloudfunctions.net/{}".format(location, project_id, function_name)
+
+function = CloudFunction(
+    name="projects/{}/locations/{}/functions/{}".format(project_id, location, function_name),
+    source_archive_url="gs://{}/{}".format(bucket_name, source_zip),
+    entry_point=function_entry_point,
+    runtime="python38",
+    https_trigger={},
+)
+
+request = CreateFunctionRequest(location="projects/{}/locations/{}".format(project_id, location), function=function)
+
+try:
+    response = client.create_function(request=request)
+    result = response.result()
+    print(f"[+] Function Invocation URL: {url}")
+    print("[+] Cloud Function creation has started")
+    print("[+] Takes 1-2 minutes to create")
+
+except Exception as e:
+    if "cloudfunctions.operations.get" in str(e):
+        print("[+] Permission cloudfunctions.operations.get denied (Not an Issue)")
+        print(f"[+] Function Invocation URL: {url}")
+        print("[+] Cloud Function creation has started")
+        print("[+] Takes 1-2 minutes to create")
+        
+    else:
+        print(f"[!] Error: {str(e)}")
+```
+
+
+Even though a warning pops up that “Permission ‘cloudfunctions.operations.get’ denied on resource” the Cloud Function will be successfully created. The warning is likely due to some internal operations being performed by the Cloud Function service during the creation process.  
+ 
+The Cloud Function however will be created with just the following permissions:
+* iam.serviceAccounts.actAs
+* cloudfunctions.functions.create
+
+
+
+
