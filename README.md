@@ -476,7 +476,7 @@ function_name = "exfil11"
 #-------------------------
 
 client = CloudFunctionsServiceClient(credentials=credentials)
-name="projects/{}/locations/{}/functions/{}".format(project_id, location, function_name)
+name = "projects/{}/locations/{}/functions/{}".format(project_id, location, function_name)
 
 policy = client.get_iam_policy(request={"resource": name})
 binding = Binding(
