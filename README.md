@@ -34,7 +34,7 @@ If you're creating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
 
 Let's start with the first step of deploying/creating a Cloud Function. As always every action in GCP requires you to have a certain amount of Permissions. Here's the list of least permission required to "Deploy a Cloud Function via gCloud".
 
-Here's the list of least number of permissions I found that's required to "Deploy a Cloud Function via gCloud"
+Here's the list of least number of permissions that's required to "Deploy a Cloud Function via gCloud"
 
 <table>
   <tr>
@@ -306,9 +306,7 @@ Modify the parameters according to your need
   <tr>
    <td>&lt;service-account-email>
    </td>
-   <td>The email address of the service account that will be used to run the Cloud Function. 
-<p align="center">
-Choosing a Service Account with high privileges will help you Privilege Escalate easier.
+   <td>The email address of the service account that will be used to run the Cloud Function. Choosing a Service Account with high privileges will help you Privilege Escalate easier.
    </td>
   </tr>
   <tr>
@@ -346,13 +344,9 @@ Now, there's a special member called `allUsers` that represents anyone on the in
 
 >Note: Granting allUsers permissions to a Cloud Function, you are essentially making your Cloud Function publicly accessible to anyone who knows the URL.
 
-In order to grant the `allUsers` member the `Cloud Function Invoker` role, the user or service account performing the operation must have certain permissions. Let's image that out as well.
+In order to grant the `allUsers` member the `Cloud Function Invoker` role, the user or service account performing the operation must have certain permissions. 
 
-<p align="center">
-  <img src="https://github.com/anrbn/blog/blob/main/images/10.jpg">
-  <br>
-  <em>Image 10</em>
-</p>
+Here's the list of least number of permissions that's required to give a member or group the role `Cloud Function Invoker` to Invoke a Cloud Function (gCloud & Cloud Function API):
 
 <table align="center">
   <tr>
@@ -369,9 +363,101 @@ In order to grant the `allUsers` member the `Cloud Function Invoker` role, the u
    <td colspan="3" ><strong>Cloud Function Invoke via Cloud Function API (REST & gRPC)</strong></td>
   </tr>
   <td>cloudfunctions.functions.setIamPolicy</td>
-
 </table>
 <p align="center"><em>Table 5</em></p>
 
+Here's an image to understand it better.
+
+<p align="center">
+  <img src="https://github.com/anrbn/blog/blob/main/images/10.jpg">
+  <br>
+  <em>Image 10</em>
+</p>
+
+Once again Cloud Function API (REST & gRPC) stands out as it requires less amount of permission to give a member or group the role `Cloud Function Invoker` to Invoke a Cloud Function. 
+
+Anyways here's the gCloud command that grants `Cloud Function Invoker` role to a member/group. 
+
+```shell
+gcloud functions add-iam-policy-binding <function-name> --region=<region> --member=allUsers --role=roles/cloudfunctions.invoker
+```
+<table align="center">
+ <tr>
+   <td>&lt;function-name>
+   </td>
+   <td>The name of the Cloud Function created.
+   </td>
+  </tr>
+  <tr>
+   <td>&lt;region>
+   </td>
+   <td>The region where the Cloud Function was deployed. For example, "us-central1".
+   </td>
+  </tr>
+  </table>
+<p align="center"><em>Table 6</em></p>
+
+Above gCloud command adds an IAM policy binding to a Google Cloud Functions resource, allowing all users, even unauthenticated 
+(--member=allUsers) to invoke the specified function (&lt;function-name>) in the specified region (--region=&lt;region>) with the cloudfunctions.invoker role 
+(--role=roles/cloudfunctions.invoker). It requires you to have both `cloudfunctions.functions.getIamPolicy` & `cloudfunctions.functions.setIamPolicy` permissions. We can narrow down the permission to just one, using Cloud Function API.
+
+Here's the curl command to call the Cloud Function API via REST 
+and code to call the Cloud Function API via gRPC.
+
+```shell
+curl -X POST \
+     -H "Authorization: Bearer <token>" \
+     -H "Content-Type: application/json" \
+     -d '{
+          "policy": {
+            "bindings": [
+              {
+                "role": "roles/cloudfunctions.invoker",
+                "members": [
+                  "allUsers"
+                ]
+              }
+            ],
+            "version": 3
+          }
+        }' \
+     https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions/<function-name>:setIamPolicy
+```
+Here's the oneliner which can run in `cmd` without any errors.
+
+```shell
+curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d "{\"policy\":{\"bindings\":[{\"role\":\"roles/cloudfunctions.invoker\",\"members\":[\"allUsers\"]}],\"version\":3}}" https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions/<function-name>:setIamPolicy
+```
+
+Modify the parameters according to your need
+
+<table>
+  <tr>
+   <td>&lt;token> 
+   </td>
+   <td>&lt;token> is a placeholder for an actual authorization token that is required to authenticate and authorize the API request. 
+   <br>Run the command "<strong>gcloud auth application-default print-access-token</strong>" to get the token.
+   </td>
+  </tr>
+  <tr>
+   <td>&lt;project-id>
+   </td>
+   <td>The ID of the Google Cloud project in which the Cloud Function was created.
+   </td>
+  </tr>
+  <tr>
+   <td>&lt;region>
+   </td>
+   <td>The region where the Cloud Function was deployed.
+   </td>
+  </tr>
+  <tr>
+   <td>&lt;function-name>
+   </td>
+   <td>The name of the Cloud Function.
+   </td>
+  </tr>
+</table>
+<p align="center"><em>Table 7</em></p>
 
 The code will query the metadata server and retrieve an access token and then print that token to the logs and response body when a request is made to that specific endpoint.
