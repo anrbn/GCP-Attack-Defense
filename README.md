@@ -91,6 +91,7 @@ Here's the list of least number of permissions I found that's required to "Deplo
    </td>
   </tr>
 </table>
+<p align="center"><em>Table 1</em></p>
 
 Here's an image to understand it better.
 
@@ -173,7 +174,7 @@ Won't go into much details and step straight into the point. Here is the list of
    </td>
   </tr>
 </table>
-
+<p align="center"><em>Table 2</em></p>
 Here's an image to understand it better.
 
 <p align="center">
@@ -240,7 +241,7 @@ except Exception as e:
   <em>Image 6</em>
 </p>
 
-Even though a warning pops up that *Permission cloudfunctions.operations.get denied on resource* the Cloud Function will be successfully created. The warning is likely due to some internal operations being performed by the Cloud Function service during the creation process.  
+Even though a warning pops up that "*Permission cloudfunctions.operations.get denied on resource*" the Cloud Function will be successfully created. The warning is likely due to some internal operations being performed by the Cloud Function service during the creation process.  
  
 The Cloud Function however will be created with just the following permissions:
 * `iam.serviceAccounts.actAs`
@@ -317,6 +318,7 @@ Choosing a Service Account with high privileges will help you Privilege Escalate
    </td>
   </tr>
 </table>
+<p align="center"><em>Table 3</em></p>
 
 <p align="center">
   <img src="https://github.com/anrbn/blog/blob/main/images/4.JPG">
@@ -340,7 +342,7 @@ When you create a Cloud Function in GCP, it is not immediately accessible for in
 
 To set up IAM permissions for your Cloud Function, you can add one or more members to a Cloud Function's IAM policy. Members can be individual user accounts, groups of users, or service accounts. You can assign roles to these members, which determine the actions they can perform on the function. 
 
-Now, there's a special member called `allUsers` that represents anyone on the internet. We will be granting the member : `allUsers` the role : `Cloud Function Invoker` to to Invoke the function.This will allow anyone on the internet to invoke the Cloud Function without requiring authentication. 
+Now, there's a special member called `allUsers` that represents anyone on the internet. We will be granting the member : `allUsers` the role : `Cloud Function Invoker`. This will allow anyone on the internet to invoke the Cloud Function without requiring authentication. 
 
 >Note: Granting allUsers permissions to a Cloud Function, you are essentially making your Cloud Function publicly accessible to anyone who knows the URL.
 
@@ -351,5 +353,25 @@ In order to grant the `allUsers` member the `Cloud Function Invoker` role, the u
   <br>
   <em>Image 10</em>
 </p>
+
+<table align="center">
+  <tr>
+   <td colspan="3" ><strong>Cloud Function Invoke via gCloud</strong></td>
+  </tr>
+  <td>cloudfunctions.functions.getIamPolicy</td>
+  <tr>
+  <td>cloudfunctions.functions.setIamPolicy</td>
+</table>
+<p align="center"><em>Table 4</em></p>
+
+<table align="center">
+  <tr>
+   <td colspan="3" ><strong>Cloud Function Invoke via Cloud Function API (REST & gRPC)</strong></td>
+  </tr>
+  <td>cloudfunctions.functions.setIamPolicy</td>
+
+</table>
+<p align="center"><em>Table 5</em></p>
+
 
 The code will query the metadata server and retrieve an access token and then print that token to the logs and response body when a request is made to that specific endpoint.
