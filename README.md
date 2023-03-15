@@ -8,9 +8,8 @@ There are three ways to create a Cloud Function in GCP:
 2. gCloud Command
 3. Cloud Function API (REST & gRPC)
 
-<p align="center">
+<p>
   <img src="https://github.com/anrbn/blog/blob/main/images/6.jpg">
-  <em>Image 1</em>
 </p>
 
 While Cloud Console may seem user-friendly for creating resources in GCP, we won't be using it. The reason being, creating resources in GCP often involves navigating through different pages, each with its own set of permissions. Depending on the user's level of access, they may not be able to view or access certain pages necessary to create a particular resource. It's important to have a number of permissions in place to ensure that a user can perform the actions they need to within the GCP environment. 
@@ -25,9 +24,8 @@ If you're creating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
 2. Cloud Storage
 3. Cloud Repository
 
-<p align="center">
+<p>
   <img src="https://github.com/anrbn/blog/blob/main/images/7.jpg">
-  <em>Image 2</em>
 </p>
 
 **Permission Required for Deploying a Cloud Function**
@@ -91,14 +89,11 @@ Here's the list of least number of permissions that's required to "Deploy a Clou
    </td>
   </tr>
 </table>
-<p align="center"><em>Table 1</em></p>
 
 Here's an image to understand it better.
 
-<p align="center">
+<p>
   <img src="https://github.com/anrbn/blog/blob/main/images/8.jpg">
-  <br>
-  <em>Image 3</em>
 </p>
 
 > Note: 
@@ -108,10 +103,8 @@ Here's an image to understand it better.
  
 Every permission mentioned in the list seems to do something which is quite clear from their name. But here's something I found really strange, why is there a need for  `cloudfunctions.functions.get` permission for creating a Cloud Function? As far as the documentation goes the description for the permission `cloudfunctions.functions.get` says view functions. ([Link](https://cloud.google.com/functions/docs/reference/iam/permissions))
 
-<p align="center">
+<p>
   <img src="https://github.com/anrbn/blog/blob/main/images/1.JPG">
-  <br>
-  <em>Image 4</em>
 </p>
 
 Which means `cloudfunctions.functions.get` permission allows a user or service account to view metadata about a Cloud Function, such as its name, runtime, entry point, trigger settings, and other configuration details. What I guess is, it may be a default behavior of gCloud to include this permission when creating a function but it is not necessary for the creation of the function.
@@ -174,13 +167,11 @@ Won't go into much details and step straight into the point. Here is the list of
    </td>
   </tr>
 </table>
-<p align="center"><em>Table 2</em></p>
+
 Here's an image to understand it better.
 
-<p align="center">
+<p>
   <img src="https://github.com/anrbn/blog/blob/main/images/9.jpg">
-  <br>
-  <em>Image 5</em>
 </p>
   
 >Note: You might need additional permissions to successfully upload code from the two sources: Local Machine and Cloud Repository via Cloud Function API (gRPC & REST).  However, for the Source: Cloud Storage, the permissions listed are the least that's required. Since it's easier to do it via Cloud Storage, why even bother with the other two? :)
@@ -237,10 +228,8 @@ except Exception as e:
     else:
         print(f"[!] Error: {str(e)}")
 ```
-<p align="center">
+<p>
   <img src="https://github.com/anrbn/blog/blob/main/images/3.JPG">
-  <br>
-  <em>Image 6</em>
 </p>
 
 Even though a warning pops up that "*Permission cloudfunctions.operations.get denied on resource*" the Cloud Function will be successfully created. The warning is likely due to some internal operations being performed by the Cloud Function service during the creation process.  
@@ -265,10 +254,8 @@ Here's the oneliner which can run in `cmd` without any errors.
 curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d "{\"name\":\"projects/<project-id>/locations/<region>/functions/<function-name>\",\"entryPoint\":\"<function-entrypoint>\",\"runtime\":\"python38\",\"serviceAccountEmail\":\"<service-account-email>\",\"sourceArchiveUrl\":\"<gs-link-to-zipped-sourcecode>\",\"httpsTrigger\":{}}" https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions?alt=json
 ```
 
-<p align="center">
+<p>
   <img src="https://github.com/anrbn/blog/blob/main/images/2.JPG">
-  <br>
-  <em>Image 7</em>
 </p>
 
 Modify the parameters according to your need
@@ -318,20 +305,15 @@ Modify the parameters according to your need
    </td>
   </tr>
 </table>
-<p align="center"><em>Table 3</em></p>
 
-<p align="center">
+<p>
   <img src="https://github.com/anrbn/blog/blob/main/images/4.JPG">
-  <br>
-  <em>Image 8. Cloud Function Created using both gRPC and REST</em>
 </p>
 
 However, invoking the function will lead to the following error (fig.9): *Your client does not have permission to get URL.* The client doesn't have required role `Cloud Function Invoker` to invoke the function.
 
-<p align="center">
+<p>
   <img src="https://github.com/anrbn/blog/blob/main/images/5.JPG">
-  <br>
-  <em>Image 9</em>
 </p>
 
 **Permission Required for Invoking a Cloud Function**
@@ -350,7 +332,7 @@ In order to grant the `allUsers` member the `Cloud Function Invoker` role, the u
 
 Here's the list of least number of permissions that's required to give a member or group the role `Cloud Function Invoker` to Invoke a Cloud Function (gCloud & Cloud Function API):
 
-<table align="center">
+<table>
   <tr>
    <td colspan="3" ><strong>Cloud Function Invoke via gCloud</strong></td>
   </tr>
@@ -358,22 +340,18 @@ Here's the list of least number of permissions that's required to give a member 
   <tr>
   <td>cloudfunctions.functions.setIamPolicy</td>
 </table>
-<p align="center"><em>Table 4</em></p>
 
-<table align="center">
+<table>
   <tr>
    <td colspan="3" ><strong>Cloud Function Invoke via Cloud Function API (REST & gRPC)</strong></td>
   </tr>
   <td>cloudfunctions.functions.setIamPolicy</td>
 </table>
-<p align="center"><em>Table 5</em></p>
 
 Here's an image to understand it better.
 
-<p align="center">
+<p>
   <img src="https://github.com/anrbn/blog/blob/main/images/10.jpg">
-  <br>
-  <em>Image 10</em>
 </p>
 
 Once again Cloud Function API (REST & gRPC) stands out as it requires less amount of permission to give a member or group the role `Cloud Function Invoker` to Invoke a Cloud Function. 
@@ -383,7 +361,7 @@ Anyways here's the gCloud command that grants `Cloud Function Invoker` role to a
 ```shell
 gcloud functions add-iam-policy-binding <function-name> --region=<region> --member=allUsers --role=roles/cloudfunctions.invoker
 ```
-<table align="center">
+<table>
  <tr>
    <td>&lt;function-name>
    </td>
@@ -397,7 +375,6 @@ gcloud functions add-iam-policy-binding <function-name> --region=<region> --memb
    </td>
   </tr>
   </table>
-<p align="center"><em>Table 6</em></p>
 
 Above gCloud command adds an IAM policy binding to a Google Cloud Functions resource, allowing all users, even unauthenticated 
 (--member=allUsers) to invoke the specified function (&lt;function-name>) in the specified region (--region=&lt;region>) with the cloudfunctions.invoker role 
@@ -459,7 +436,6 @@ Modify the parameters according to your need
    </td>
   </tr>
 </table>
-<p align="center"><em>Table 7</em></p>
 
 You can also use the gRPC API to add the IAM policy binding of `allUsers` with the role `Cloud Function Invoker` to a Cloud Function. Here's the code for that.
 
