@@ -101,6 +101,25 @@ Here's an image to understand it better.
 >2. Last two permissions in bottom right (`source.repos.get` & `source.repos.list`) are required to be granted to the "Google Cloud Functions Service Agent" in Attacker's controlled project for it to be able to read the repository from attacker's project and upload the code in the Function. 
 >3. The format of the service account email for the Google Cloud Functions Service Agent is `service-{PROJECT_NUMBER}@gcf-admin-robot.iam.gserviceaccount.com`. Figuring out the Google Cloud Functions Service Agent email requires one to know the Project Number, which might need additional permissions. 
  
+<table>
+  <tr>
+   <td colspan="3" ><strong>Command to Deploy Cloud Function via gCloud</strong></td>
+  </tr>
+  <tr>
+   <td><strong>Source Code Upload via: Local Machine</strong></td>
+   <td>gcloud functions deploy &lt;function-name> --runtime=python38 --source=. --entry-point=&lt;function-entrypoint> --trigger-http --service-account=&lt;service-account-email></td>
+   </tr>
+   
+<tr>
+  <td><strong>Source Code Upload via: Cloud Storage</strong></td>
+   <td>gcloud functions deploy &lt;function-name> --runtime=python38 --source=&lt;gs-link-to-zipped-sourcecode> --entry-point=&lt;function-entrypoint> --trigger-http --service-account=&lt;service-account-email></td>
+ </tr>
+  <tr>
+ <td><strong>Source Code Upload via: Cloud Repository</strong></td>
+ <td>gcloud functions deploy &lt;function-name> --runtime=python38 --source=&lt;gs-link-to-zipped-sourcecode> --entry-point=&lt;function-entrypoint> --trigger-http --service-account=&lt;service-account-email></td>
+ </tr>
+</table>
+
 Every permission mentioned in the list seems to do something which is quite clear from their name. But here's something I found really strange, why is there a need for  `cloudfunctions.functions.get` permission for creating a Cloud Function? As far as the documentation goes the description for the permission `cloudfunctions.functions.get` says view functions. ([Link](https://cloud.google.com/functions/docs/reference/iam/permissions))
 
 <p>
