@@ -1,6 +1,6 @@
 **Mapping the Attack Path**
 
-#Heading 1 link [Heading link](https://github.com/pandao/editor.md "Heading link")
+#Heading 1 link [Heading link](https://github.com/anrbn/blog/blob/main/README.md "Heading link")
 
 **Ways to Deploy a Cloud Function in GCP**
 
