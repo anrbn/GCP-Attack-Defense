@@ -9,7 +9,8 @@
     - [Permission Required for Deploying a Cloud Function (gRPC & REST)](#permission-required-for-deploying-a-cloud-function-grpc--rest)
 - [Phase II - Ways to Set IAM Policy Binding to a Cloud Function in Google Cloud Platform](#phase-ii---ways-to-set-iam-policy-binding-to-a-cloud-function-in-google-cloud-platform)
   - [Permission Required to Set IAM Policy Binding to a Cloud Function](#permission-required-to-set-iam-policy-binding-to-a-cloud-function)
-
+  - [Setting IAM Policy Binding to the Cloud Function](#setting-iam-policy-binding-to-the-cloud-function)
+- [Phase III - Privilege Escalating via Cloud Function in Google Cloud Platform](#phase-iii---privilege-escalating-via-cloud-function-in-google-cloud-platform)
 ## Phase I - Ways to Deploy a Cloud Function in GCP
 
 There are three ways to deploy a Cloud Function in GCP: 
@@ -494,5 +495,7 @@ policy.bindings.append(binding)
 response = client.set_iam_policy(request={"resource": name, "policy": policy})
 print("[+] Done.")
 ```
+## Phase III - Privilege Escalating via Cloud Function in Google Cloud Platform
+Deploying a Cloud Function via Cloud Function API (gRPC)
 
 The code will query the metadata server and retrieve an access token and then print that token to the logs and response body when a request is made to that specific endpoint.
