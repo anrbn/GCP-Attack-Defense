@@ -1,22 +1,20 @@
 **Mapping the Attack Path**
 
-**Ways one can create a Cloud Function in GCP**
+**Ways to Deploy a Cloud Function in GCP**
 
-There are three ways to create a Cloud Function in GCP: 
+There are three ways to deploy a Cloud Function in GCP: 
 
 1. Cloud Console
 2. gCloud Command
 3. Cloud Function API (REST & gRPC)
 
-<p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/6.jpg">
-</p>
+<p><img src="https://github.com/anrbn/blog/blob/main/images/6.jpg"></p>
 
 While Cloud Console may seem user-friendly for creating resources in GCP, we won't be using it. The reason being, creating resources in GCP often involves navigating through different pages, each with its own set of permissions. Depending on the user's level of access, they may not be able to view or access certain pages necessary to create a particular resource. It's important to have a number of permissions in place to ensure that a user can perform the actions they need to within the GCP environment. 
 
-Our focus in this blog is on creating a Cloud Function using the least privileges possible. That's also why attackers tend to use the gCloud command and Cloud Function API (via gRPC or REST) to create resources. Furthermore, attackers mainly gain access to a GCP environment using stolen or compromised authentication tokens (auth_tokens). Cloud Console doesn't support authentication via auth_tokens. As a result, attackers may prefer to use the gCloud command or directly call the Cloud Function API via gRPC or REST API to create resources because they offer more flexibility in terms of authentication and control.
+Our focus in this blog is on creating a Cloud Function using the least privileges possible. That's also the reason why attackers tend to use the gCloud command and Cloud Function API (via gRPC or REST) to create resources. Furthermore, attackers mainly gain access to a GCP environment using stolen or compromised authentication tokens (auth_tokens). Cloud Console doesn't support authentication via auth_tokens. As a result, attackers may prefer to use the gCloud command or directly call the Cloud Function API via gRPC or REST API to create resources because they offer more flexibility in terms of authentication and control.
 
-Now let's dig deeper into it.
+**Ways to upload code in Cloud Function in GCP**
 
 If you're creating a Cloud Function in GCP, you can use **Cloud Console, gCloud Command, **or** Cloud Function API** to do so. Regardless of the method you choose, you will need to upload the code into the Cloud Function. There are three different ways to upload the code:
 
@@ -24,15 +22,11 @@ If you're creating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
 2. Cloud Storage
 3. Cloud Repository
 
-<p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/7.jpg">
-</p>
+<p><img src="https://github.com/anrbn/blog/blob/main/images/7.jpg"></p>
 
-**Permission Required for Deploying a Cloud Function**
+**Permission Required for Deploying a Cloud Function (via gCloud)**
 
-Let's start with the first step of deploying/creating a Cloud Function. As always every action in GCP requires you to have a certain amount of Permissions. Here's the list of least permission required to "Deploy a Cloud Function via gCloud".
-
-Here's the list of least number of permissions that's required to "Deploy a Cloud Function via gCloud"
+Let's start with the first step of deploying/creating a Cloud Function. As always every action in GCP requires you to have a certain amount of Permissions. Here's the list of least number of permissions that's required to "Deploy a Cloud Function via gCloud"
 
 <table>
   <tr>
@@ -119,6 +113,10 @@ Here's an image to understand it better.
  <td>gcloud functions deploy &lt;function-name> --runtime=python38 --source=&lt;gs-link-to-zipped-sourcecode> --entry-point=&lt;function-entrypoint> --trigger-http --service-account=&lt;service-account-email></td>
  </tr>
 </table>
+
+>Note: You might encounter an Error: "*ERROR: (gcloud.functions.deploy) ResponseError: status=[403], code=[Ok], message=[Permission 'cloudfunctions.operations.get' denied on resource 'operations/bzQ2MjAvdXMtY2VudHJhbDEvZXhmaWwxL18yTjJSYkp6alBB' (or resource may not exist).]*". Don't worry about it, the Cloud Function will be created regardless without any errors.  
+
+**Deploying a Cloud Function via Cloud Function API (gRPC)**
 
 Every permission mentioned in the list seems to do something which is quite clear from their name. But here's something I found really strange, why is there a need for  `cloudfunctions.functions.get` permission for creating a Cloud Function? As far as the documentation goes the description for the permission `cloudfunctions.functions.get` says view functions. ([Link](https://cloud.google.com/functions/docs/reference/iam/permissions))
 
