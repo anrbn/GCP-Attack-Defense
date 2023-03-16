@@ -36,7 +36,7 @@ Here's the list of least number of permissions that's required to "Deploy a Clou
 
 <table>
   <tr>
-   <td colspan="3" ><strong>Cloud Function Deploy via gCloud</strong>
+   <td colspan="3" align="center"><strong>Cloud Function Deploy via gCloud</strong>
    </td>
   </tr>
   <tr>
@@ -103,7 +103,7 @@ Here's an image to understand it better.
  
 <table>
   <tr>
-   <td colspan="3" ><strong>Command to Deploy Cloud Function via gCloud</strong></td>
+   <td colspan="3" align="center"><strong>Command to Deploy Cloud Function via gCloud</strong></td>
   </tr>
   <tr>
    <td><strong>Source Code Upload via: Local Machine</strong></td>
@@ -142,7 +142,7 @@ Won't go into much details and step straight into the point. Here is the list of
 
 <table>
   <tr>
-   <td colspan="3" ><strong>Cloud Function Deploy via Cloud Function API (gRPC & REST)</strong>
+   <td colspan="3" align="center"><strong>Cloud Function Deploy via Cloud Function API (gRPC & REST)</strong>
    </td>
   </tr>
   <tr>
@@ -353,7 +353,7 @@ Here's the list of least number of permissions that's required to give a member 
 
 <table>
   <tr>
-   <td colspan="3" ><strong>Cloud Function Invoke via gCloud</strong></td>
+   <td colspan="3" align="center"><strong>Cloud Function Invoke via gCloud</strong></td>
   </tr>
   <td>cloudfunctions.functions.getIamPolicy</td>
   <tr>
@@ -362,7 +362,7 @@ Here's the list of least number of permissions that's required to give a member 
 
 <table>
   <tr>
-   <td colspan="3" ><strong>Cloud Function Invoke via Cloud Function API (REST & gRPC)</strong></td>
+   <td colspan="3"align="center"><strong>Cloud Function Invoke via Cloud Function API (REST & gRPC)</strong></td>
   </tr>
   <td>cloudfunctions.functions.setIamPolicy</td>
 </table>
