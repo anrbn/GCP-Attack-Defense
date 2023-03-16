@@ -1,5 +1,7 @@
 **Mapping the Attack Path**
 
+#Heading 1 link [Heading link](https://github.com/pandao/editor.md "Heading link")
+
 **Ways to Deploy a Cloud Function in GCP**
 
 There are three ways to deploy a Cloud Function in GCP: 
@@ -7,7 +9,10 @@ There are three ways to deploy a Cloud Function in GCP:
 1. Cloud Console
 2. gCloud Command
 3. Cloud Function API (REST & gRPC)
+##Headers (Underline)
 
+H1 Header (Underline)
+=============
 <p><img src="https://github.com/anrbn/blog/blob/main/images/6.jpg"></p>
 
 While Cloud Console may seem user-friendly for creating resources in GCP, we won't be using it. The reason being, creating resources in GCP often involves navigating through different pages, each with its own set of permissions. Depending on the user's level of access, they may not be able to view or access certain pages necessary to create a particular resource. It's important to have a number of permissions in place to ensure that a user can perform the actions they need to within the GCP environment. 
