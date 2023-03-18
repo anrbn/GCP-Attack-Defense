@@ -538,8 +538,20 @@ These are the permissions required for the overall task:
 - `cloudfunctions.functions.setIamPolicy`
 
 ### Deploying the Cloud Function (via gRPC)
-Use the following script [grpc-deploy-storage.py](https://github.com/anrbn/blog/blob/main/code/grpc-deploy-storage.py) to deploy the Cloud Function . This script sets the source code for a Cloud Function using Cloud Storage.
 
-
+1. Create a new role and add the following permissions to it.
+- `iam.serviceAccounts.actAs`
+- `cloudfunctions.functions.create`
+- `cloudfunctions.functions.setIamPolicy`
+2. I created two different roles but you can put the three permissions in one role.
+<p float="left">
+<img src="https://github.com/anrbn/blog/blob/main/images/13.JPG" width="500" />
+<img src="https://github.com/anrbn/blog/blob/main/images/12.JPG" width="500" /> 
+<img src="https://github.com/anrbn/blog/blob/main/images/11.png" width="1000" /> 
+</p>
+3. With the roles set, lets fire up the following script [grpc-deploy-storage.py](https://github.com/anrbn/blog/blob/main/code/grpc-deploy-storage.py) to deploy the Cloud Function. This script sets the source code for a Cloud Function using Cloud Storage.
+<p float="left">
+<img src="https://github.com/anrbn/blog/blob/main/images/14.1.png" width="1000" /> 
+</p>
 
 The code will query the metadata server and retrieve an access token and then print that token to the logs and response body when a request is made to that specific endpoint.
