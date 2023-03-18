@@ -13,8 +13,8 @@
     - [Setting IAM Policy Binding to the Cloud Function (REST)](#setting-iam-policy-binding-to-the-cloud-function-rest)
     - [Setting IAM Policy Binding to the Cloud Function (gRPC)](#setting-iam-policy-binding-to-the-cloud-function-grpc)
 - [Phase III - Privilege Escalating via Cloud Function in Google Cloud Platform](#phase-iii---privilege-escalating-via-cloud-function-in-google-cloud-platform)
-  - [Deploying the Cloud Function (via gRPC)](#)
-  - [Setting IAM Policy Binding to the Cloud Function (gRPC)](#)
+  - [Deploying the Cloud Function (via Cloud Function API - gRPC)](#deploying-the-cloud-function-via-cloud-function-api---grpc)
+  - [Setting IAM Policy Binding to the Cloud Function (via Cloud Function API - gRPC)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api---grpc)
   - [Invoking the Cloud Function](#)
   - [Escalating Privilege to a high level Service Account](#)
 
