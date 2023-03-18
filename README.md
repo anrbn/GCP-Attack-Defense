@@ -388,7 +388,7 @@ Here's the list of least number of permissions that's required to give a member 
   <td>cloudfunctions.functions.setIamPolicy</td>
 </table>
 
-<table>
+<table style="float: left">
   <tr>
    <td colspan="3"align="center"><strong>Cloud Function Invoke via Cloud Function API (REST & gRPC)</strong></td>
   </tr>
