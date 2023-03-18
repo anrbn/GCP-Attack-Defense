@@ -568,5 +568,11 @@ These are the permissions required for the overall task:
 1. Set the IAM Policy Binding to the Cloud Function via this script [grpc-setiampolicy.py](https://github.com/anrbn/blog/blob/main/code/grpc-setiampolicy.py).
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/14.1.png">
+  <img src="https://github.com/anrbn/blog/blob/main/images/15.1.png">
+</p>
+
+2. `curl` the endpoint to get the access token. (Output of `grpc-deploy-storage.py` will give you the endpoint to query, note the "Function Invocation URL: ") 
+
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/16.png">
 </p>
