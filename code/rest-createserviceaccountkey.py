@@ -4,8 +4,9 @@ import googleapiclient.discovery
 import google.oauth2.credentials
 import base64
 
-service_account_email = input('Enter Service Account Email: ')
-access_token = input('Enter Access Token: ')
+service_account_email = input('\n[+] Enter Service Account Email: ')
+access_token = input('\n[+] Enter Access Token: ')
+output_filename = f"{service_account_email}.json"
 
 credentials = google.oauth2.credentials.Credentials(access_token)
 service = googleapiclient.discovery.build(
@@ -16,11 +17,11 @@ key = service.projects().serviceAccounts().keys().create(
 ).execute()
 
 if not key.get('disabled', False):
-    print('[+] Created JSON Key')
+    print('\n[+] Created JSON Key')
     json_key_file = base64.b64decode(key['privateKeyData']).decode('utf-8')
-    with open('new_service_account_key.json', 'w') as key_file:
+    with open(output_filename, 'w') as key_file:
         key_file.write(json_key_file)
-    print('[+] Saved new service account key to new_service_account_key.json')
+    print(f'[+] Saved {service_account_email} key to {service_account_email}.json')
 
 else:
     print('[!] Failed to create key')
