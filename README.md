@@ -593,14 +593,17 @@ $accessToken | Out-File -FilePath "code.txt"
 Example Usage:
 
 ```shell
-Example Usage:
 gcloud projects list --access-token-file=code.txt
 gcloud projects list --access-token-file=C:\Users\Administrator\code.txt
 ```
->>You might encounter an error *"ERROR: gcloud crashed (UnicodeDecodeError): 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte"* if you use the above command. This has something to do with the gCloud version in use.
+>You might encounter an error *"ERROR: gcloud crashed (UnicodeDecodeError): 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte"* if you use the above command. This has something to do with the gCloud version in use.
 
 The better way next after getting the *access_token* would be to download the Service Account Key (the Service Account you just compromised) in JSON format. Use the python script [rest-createserviceaccountkey.py](https://github.com/anrbn/blog/blob/main/code/rest-createserviceaccountkey.py), it'll create a new JSON Key and download it. 
 
-Once downloaded login 
+Once you've downloaded the JSON Key file for the Service Account you can authenticate and activate it via gCloud. 
 
-Let's use the *access_token*.
+Command to Activate the Service Account via gcloud:
+
+```shell
+gcloud auth activate-service-account --key-file="C:/Users/Administrator/Downloads/service_account.json" 
+```
