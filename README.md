@@ -607,3 +607,8 @@ Command to Activate the Service Account via gcloud:
 ```shell
 gcloud auth activate-service-account --key-file="C:/Users/Administrator/Downloads/service_account.json" 
 ```
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/17.png">
+</p>
+
+After you've activated the Service Account, you can now run commands as the activated service account user. Since the Service Account has Editor level permission one can perform a wide range of actions on Google Cloud resources.
