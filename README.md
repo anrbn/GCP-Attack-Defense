@@ -2,19 +2,19 @@
 [CLOUD FUNCTION UPDATE]
 - [Phase I - Ways to Deploy a Cloud Function in Google Cloud Platform](#phase-i---ways-to-deploy-a-cloud-function-in-gcp)
   - [Ways to upload code in Cloud Function](#ways-to-upload-code-in-cloud-function-in-gcp)
-  - [Permission Required for Deploying a Cloud Function (via gCloud)](#permission-required-for-deploying-a-cloud-function-via-gcloud)
+  - [Permission Required for Deploying a Cloud Function via gCloud](#permission-required-for-deploying-a-cloud-function-via-gcloud)
     - [Deploying a Cloud Function via gCloud](#deploying-a-cloud-function-via-gcloud) 
-  - [Permission Required for Deploying a Cloud Function (via gRPC & REST)](#permission-required-for-deploying-a-cloud-function-via-grpc--rest)
+  - [Permission Required for Deploying a Cloud Function via  Cloud Function API (gRPC & REST)](#permission-required-for-deploying-a-cloud-function-via-cloud-function-api-grpc--rest)
     - [Deploying a Cloud Function via Cloud Function API (gRPC)](#deploying-a-cloud-function-via-cloud-function-api-grpc)
     - [Deploying a Cloud Function via Cloud Function API (REST)](#deploying-a-cloud-function-via-cloud-function-api-rest)
 - [Phase II - Ways to Set IAM Policy Binding to a Cloud Function in Google Cloud Platform](#phase-ii---ways-to-set-iam-policy-binding-to-a-cloud-function-in-google-cloud-platform)
   - [Permission Required to Set IAM Policy Binding to a Cloud Function](#permission-required-to-set-iam-policy-binding-to-a-cloud-function)
-    - [Setting IAM Policy Binding to the Cloud Function (gCloud)](#setting-iam-policy-binding-to-the-cloud-function-gcloud)
-    - [Setting IAM Policy Binding to the Cloud Function (REST)](#setting-iam-policy-binding-to-the-cloud-function-rest)
-    - [Setting IAM Policy Binding to the Cloud Function (gRPC)](#setting-iam-policy-binding-to-the-cloud-function-grpc)
+    - [Setting IAM Policy Binding to the Cloud Function via gCloud](#setting-iam-policy-binding-to-the-cloud-function-via-gcloud)
+    - [Setting IAM Policy Binding to the Cloud Function via Cloud Function API (REST)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-rest)
+    - [Setting IAM Policy Binding to the Cloud Function  via Cloud Function API (gRPC)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-grpc)
 - [Phase III - Privilege Escalating via Cloud Function in Google Cloud Platform](#phase-iii---privilege-escalating-via-cloud-function-in-google-cloud-platform)
-  - [Deploying the Cloud Function (via Cloud Function API - gRPC)](#deploying-the-cloud-function-via-cloud-function-api---grpc)
-  - [Setting IAM Policy Binding to the Cloud Function (via Cloud Function API - gRPC)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api---grpc)
+  - [Deploying the Cloud Function via Cloud Function API (gRPC)](#deploying-the-cloud-function-via-cloud-function-api-grpc)
+  - [Setting IAM Policy Binding to the Cloud Function via Cloud Function API (gRPC)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-grpc-1)
   - [Escalating Privilege to a high level Service Account](#escalating-privilege-to-a-high-level-service-account)
 
 <br>
@@ -430,7 +430,7 @@ Above gCloud command adds an IAM policy binding to a Google Cloud Functions reso
 (--member=allUsers) to invoke the specified function (&lt;function-name>) in the specified region (--region=&lt;region>) with the cloudfunctions.invoker role 
 (--role=roles/cloudfunctions.invoker). It requires you to have both `cloudfunctions.functions.getIamPolicy` & `cloudfunctions.functions.setIamPolicy` permissions. We can narrow down the permission to just one, using Cloud Function API.
 
-### Setting IAM Policy Binding to the Cloud Function (REST)
+### Setting IAM Policy Binding to the Cloud Function via Cloud Function API (REST)
 
 Here's the curl command that adds an IAM policy binding of `allUsers` with `Cloud Function Invoker` role to a Cloud Function:
 
