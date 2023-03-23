@@ -139,7 +139,7 @@ Here's an image to understand it better.
 >Note: You might encounter an Error: "*ERROR: (gcloud.functions.deploy) ResponseError: status=[403], code=[Ok], message=[Permission 'cloudfunctions.operations.get' denied on resource 'operations/bzQ2MjAvdXMtY2VudHJhbDEvZXhmaWwxL18yTjJSYkp6alBB' (or resource may not exist).]*". Don't worry about it, the Cloud Function will be created regardless without any errors.  
 <br>
 
-### Permission Required for Deploying a Cloud Function (via gRPC & REST)
+### Permission Required for Deploying a Cloud Function via Cloud Function API (gRPC & REST)
 
 <table>
   <tr>
@@ -404,7 +404,7 @@ Here's an image to understand it better.
 
 Once again Cloud Function API (REST & gRPC) stands out as it requires less amount of permission to give a member or group the role `Cloud Function Invoker` to Invoke a Cloud Function. 
 
-### Setting IAM Policy Binding to the Cloud Function (gCloud)
+### Setting IAM Policy Binding to the Cloud Function via gCloud
 
 Anyways here's the gCloud command that grants `Cloud Function Invoker` role to a member/group. 
 
@@ -489,7 +489,7 @@ Modify the parameters according to your need
   </tr>
 </table>
 
-### Setting IAM Policy Binding to the Cloud Function (gRPC)
+### Setting IAM Policy Binding to the Cloud Function via Cloud Function API (gRPC)
 
 You can also use the gRPC API to add the IAM policy binding of `allUsers` with the role `Cloud Function Invoker` to a Cloud Function. Here's the code for that.
 
@@ -538,7 +538,7 @@ These are the permissions required for the overall task:
 - `cloudfunctions.functions.create`
 - `cloudfunctions.functions.setIamPolicy`
 
-### Deploying the Cloud Function (via Cloud Function API - gRPC)
+### Deploying the Cloud Function via Cloud Function API (gRPC)
 
 1. Create a new role and add the following permissions to it.
 - `iam.serviceAccounts.actAs`
@@ -564,7 +564,7 @@ These are the permissions required for the overall task:
 
 5. Next up we'll move to "Setting IAM Policy Binding to the Cloud Function via Cloud Function API (gRPC)"
 
-### Setting IAM Policy Binding to the Cloud Function (via Cloud Function API - gRPC)
+### Setting IAM Policy Binding to the Cloud Function via Cloud Function API (gRPC)
 
 1. Set the IAM Policy Binding to the Cloud Function via this script [grpc-setiampolicy.py](https://github.com/anrbn/blog/blob/main/code/grpc-setiampolicy.py).
 
