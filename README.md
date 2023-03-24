@@ -46,7 +46,8 @@ If you're creating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
 
 ### Permission Required for Deploying a Cloud Function (via gCloud)
 
-Let's start with the first step of deploying/creating a Cloud Function. As always every action in GCP requires you to have a certain amount of Permissions. Here's the list of least number of permissions that's required to "Deploy a Cloud Function via gCloud"
+Let's start with the first step of deploying/creating a Cloud Function. As always every action in GCP requires you to have a certain amount of Permissions. 
+#### Here's the list of least number of permissions that's required to "Deploy a Cloud Function via gCloud"
 
 <table>
   <tr>
@@ -139,7 +140,11 @@ Here's an image to understand it better.
 >Note: You might encounter an Error: "*ERROR: (gcloud.functions.deploy) ResponseError: status=[403], code=[Ok], message=[Permission 'cloudfunctions.operations.get' denied on resource 'operations/bzQ2MjAvdXMtY2VudHJhbDEvZXhmaWwxL18yTjJSYkp6alBB' (or resource may not exist).]*". Don't worry about it, the Cloud Function will be created regardless without any errors.  
 <br>
 
-Every permission mentioned in the list seems to do something which is quite clear from their name. But here's something I found really strange, why is there a need for  `cloudfunctions.functions.get` permission for creating a Cloud Function? As far as the documentation goes the description for the permission `cloudfunctions.functions.get` says view functions. ([Link](https://cloud.google.com/functions/docs/reference/iam/permissions))
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/18.png">
+</p>
+
+Every permission mentioned in the [list](#heres-the-list-of-least-number-of-permissions-thats-required-to-deploy-a-cloud-function-via-gcloud) seems to do something which is quite clear from their name. But here's something I found really strange, why is there a need for  `cloudfunctions.functions.get` permission for creating a Cloud Function? As far as the documentation goes the description for the permission `cloudfunctions.functions.get` says view functions. ([Link](https://cloud.google.com/functions/docs/reference/iam/permissions))
 
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/1.JPG">
