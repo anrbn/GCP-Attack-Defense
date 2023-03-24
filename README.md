@@ -854,6 +854,8 @@ Write-Output $response.access_token
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/30.png">
 </p>
+  
+Use command below for Linux OS.
 ```shell
 access_token=$(gcloud auth print-identity-token)
 headers="Authorization: bearer ${access_token}"
