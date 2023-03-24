@@ -334,15 +334,7 @@ However, invoking the function will lead to the following error: *Your client do
   <img src="https://github.com/anrbn/blog/blob/main/images/24.png">
 </p>
 
-
-
-
-
-
-
-
-
-
+Go over to [Phase-II](#phase-ii---ways-to-set-iam-policy-binding-to-a-cloud-function-in-google-cloud-platform) to know how to overcome this issue.
 
 ## Phase I.I - Ways to Update a Cloud Function in GCP
 
