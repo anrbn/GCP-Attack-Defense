@@ -114,11 +114,6 @@ Here's an image to understand it better.
   <img src="https://github.com/anrbn/blog/blob/main/images/8.jpg">
 </p>
 
-> Note: 
->1. Different Project means the Source Code is uploaded to a Cloud Storage / Repository of a project different than the one being exploited. It is the attacker controlled project where the attacker has full control.
->2. Last two permissions in bottom right (`source.repos.get` & `source.repos.list`) are required to be granted to the "Google Cloud Functions Service Agent" in Attacker's controlled project for it to be able to read the repository from attacker's project and upload the code in the Function. 
->3. The format of the service account email for the Google Cloud Functions Service Agent is `service-{PROJECT_NUMBER}@gcf-admin-robot.iam.gserviceaccount.com`. Figuring out the Google Cloud Functions Service Agent email requires one to know the Project Number, which might need additional permissions. 
-
 ### Deploying a Cloud Function via gCloud
 
 <table>
@@ -423,16 +418,11 @@ Here's an image to understand it better.
   <img src="https://github.com/anrbn/blog/blob/main/images/32.1.jpg">
 </p>
 
-> Note: 
->1. Different Project means the Source Code is uploaded to a Cloud Storage / Repository of a project different than the one being exploited. It is the attacker controlled project where the attacker has full control.
->2. Last two permissions in bottom right (`source.repos.get` & `source.repos.list`) are required to be granted to the "Google Cloud Functions Service Agent" in Attacker's controlled project for it to be able to read the repository from attacker's project and upload the code in the Function. 
->3. The format of the service account email for the Google Cloud Functions Service Agent is `service-{PROJECT_NUMBER}@gcf-admin-robot.iam.gserviceaccount.com`. Figuring out the Google Cloud Functions Service Agent email requires one to know the Project Number, which might need additional permissions. 
-
-### Deploying a Cloud Function via gCloud
+### Updating a Cloud Function via gCloud
 
 <table>
   <tr>
-   <td colspan="3" align="center"><strong>Command to Deploy Cloud Function via gCloud</strong></td>
+   <td colspan="3" align="center"><strong>Command to Update Cloud Function via gCloud</strong></td>
   </tr>
   <tr>
    <td><strong>Source Code Upload via: Local Machine</strong></td>
@@ -449,36 +439,13 @@ Here's an image to understand it better.
  </tr>
 </table>
 
->Note: You might encounter an Error: "*ERROR: (gcloud.functions.deploy) ResponseError: status=[403], code=[Ok], message=[Permission 'cloudfunctions.operations.get' denied on resource 'operations/bzQ2MjAvdXMtY2VudHJhbDEvZXhmaWwxL18yTjJSYkp6alBB' (or resource may not exist).]*". Don't worry about it, the Cloud Function will be created regardless without any errors.  
+>Note: In case you're wondering why "deploy" argument is being used to update a Cloud Function, it's because there is no update command that updates a Cloud Function. Updation is done via "deploy" argument. Update happens when the function name and region is same and the user running the command has `cloudfunctions.function.update` permission.   
 
-Here's the deployment of cloud function via gCloud deploy command in action
-
-<p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/18.png">
-</p>
-
-Every permission mentioned in the [list](#heres-the-list-of-least-number-of-permissions-thats-required-to-deploy-a-cloud-function-via-gcloud) seems to do something which is quite clear from their name. But here's something I found really strange, why is there a need for  `cloudfunctions.functions.get` permission for creating a Cloud Function? As far as the documentation goes the description for the permission `cloudfunctions.functions.get` says view functions. ([Link](https://cloud.google.com/functions/docs/reference/iam/permissions))
-
-<p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/1.JPG">
-</p>
-
-Which means `cloudfunctions.functions.get` permission allows a user or service account to view metadata about a Cloud Function, such as its name, runtime, entry point, trigger settings, and other configuration details. What I guess is, it may be a default behavior of gCloud to include this permission when creating a function but it is not necessary for the creation of the function.
-
-Using tools like gCloud can be convenient, but sometimes gCloud requires additional permissions beyond what is actually needed for the task at hand as you saw above. This can result in unnecessarily permission requirements for users. 
-
-When a command is executed, gCloud translates the command into an API request and sends it to respective APIs underneath (Cloud Function API, Compute Engine API etc). The API then processes the request, creates or updates the respective resource, and sends back a response, which gcloud displays in your terminal.
-
-One way to narrow down the permission requirements is to not rely on tools like gCloud to communicate with the APIs at all, but to use communicate with the APIs ourself. 
-APIs can be called via gRPC and REST APIs and can make the process much more precise and efficient in terms of permissions to create resources like Cloud Functions, Compute Engine etc. gRPC and REST API allows us to specify only the necessary permissions for the specific task not more not less.
-
-Let's see how we can do it.
-
-### Permission Required for Deploying a Cloud Function via Cloud Function API (gRPC & REST)
+### Permission Required for Updating a Cloud Function via Cloud Function API (gRPC & REST)
 
 <table>
   <tr>
-   <td colspan="3" align="center"><strong>Cloud Function Deploy via Cloud Function API (gRPC & REST)</strong>
+   <td colspan="3" align="center"><strong>Cloud Function Update via Cloud Function API (gRPC & REST)</strong>
    </td>
   </tr>
   <tr>
@@ -498,11 +465,11 @@ Let's see how we can do it.
    </td>
   </tr>
   <tr>
-   <td>cloudfunctions.functions.create
+   <td>cloudfunctions.functions.update
    </td>
-   <td>cloudfunctions.functions.create
+   <td>cloudfunctions.functions.update
    </td>
-   <td>cloudfunctions.functions.create
+   <td>cloudfunctions.functions.update
    </td>
   </tr>
   <tr>
@@ -526,17 +493,7 @@ Let's see how we can do it.
 Here's an image to understand it better.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/9.jpg">
-</p>
-  
->Note: You might need additional permissions to successfully upload code from the two sources: Local Machine and Cloud Repository via Cloud Function API (gRPC & REST).  However, for the Source: Cloud Storage, the permissions listed are the least that's required. Since it's easier to do it via Cloud Storage, why even bother with the other two? :)
-
-Notice, how when we use Cloud Function API we dont' need any additional permissions (in our case: cloudfunctions.functions.get). We only need the permissions that required for the task. While in case of gCloud we need to have the additional permission (in our case: cloudfunctions.functions.get), although they were not required.
-
-If you take a look at the image below, it's clear that of the two methods for deploying a Cloud Function (gCloud and Cloud Function API), Cloud Function API's path requires the least amount of permissions and can easily be chosen over any other method. This is another reason why attackers would tend to use this method rather than relying on gCloud.
-
-<p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/19.1.jpg">
+  <img src="https://github.com/anrbn/blog/blob/main/images/33.jpg">
 </p>
 
 Let's call the Cloud Function API using both gRPC and REST to deploy a Cloud Function (Code Upload Source: Cloud Storage). 
