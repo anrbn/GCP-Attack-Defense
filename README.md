@@ -7,7 +7,7 @@
     - [Deploying a Cloud Function via Cloud Function API (gRPC)](#deploying-a-cloud-function-via-cloud-function-api-grpc)
     - [Deploying a Cloud Function via Cloud Function API (REST)](#deploying-a-cloud-function-via-cloud-function-api-rest)
 - [Phase I.I - Ways to Update a Cloud Function in Google Cloud Platform](#phase-i---ways-to-update-a-cloud-function-in-gcp)
-  - [Ways to upload code in Cloud Function (for Updation)](#ways-to-upload-code-in-cloud-function-in-gcp-for-updation)
+  - [Ways to upload code in Cloud Function (For Updation)](#ways-to-upload-code-in-cloud-function-in-gcp-for-updation)
   - [Permission Required for Updating a Cloud Function via gCloud](#permission-required-for-updating-a-cloud-function-via-gcloud)
     - [Updating a Cloud Function via gCloud](#updating-a-cloud-function-via-gcloud) 
   - [Permission Required for Updating a Cloud Function via  Cloud Function API (gRPC & REST)](#permission-required-for-updating-a-cloud-function-via-cloud-function-api-grpc--rest)
@@ -31,6 +31,7 @@ There are three ways to deploy a Cloud Function in GCP:
 2. gCloud Command
 3. Cloud Function API (REST & gRPC)
 
+#### Reason to not use Cloud Console
 While Cloud Console may seem user-friendly for creating resources in GCP, we won't be using it. The reason being, creating resources in GCP often involves navigating through different pages, each with its own set of permissions. Depending on the user's level of access, they may not be able to view or access certain pages necessary to create a particular resource. It's important to have a number of permissions in place to ensure that a user can perform the actions they need to within the GCP environment. 
 
 Our focus in this blog is on creating a Cloud Function using the least privileges possible. That's also the reason why attackers tend to use the gCloud command and Cloud Function API (via gRPC or REST) to create resources. Furthermore, attackers mainly gain access to a GCP environment using stolen or compromised authentication tokens (auth_tokens). Cloud Console doesn't support authentication via auth_tokens. As a result, attackers may prefer to use the gCloud command or directly call the Cloud Function API via gRPC or REST API to create resources because they offer more flexibility in terms of authentication and control.
@@ -342,19 +343,18 @@ However, invoking the function will lead to the following error: *Your client do
 
 
 
-## Phase I - Ways to Deploy a Cloud Function in GCP
+## Phase I.I - Ways to Update a Cloud Function in GCP
 
-There are three ways to deploy a Cloud Function in GCP: 
+> You might notice lots of similarities between Phase I and Phase I.I. Because function deployment and updation is technically similar, both need almost similar permisions, Thus I've described them in the same manner.  
 
+There are three ways to update a Cloud Function in GCP: 
 1. Cloud Console
 2. gCloud Command
 3. Cloud Function API (REST & gRPC)
 
-While Cloud Console may seem user-friendly for creating resources in GCP, we won't be using it. The reason being, creating resources in GCP often involves navigating through different pages, each with its own set of permissions. Depending on the user's level of access, they may not be able to view or access certain pages necessary to create a particular resource. It's important to have a number of permissions in place to ensure that a user can perform the actions they need to within the GCP environment. 
+For Obvious reasons (discussed in Phase I) we won't be using Cloud Console for any task. ([Reason](#reason-to-not-use-cloud-console))
 
-Our focus in this blog is on creating a Cloud Function using the least privileges possible. That's also the reason why attackers tend to use the gCloud command and Cloud Function API (via gRPC or REST) to create resources. Furthermore, attackers mainly gain access to a GCP environment using stolen or compromised authentication tokens (auth_tokens). Cloud Console doesn't support authentication via auth_tokens. As a result, attackers may prefer to use the gCloud command or directly call the Cloud Function API via gRPC or REST API to create resources because they offer more flexibility in terms of authentication and control.
-
-### Ways to upload code in Cloud Function in GCP
+### Ways to upload code in Cloud Function in GCP (For Updation)
 
 If you're creating a Cloud Function in GCP, you can use **Cloud Console, gCloud Command, **or** Cloud Function API** to do so. Regardless of the method you choose, you will need to upload the code into the Cloud Function. There are three different ways to upload the code:
 
