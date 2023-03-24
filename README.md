@@ -138,7 +138,8 @@ Here's an image to understand it better.
 </table>
 
 >Note: You might encounter an Error: "*ERROR: (gcloud.functions.deploy) ResponseError: status=[403], code=[Ok], message=[Permission 'cloudfunctions.operations.get' denied on resource 'operations/bzQ2MjAvdXMtY2VudHJhbDEvZXhmaWwxL18yTjJSYkp6alBB' (or resource may not exist).]*". Don't worry about it, the Cloud Function will be created regardless without any errors.  
-<br>
+
+Here's the deployment of cloud function via gCloud deploy command in action
 
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/18.png">
@@ -220,11 +221,13 @@ Here's an image to understand it better.
 
 ### Deploying a Cloud Function via Cloud Function API (gRPC)
 
-gRPC is an open-source Remote Procedure Call (RPC) framework developed by Google. While REST (Representational State Transfer) is an architectural style for building web-based software systems. REST APIs are commonly used to access and manage cloud resources. 
+gRPC is an open-source Remote Procedure Call (RPC) framework developed by Google. Won't go into much details of gRPC and step straight into the point.
 
-Won't go into much details and step straight into the point. Here is the list of least number of permission required to successfully deploy a Cloud Function via Cloud Function API (gRPC & REST). 
+If you take a look at the image below, it's clear that of the two methods for deploying a Cloud Function (gCloud and Cloud Function API), Cloud Function API's path requires the least amount of permissions and can easily be chosen over any other method.
 
-If you take a look at the above Images (Image 3 & 5), it's clear that of the two methods for deploying a Cloud Function (gCloud and Cloud Function API), uploading the source code via Cloud Storage using the Cloud Function API requires the least amount of permissions and can easily be chosen over any other method.
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/19.1.jpg">
+</p>
 
 Let's call the Cloud Function API using both gRPC and REST to deploy a Cloud Function (Code Upload Source: Cloud Storage). 
 
