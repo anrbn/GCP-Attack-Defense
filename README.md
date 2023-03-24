@@ -500,8 +500,6 @@ Let's call the Cloud Function API using both gRPC and REST to deploy a Cloud Fun
 
 ### Updating a Cloud Function via Cloud Function API (gRPC)
 
-gRPC is an open-source Remote Procedure Call (RPC) framework developed by Google. Won't go into much details of gRPC and step straight into the point.
-
 Here's a little tool I made that uses gRPC to communicate with the Cloud Function API and perform various tasks on Cloud Functions such as deployment, updatation, setting IAM Binding etc all while using the lowest privileges possible.
 
 We will be utilizing this tool to accomplish all related tasks pertaining to Cloud Function and gRPC all through this blog. Before we deploy the function, let's check the permission the user holds first.
