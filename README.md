@@ -219,11 +219,9 @@ Here's an image to understand it better.
   
 >Note: You might need additional permissions to successfully upload code from the two sources: Local Machine and Cloud Repository via Cloud Function API (gRPC & REST).  However, for the Source: Cloud Storage, the permissions listed are the least that's required. Since it's easier to do it via Cloud Storage, why even bother with the other two? :)
 
-### Deploying a Cloud Function via Cloud Function API (gRPC)
+Notice, how when we use Cloud Function API we dont' need any additional permissions (in our case: cloudfunctions.functions.get). We only need the permissions that required for the task. While in case of gCloud we need to have the additional permission (in our case: cloudfunctions.functions.get), although they were not required.
 
-gRPC is an open-source Remote Procedure Call (RPC) framework developed by Google. Won't go into much details of gRPC and step straight into the point.
-
-If you take a look at the image below, it's clear that of the two methods for deploying a Cloud Function (gCloud and Cloud Function API), Cloud Function API's path requires the least amount of permissions and can easily be chosen over any other method.
+If you take a look at the image below, it's clear that of the two methods for deploying a Cloud Function (gCloud and Cloud Function API), Cloud Function API's path requires the least amount of permissions and can easily be chosen over any other method. This is another reason why attackers would tend to use this method rather than relying on gCloud.
 
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/19.1.jpg">
@@ -231,57 +229,20 @@ If you take a look at the image below, it's clear that of the two methods for de
 
 Let's call the Cloud Function API using both gRPC and REST to deploy a Cloud Function (Code Upload Source: Cloud Storage). 
 
-Below is a code that's calling the Cloud Function API via gRPC to deploy a Cloud Function in GCP. It's using the method `create_function()` from the `google.cloud.functions_v1.CloudFunctionsServiceClient` class. Note that for uploading the Source Code we will be using Cloud Storage, simply because it requires less number of permission than any other method (Check fig.3 & 5).
+### Deploying a Cloud Function via Cloud Function API (gRPC)
 
-```python
-from google.cloud.functions_v1 import CloudFunctionsServiceClient, CloudFunction, CreateFunctionRequest
-import google.oauth2.credentials
+gRPC is an open-source Remote Procedure Call (RPC) framework developed by Google. Won't go into much details of gRPC and step straight into the point.
 
-#------change this--------
-location = "us-east1"
-function_name = "exfil2"
-gsutil_uri = "gs://anirb/function.zip"
-function_entry_point = "exfil"
-project_id="nnnn-374620"
-service_account = "637374802462-compute@developer.gserviceaccount.com"
-#-------------------------
+Here's a little tool I made that uses gRPC to communicate with the Cloud Function API and perform various tasks on Cloud Functions such as deployment, updatation, setting IAM Binding etc all while using the lowest privileges possible.
 
-access_token = input('Enter Access Token: ')
-credentials = google.oauth2.credentials.Credentials(access_token)
-client = CloudFunctionsServiceClient(credentials=credentials)
+We will be utilizing this tool to accomplish all related tasks pertaining to Cloud Function and gRPC all through this blog. Before we deploy the function, let's check the permission the user holds first.
 
-url = "https://{}-{}.cloudfunctions.net/{}".format(location, project_id, function_name)
-
-function = CloudFunction(
-    name="projects/{}/locations/{}/functions/{}".format(project_id, location, function_name),
-    source_archive_url="{}".format(gsutil_uri),
-    entry_point=function_entry_point,
-    runtime="python38",
-    service_account_email=service_account,
-    https_trigger={},
-)
-
-request = CreateFunctionRequest(location="projects/{}/locations/{}".format(project_id, location), function=function)
-
-try:
-    response = client.create_function(request=request)
-    result = response.result()
-    print(f"[+] Function Invocation URL: {url}")
-    print("[+] Cloud Function creation has started")
-    print("[+] Takes 1-2 minutes to create")
-
-except Exception as e:
-    if "cloudfunctions.operations.get" in str(e):
-        print("[+] Permission cloudfunctions.operations.get denied (Not an Issue)")
-        print(f"[+] Function Invocation URL: {url}")
-        print("[+] Cloud Function creation has started")
-        print("[+] Takes 1-2 minutes to create")
-        
-    else:
-        print(f"[!] Error: {str(e)}")
+```powershell
+py.exe .\main.py --project-id nnnn-374620 --checkperm
 ```
+
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/3.JPG">
+  <img src="https://github.com/anrbn/blog/blob/main/images/20.png">
 </p>
 
 Even though a warning pops up that "*Permission cloudfunctions.operations.get denied on resource*" the Cloud Function will be successfully created. The warning is likely due to some internal operations being performed by the Cloud Function service during the creation process.  
