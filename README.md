@@ -349,18 +349,17 @@ For Obvious reasons (discussed in Phase I) we won't be using Cloud Console for a
 
 ### Ways to upload code in Cloud Function in GCP (For Updation)
 
-If you're creating a Cloud Function in GCP, you can use **Cloud Console, gCloud Command, **or** Cloud Function API** to do so. Regardless of the method you choose, you will need to upload the code into the Cloud Function. There are three different ways to upload the code:
+If you're updating a Cloud Function in GCP, you can use **Cloud Console, gCloud Command, **or** Cloud Function API** to do so. Regardless of the method you choose, you will need to upload the code into the Cloud Function. There are three different ways to upload the code:
 
 1. Local Machine
 2. Cloud Storage
 3. Cloud Repository
 
-<p><img src="https://github.com/anrbn/blog/blob/main/images/7.jpg"></p>
+<p><img src="https://github.com/anrbn/blog/blob/main/images/31.jpg"></p>
 
-### Permission Required for Deploying a Cloud Function (via gCloud)
+### Permission Required for Updating a Cloud Function (via gCloud)
 
-Let's start with the first step of deploying/creating a Cloud Function. As always every action in GCP requires you to have a certain amount of Permissions. 
-#### Here's the list of least number of permissions that's required to "Deploy a Cloud Function via gCloud"
+#### Permissions required to "Update a Cloud Function via gCloud"
 
 <table>
   <tr>
@@ -385,11 +384,11 @@ Let's start with the first step of deploying/creating a Cloud Function. As alway
    </td>
   </tr>
   <tr>
-   <td>cloudfunctions.functions.create
+   <td>cloudfunctions.functions.update
    </td>
-   <td>cloudfunctions.functions.create
+   <td>cloudfunctions.functions.update
    </td>
-   <td>cloudfunctions.functions.create
+   <td>cloudfunctions.functions.update
    </td>
   </tr>
   <tr>
@@ -421,7 +420,7 @@ Let's start with the first step of deploying/creating a Cloud Function. As alway
 Here's an image to understand it better.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/8.jpg">
+  <img src="https://github.com/anrbn/blog/blob/main/images/32.1.jpg">
 </p>
 
 > Note: 
