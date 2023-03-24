@@ -426,16 +426,16 @@ Here's an image to understand it better.
   </tr>
   <tr>
    <td><strong>Source Code Upload via: Local Machine</strong></td>
-   <td>gcloud functions deploy &lt;function-name> --runtime=python38 --source=. --entry-point=&lt;function-entrypoint> --trigger-http --service-account=&lt;service-account-email></td>
+   <td>gcloud functions deploy &lt;old-function-name> --runtime=python38 --source=. --entry-point=&lt;function-entrypoint> --trigger-http --service-account=&lt;service-account-email></td>
    </tr>
    
 <tr>
   <td><strong>Source Code Upload via: Cloud Storage</strong></td>
-   <td>gcloud functions deploy &lt;function-name> --runtime=python38 --source=&lt;gs-link-to-zipped-sourcecode> --entry-point=&lt;function-entrypoint> --trigger-http --service-account=&lt;service-account-email></td>
+   <td>gcloud functions deploy &lt;old-function-name> --runtime=python38 --source=&lt;gs-link-to-zipped-sourcecode> --entry-point=&lt;function-entrypoint> --trigger-http --service-account=&lt;service-account-email></td>
  </tr>
   <tr>
  <td><strong>Source Code Upload via: Cloud Repository</strong></td>
- <td>gcloud functions deploy &lt;function-name> --runtime=python38 --source=&lt;gs-link-to-zipped-sourcecode> --entry-point=&lt;function-entrypoint> --trigger-http --service-account=&lt;service-account-email></td>
+ <td>gcloud functions deploy &lt;old-function-name> --runtime=python38 --source=&lt;gs-link-to-zipped-sourcecode> --entry-point=&lt;function-entrypoint> --trigger-http --service-account=&lt;service-account-email></td>
  </tr>
 </table>
 
@@ -498,7 +498,7 @@ Here's an image to understand it better.
 
 Let's call the Cloud Function API using both gRPC and REST to deploy a Cloud Function (Code Upload Source: Cloud Storage). 
 
-### Deploying a Cloud Function via Cloud Function API (gRPC)
+### Updating a Cloud Function via Cloud Function API (gRPC)
 
 gRPC is an open-source Remote Procedure Call (RPC) framework developed by Google. Won't go into much details of gRPC and step straight into the point.
 
