@@ -196,8 +196,6 @@ Here's an image to understand it better.
   
 >Note: You might need additional permissions to successfully upload code from the two sources: Local Machine and Cloud Repository via Cloud Function API (gRPC & REST).  However, for the Source: Cloud Storage, the permissions listed are the least that's required. Since it's easier to do it via Cloud Storage, why even bother with the other two? :)
 
-### Deploying a Cloud Function via Cloud Function API (gRPC)
-
 Every permission mentioned in the list seems to do something which is quite clear from their name. But here's something I found really strange, why is there a need for  `cloudfunctions.functions.get` permission for creating a Cloud Function? As far as the documentation goes the description for the permission `cloudfunctions.functions.get` says view functions. ([Link](https://cloud.google.com/functions/docs/reference/iam/permissions))
 
 <p>
@@ -212,7 +210,7 @@ One way to narrow down the permission requirements is to not rely on tools like 
 
 That being said let's look at how to "Deploy a Cloud Function via Cloud Function API (gRPC & REST)"
 
-**Deploying a Cloud Function via Cloud Function API (gRPC)**
+### Deploying a Cloud Function via Cloud Function API (gRPC)
 
 gRPC is an open-source Remote Procedure Call (RPC) framework developed by Google. While REST (Representational State Transfer) is an architectural style for building web-based software systems. REST APIs are commonly used to access and manage cloud resources. 
 
