@@ -486,32 +486,19 @@ Modify the parameters according to your need
 
 ### Setting IAM Policy Binding to the Cloud Function via Cloud Function API (gRPC)
 
-You can also use the gRPC API to add the IAM policy binding of `allUsers` with the role `Cloud Function Invoker` to a Cloud Function. Here's the code for that.
+We'll be using the tool to add the IAM policy binding of principal:"allUsers/Service Account" and role:"Cloud Function Invoker" to the Cloud Function. The tool will set the IAM Binding successfully only if you're passing a Service Account as prinicpal or passing "allUsers". 
 
-```python
-from google.iam.v1.policy_pb2 import Policy, Binding
-from google.cloud.functions_v1 import CloudFunctionsServiceClient
-import google.auth
-
-credentials, project_id = google.auth.default()
-
-#------change this--------
-location = "us-east1"
-function_name = "exfil11"
-#-------------------------
-
-client = CloudFunctionsServiceClient(credentials=credentials)
-name = "projects/{}/locations/{}/functions/{}".format(project_id, location, function_name)
-
-policy = client.get_iam_policy(request={"resource": name})
-binding = Binding(
-    role="roles/cloudfunctions.invoker",
-    members=["allUsers"],
-)
-policy.bindings.append(binding)
-response = client.set_iam_policy(request={"resource": name, "policy": policy})
-print("[+] Done.")
+```powershell
+py.exe .\main.py --project-id <project-id> --location <region> --function-name <function> --setiambinding <principal>
+py.exe .\main.py --project-id <project-id> --location <region> --function-name <function> --setiambinding allUsers
 ```
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/28.png">
+</p>
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/27.png">
+</p>
+  
 ## Phase III - Privilege Escalating via Cloud Function in Google Cloud Platform
 To Privilege Escalate via Cloud Function in Google Cloud Platform we'll be taking the path with least privileges possible. 
 - Deploying the Cloud Function
