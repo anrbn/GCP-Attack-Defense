@@ -339,15 +339,14 @@ When you create a Cloud Function in GCP, it is not immediately accessible for in
 
 To set up IAM permissions for your Cloud Function, you can add one or more members to a Cloud Function's IAM policy. Members can be individual user accounts, groups of users, or service accounts. You can assign roles to these members, which determine the actions they can perform on the function. 
 
-Now, there's a special member called `allUsers` that represents anyone on the internet. We will be granting the member : `allUsers` the role : `Cloud Function Invoker`. This will allow anyone on the internet to invoke the Cloud Function without requiring authentication. 
+Now, there's a special member called `allUsers` that represents anyone on the internet. You can grant the member : `allUsers` the role : `Cloud Function Invoker`. This will allow anyone on the internet to invoke the Cloud Function without requiring authentication. However we'll stick to giving a specific service account the permission `Cloud Function Invoker`. 
+Invoking a Cloud Function using the `allUsers` binding, the function's logs will show the request came from an unauthenticated source, making it suspicious in some cases. On the other hand, if a service account is used, the logs will show request coming from an authorized source, reducing any suspicion.
 
->Note: Granting allUsers permissions to a Cloud Function, you are essentially making your Cloud Function publicly accessible to anyone who knows the URL.
-
-In order to grant the `allUsers` member the `Cloud Function Invoker` role, the user or service account performing the operation must have certain permissions. 
 <br>
 
 ### Permission Required to Set IAM Policy Binding to a Cloud Function
 
+In order to grant the "Principals" a "Role", the user or service account performing the operation must have the certain permissions as listed in the table below. 
 Here's the list of least number of permissions that's required to give a member or group the role `Cloud Function Invoker` to Invoke a Cloud Function (gCloud & Cloud Function API):
 
 <table>
