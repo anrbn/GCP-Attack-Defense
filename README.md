@@ -238,18 +238,23 @@ Here's a little tool I made that uses gRPC to communicate with the Cloud Functio
 We will be utilizing this tool to accomplish all related tasks pertaining to Cloud Function and gRPC all through this blog. Before we deploy the function, let's check the permission the user holds first.
 
 ```powershell
-py.exe .\main.py --project-id nnnn-374620 --checkperm
+py.exe .\main.py --project-id <project-id> --checkperm
 ```
-
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/20.png">
+  <img src="https://github.com/anrbn/blog/blob/main/images/20.1.png">
 </p>
 
-Even though a warning pops up that "*Permission cloudfunctions.operations.get denied on resource*" the Cloud Function will be successfully created. The warning is likely due to some internal operations being performed by the Cloud Function service during the creation process.  
- 
-The Cloud Function however will be created with just the following permissions:
-* `iam.serviceAccounts.actAs`
-* `cloudfunctions.functions.create`
+We only have two permissions ( `iam.serviceAccounts.actAs` & `cloudfunctions.functions.create` ) as you can see above, that's enough for us to deploy a Cloud Function. For every action this tool communicates to Cloud Function API via gRPC (not REST). For uploading the Source Code to the Cloud Function, Cloud Storage is being used as it takes the least permission.
+
+Next, we will deploy the function. 
+```powershell
+py.exe .\main.py --project-id <project-id> --location <region> --function-name <function-name> --gsutil-uri <gsutil-uri> --function-entry-point <entry-point> --service-account <sa-account> --deploy
+```
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/22.png">
+</p>
+
+Even though a warning pops up that "*Permission cloudfunctions.operations.get denied*" the Cloud Function will be successfully created. The warning is likely due to some internal operations being performed by the Cloud Function service during the creation process.  
 
 ### Deploying a Cloud Function via Cloud Function API (REST)
 
@@ -270,7 +275,7 @@ curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/js
 ```
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/2.JPG">
+  <img src="https://github.com/anrbn/blog/blob/main/images/23.png">
 </p>
 
 Modify the parameters according to your need
@@ -321,14 +326,9 @@ Modify the parameters according to your need
   </tr>
 </table>
 
+However, invoking the function will lead to the following error: *Your client does not have permission to get URL.* 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/4.JPG">
-</p>
-
-However, invoking the function will lead to the following error (fig.9): *Your client does not have permission to get URL.* The client doesn't have required role `Cloud Function Invoker` to invoke the function.
-
-<p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/5.JPG">
+  <img src="https://github.com/anrbn/blog/blob/main/images/24.png">
 </p>
 
 ## Phase II - Ways to Set IAM Policy Binding to a Cloud Function in Google Cloud Platform
