@@ -17,8 +17,6 @@
   - [Setting IAM Policy Binding to the Cloud Function via Cloud Function API (gRPC)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-grpc-1)
   - [Escalating Privilege to a high level Service Account](#escalating-privilege-to-a-high-level-service-account)
 
-<br>
-
 ## Phase I - Ways to Deploy a Cloud Function in GCP
 
 There are three ways to deploy a Cloud Function in GCP: 
@@ -31,8 +29,6 @@ While Cloud Console may seem user-friendly for creating resources in GCP, we won
 
 Our focus in this blog is on creating a Cloud Function using the least privileges possible. That's also the reason why attackers tend to use the gCloud command and Cloud Function API (via gRPC or REST) to create resources. Furthermore, attackers mainly gain access to a GCP environment using stolen or compromised authentication tokens (auth_tokens). Cloud Console doesn't support authentication via auth_tokens. As a result, attackers may prefer to use the gCloud command or directly call the Cloud Function API via gRPC or REST API to create resources because they offer more flexibility in terms of authentication and control.
 
-<br>
-
 ### Ways to upload code in Cloud Function in GCP
 
 If you're creating a Cloud Function in GCP, you can use **Cloud Console, gCloud Command, **or** Cloud Function API** to do so. Regardless of the method you choose, you will need to upload the code into the Cloud Function. There are three different ways to upload the code:
@@ -42,7 +38,6 @@ If you're creating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
 3. Cloud Repository
 
 <p><img src="https://github.com/anrbn/blog/blob/main/images/7.jpg"></p>
-<br>
 
 ### Permission Required for Deploying a Cloud Function (via gCloud)
 
@@ -342,8 +337,6 @@ To set up IAM permissions for your Cloud Function, you can add one or more membe
 Now, there's a special member called `allUsers` that represents anyone on the internet. You can grant the member : `allUsers` the role : `Cloud Function Invoker`. This will allow anyone on the internet to invoke the Cloud Function without requiring authentication. However we'll stick to giving a specific service account the permission `Cloud Function Invoker`. 
 Invoking a Cloud Function using the `allUsers` binding, the function's logs will show the request came from an unauthenticated source, making it suspicious in some cases. On the other hand, if a service account is used, the logs will show request coming from an authorized source, reducing any suspicion.
 
-<br>
-
 ### Permission Required to Set IAM Policy Binding to a Cloud Function
 
 In order to grant the "Principals" a "Role", the user or service account performing the operation must have the certain permissions as listed in the table below. 
@@ -395,14 +388,13 @@ gcloud functions add-iam-policy-binding <function-name> --region=<region> --memb
   </tr>
   </table>
 
-Above gCloud command adds an IAM policy binding to a Google Cloud Functions resource, allowing all users, even unauthenticated 
-(--member=allUsers) to invoke the specified function (&lt;function-name>) in the specified region (--region=&lt;region>) with the cloudfunctions.invoker role 
-(--role=roles/cloudfunctions.invoker). It requires you to have both `cloudfunctions.functions.getIamPolicy` & `cloudfunctions.functions.setIamPolicy` permissions. We can narrow down the permission to just one, using Cloud Function API.
+Above gCloud command grants the principal:"allUsers" the role:"Cloud Function Invoker", it binds the Policy to the resource:"Google Cloud Functions" , allowing all users, even unauthenticated 
+(--member=allUsers) to invoke the specified function (&lt;function-name>) in the specified region (--region=&lt;region>). It requires you to have both `cloudfunctions.functions.getIamPolicy` & `cloudfunctions.functions.setIamPolicy` permissions. We can narrow down the permission to just one, using Cloud Function API.
 
 ### Setting IAM Policy Binding to the Cloud Function via Cloud Function API (REST)
 
-Here's the curl command that adds an IAM policy binding of `allUsers` with `Cloud Function Invoker` role to a Cloud Function:
-
+curl command that binds the policy principal:"allUsers" and role:"Cloud Function Invoker" to a Cloud Function:
+  
 ```shell
 curl -X POST \
      -H "Authorization: Bearer <token>" \
@@ -426,6 +418,34 @@ Here's the oneliner which can run in `cmd` without any errors.
 
 ```shell
 curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d "{\"policy\":{\"bindings\":[{\"role\":\"roles/cloudfunctions.invoker\",\"members\":[\"allUsers\"]}],\"version\":3}}" https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions/<function-name>:setIamPolicy
+```
+>Note: You can't input a Service Account in place of allUsers as principal name and expect it to work because in GCP IAM, members are identified using a prefix that specifies the type of the member, such as user: for a Google account, group: for a Google group, or serviceAccount: for a service account. Thus when a specific service account is being added in the policy it should have a prefix "serviceAccount" same goes for user and group.
+
+curl command that binds the policy principal:"<service-account>" and role:"Cloud Function Invoker" to a Cloud Function:
+
+```shell
+curl -X POST \
+     -H "Authorization: Bearer <token>" \
+     -H "Content-Type: application/json" \
+     -d '{
+          "policy": {
+            "bindings": [
+              {
+                "role": "roles/cloudfunctions.invoker",
+                "members": [
+                  "serviceAccount:<service-account>"
+                ]
+              }
+            ],
+            "version": 3
+          }
+        }' \
+     https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions/<function-name>:setIamPolicy
+```
+Here's the oneliner which can run in `cmd` without any errors.
+
+```shell
+curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d "{\"policy\":{\"bindings\":[{\"role\":\"roles/cloudfunctions.invoker\",\"members\":[\"serviceAccount:<service-account>\"]}],\"version\":3}}" https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions/<function-name>:setIamPolicy
 ```
 
 Modify the parameters according to your need
@@ -454,6 +474,12 @@ Modify the parameters according to your need
    <td>&lt;function-name>
    </td>
    <td>The name of the Cloud Function.
+   </td>
+  </tr>
+  <tr>
+   <td>&lt;service-account>
+   </td>
+   <td>The name of the Service Account to grant "Cloud Function Invoke" role.
    </td>
   </tr>
 </table>
