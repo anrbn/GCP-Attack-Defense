@@ -48,6 +48,7 @@ If you're creating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
 
 Let's start with the first step of deploying/creating a Cloud Function. As always every action in GCP requires you to have a certain amount of Permissions. Here's the list of least number of permissions that's required to "Deploy a Cloud Function via gCloud"
 
+#hi
 <table>
   <tr>
    <td colspan="3" align="center"><strong>Cloud Function Deploy via gCloud</strong>
