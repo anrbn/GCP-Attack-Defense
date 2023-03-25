@@ -356,9 +356,12 @@ If you're updating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
 
 <p><img src="https://github.com/anrbn/blog/blob/main/images/31.jpg"></p>
 
-### Permission Required for Updating a Cloud Function (via gCloud)
+### Permission Required for Listing Cloud Functions via gCloud
+### Listing a Cloud Function via gCloud
+### Permission Required for Listing Cloud Functions via Cloud Function API (gRPC & REST)
+### Listing a Cloud Function via Cloud Function API (gRPC & REST)
 
-#### Permissions required to "Update a Cloud Function via gCloud"
+### Permission Required for Updating a Cloud Function (via gCloud)
 
 <table>
   <tr>
