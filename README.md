@@ -569,7 +569,7 @@ Modify the parameters according to your need
   <tr>
    <td>&lt;project-id>
    </td>
-   <td>The ID of the Google Cloud project in which the Cloud Function will be created.
+   <td>The ID of the Google Cloud project where the Cloud Function is located.
    </td>
   </tr>
   <tr>
@@ -581,7 +581,7 @@ Modify the parameters according to your need
   <tr>
    <td>&lt;function-name>
    </td>
-   <td>The name of the Cloud Function being created.
+   <td>The name of the Cloud Function to update.
    </td>
   </tr>
   <tr>
