@@ -51,7 +51,7 @@ If you're creating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
 
 <p><img src="https://github.com/anrbn/blog/blob/main/images/7.jpg"></p>
 
-### Permission Required for Deploying a Cloud Function (via gCloud)
+### Permission Required for Deploying a Cloud Function via gCloud
 
 Let's start with the first step of deploying/creating a Cloud Function. As always every action in GCP requires you to have a certain amount of Permissions. 
 #### Here's the list of least number of permissions that's required to "Deploy a Cloud Function via gCloud"
@@ -361,7 +361,7 @@ If you're updating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
 ### Permission Required for Listing Cloud Functions via Cloud Function API (gRPC & REST)
 ### Listing a Cloud Function via Cloud Function API (gRPC & REST)
 
-### Permission Required for Updating a Cloud Function (via gCloud)
+### Permission Required for Updating a Cloud Function via gCloud
 
 <table>
   <tr>
