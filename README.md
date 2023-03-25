@@ -423,11 +423,13 @@ gcloud functions list
 For listing Cloud Function Information via Cloud Function API (gRPC), we'll be using the tool 
 
 ```powershell
-py.exe .\main.py --project-id abc-123456 --list
+py.exe .\main.py --project-id <project-id> --list
 ```
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/34.png">
 </p>
+
+Listing Cloud Function Information via Cloud Function API (REST) 
 
 ### Permission Required for Updating a Cloud Function via gCloud
 
@@ -493,7 +495,7 @@ Here's an image to understand it better.
   <img src="https://github.com/anrbn/blog/blob/main/images/32.1.jpg">
 </p>
 
->Note: If a function already exists then in most cases you won't need to set any IAM Policy Binding to the Cloud Function. Chances are they are already invokable by authenticated or non-authenticated principals. The Function could be public which means anyone can access the function. But in some cases the function could be private which means only certain user, group or service account has access to the function. In that case you'd need to set an IAM Policy Binding to the Cloud Function.
+>Note: If a function already exists then in most cases you won't need to set any IAM Policy Binding to the Cloud Function. Chances are they are already invokable by authenticated or non-authenticated principals. The Function could be public which means anyone can access the function. But in some cases the function could be private which means only certain user, group or service account has access to the function. In that case you'd need to update the IAM Policy Binding to the Cloud Function.  It is the same command for Setting and Updating the IAM Policy Binding.
 
 ### Updating a Cloud Function via gCloud
 
@@ -577,28 +579,30 @@ Let's call the Cloud Function API using both gRPC and REST to update a Cloud Fun
 
 ### Updating a Cloud Function via Cloud Function API (gRPC)
 
-Let's use the tool update a Cloud Function. But first let's confirm we have the permission to update a Cloud Function.
+Let's use the tool to update a Cloud Function. But first let's confirm we have the permission to update a Cloud Function as well as list their information.
 
 ```powershell
 py.exe .\main.py --project-id <project-id> --checkperm
 ```
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/20.1.png">
+  <img src="https://github.com/anrbn/blog/blob/main/images/">
 </p>
 
-We do have the `cloudfunctions.functions.update` permission which is enough to update a Cloud Function. However, we have `cloudfunctions.functions.list` permission as well which means we can list the Cloud Functions for a specific region and project. Let's do that first.
+We do have the `cloudfunctions.functions.update` permission which is enough to update a Cloud Function. However, we have `cloudfunctions.functions.list` permission as well which means we can list Cloud Functions information. Let's do that first.
 
-Listing the Cloud Functions.
+Listing Cloud Functions Information.
 ```powershell
-py.exe .\main.py --project-id <project-id> --location <region> --list
+py.exe .\main.py --project-id <project-id> --list
 ```
-
-Next, we will update the function. 
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/">
+</p>
+Next, we will choose a function to update, i'll be going with "func-storage-grpc". 
 ```powershell
 py.exe .\main.py --project-id <project-id> --location <region> --function-name <function-name> --gsutil-uri <gsutil-uri> --function-entry-point <entry-point> --service-account <sa-account> --update
 ```
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/22.png">
+  <img src="https://github.com/anrbn/blog/blob/main/images/">
 </p>
 Cloud Function has been successfully updated.
 
