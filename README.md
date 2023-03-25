@@ -357,6 +357,7 @@ If you're updating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
 <p><img src="https://github.com/anrbn/blog/blob/main/images/31.jpg"></p>
 
 ### Permission Required for Listing Cloud Functions via gCloud
+
 ### Listing a Cloud Function via gCloud
 ### Permission Required for Listing Cloud Functions via Cloud Function API (gRPC & REST)
 ### Listing a Cloud Function via Cloud Function API (gRPC & REST)
@@ -425,7 +426,9 @@ Here's an image to understand it better.
   <img src="https://github.com/anrbn/blog/blob/main/images/32.1.jpg">
 </p>
 
->Note: If a function already exists then in most cases you won't need to set any IAM Policy Binding to the Cloud Function. You'd need `cloudfunctions.functions.list` permission to list out functions existing in the project. The Function could be public which means anyone can access the function. But in some cases the function could be private which means only certain user, group or service account has access to the function. In that case you'd need to set an IAM Policy Binding to the Cloud Function.
+>Note: 
+> 1. If a function already exists then in most cases you won't need to set any IAM Policy Binding to the Cloud Function. You'd need `cloudfunctions.functions.list` permission to list out functions existing in the project. The Function could be public which means anyone can access the function. But in some cases the function could be private which means only certain user, group or service account has access to the function. In that case you'd need to set an IAM Policy Binding to the Cloud Function.
+> 2. Listing the functions is optional, you would not need `cloudfunctions.functions.list` permission if you already know the functions available in the region via different ways like function having a public endpoint which give off the function name etc.
 
 Permissions required for Listing Cloud Functions via Cloud Function API (Optional) 
 - `cloudfunctions.functions.list`
