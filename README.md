@@ -366,12 +366,14 @@ If you're updating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
    </td>
    <td><strong>via Cloud Function API (gRPC & REST)</strong>
    </td>
+
   </tr>
   <tr>
    <td>cloudfunctions.functions.list
    </td>
    <td>cloudfunctions.functions.list
    </td>
+
   </tr>
   <tr>
    <td>cloudfunctions.locations.list
@@ -379,12 +381,11 @@ If you're updating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
    <td>
    </td>
   </tr>
-  <tr>
 </table>
 
 <table>
   <tr>
-   <td colspan="3" align="center"><strong>Listing Cloud Function Location/Region</strong>
+   <td colspan="3" align="center"><strong>Listing Cloud Function Region/Location</strong>
    </td>
   </tr>
   <tr>
@@ -392,28 +393,39 @@ If you're updating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
    </td>
    <td><strong>via Cloud Function API (gRPC & REST)</strong>
    </td>
+
   </tr>
   <tr>
    <td>cloudfunctions.functions.list
    </td>
    <td>cloudfunctions.locations.list
    </td>
+
   </tr>
   <tr>
-   <td>cloudfunctions.locations.list
+   <td>cloudfunctions.functions.list
    </td>
    <td>
    </td>
   </tr>
-  <tr>
 </table>
 
->Note: `cloudfunctions.functions.list` lists the function name & `cloudfunctions.locations.list` lists the function region.
-
-Listing the functions is optional, you would not need `cloudfunctions.functions.list` & `cloudfunctions.locations.list` permission (depends weather its gCloud or Cloud Function API) if you already know the functions name and region via different ways like function having a public endpoint which give off the function name etc.
-
+Listing the functions is optional, you would not need the above permissions if you already know the functions name and region via different ways like function having a public endpoint which give off the function name etc.
 
 ### Listing Cloud Function Information via gCloud and Cloud Function API (gRPC & REST)
+
+Listing Cloud Function Information via gCloud 
+
+```powershell
+gcloud functions list
+```
+
+For listing Cloud Function Information via Cloud Function API (gRPC), we'll be using the tool 
+
+```powershell
+py.exe .\main.py --project-id nnnn-374620 --location us-east1 --list
+```
+>>--list for getting 
 
 ### Permission Required for Updating a Cloud Function via gCloud
 
