@@ -8,10 +8,8 @@
     - [Deploying a Cloud Function via Cloud Function API (REST)](#deploying-a-cloud-function-via-cloud-function-api-rest)
 - [Phase I.I - Ways to Update a Cloud Function in Google Cloud Platform](#phase-ii---ways-to-update-a-cloud-function-in-google-cloud-platform)
   - [Ways to update code in Cloud Function](#ways-to-update-code-in-cloud-function-in-gcp)
-  - [Permission Required for Listing Cloud Functions via gCloud](#permission-required-for-listing-cloud-functions-via-gcloud)
-     - [Listing a Cloud Function via gCloud](#listing-a-cloud-function-via-gcloud) 
-  - [Permission Required for Listing Cloud Functions via Cloud Function API (gRPC & REST)](#permission-required-for-listing-cloud-functions-via-cloud-function-api-grpc--rest)
-     - [Listing a Cloud Function via Cloud Function API (gRPC & REST)](#listing-a-cloud-function-via-cloud-function-api-grpc--rest)
+  - [Permission Required for Listing Cloud Functions via gCloud and Cloud Function API (gRPC & REST)](#permission-required-for-listing-cloud-function-information-via-gcloud-and-cloud-function-api-grpc--rest)
+     - [Listing Cloud Function Information via gCloud and Cloud Function API (gRPC & REST)](#listing-cloud-function-information-via-gcloud-and-cloud-function-api-grpc--rest) 
   - [Permission Required for Updating a Cloud Function via gCloud](#permission-required-for-updating-a-cloud-function-via-gcloud)
     - [Updating a Cloud Function via gCloud](#updating-a-cloud-function-via-gcloud) 
   - [Permission Required for Updating a Cloud Function via Cloud Function API (gRPC & REST)](#permission-required-for-updating-a-cloud-function-via-cloud-function-api-grpc--rest)
@@ -356,11 +354,66 @@ If you're updating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
 
 <p><img src="https://github.com/anrbn/blog/blob/main/images/31.jpg"></p>
 
-### Permission Required for Listing Cloud Functions via gCloud
+### Permission Required for Listing Cloud Function Information via gCloud and Cloud Function API (gRPC & REST)
 
-### Listing a Cloud Function via gCloud
-### Permission Required for Listing Cloud Functions via Cloud Function API (gRPC & REST)
-### Listing a Cloud Function via Cloud Function API (gRPC & REST)
+<table>
+  <tr>
+   <td colspan="3" align="center"><strong>Listing Cloud Function Name</strong>
+   </td>
+  </tr>
+  <tr>
+   <td><strong>via gCloud</strong>
+   </td>
+   <td><strong>via Cloud Function API (gRPC & REST)</strong>
+   </td>
+  </tr>
+  <tr>
+   <td>cloudfunctions.functions.list
+   </td>
+   <td>cloudfunctions.functions.list
+   </td>
+  </tr>
+  <tr>
+   <td>cloudfunctions.locations.list
+   </td>
+   <td>
+   </td>
+  </tr>
+  <tr>
+</table>
+
+<table>
+  <tr>
+   <td colspan="3" align="center"><strong>Listing Cloud Function Location/Region</strong>
+   </td>
+  </tr>
+  <tr>
+   <td><strong>via gCloud</strong>
+   </td>
+   <td><strong>via Cloud Function API (gRPC & REST)</strong>
+   </td>
+  </tr>
+  <tr>
+   <td>cloudfunctions.functions.list
+   </td>
+   <td>cloudfunctions.locations.list
+   </td>
+  </tr>
+  <tr>
+   <td>cloudfunctions.locations.list
+   </td>
+   <td>
+   </td>
+  </tr>
+  <tr>
+</table>
+
+>Note: `cloudfunctions.functions.list` lists the function name & `cloudfunctions.locations.list` lists the function region.
+
+Listing the functions is optional, you would not need `cloudfunctions.functions.list` & `cloudfunctions.locations.list` permission (depends weather its gCloud or Cloud Function API) if you already know the functions name and region via different ways like function having a public endpoint which give off the function name etc.
+
+
+### Listing Cloud Function Information via gCloud and Cloud Function API (gRPC & REST)
 
 ### Permission Required for Updating a Cloud Function via gCloud
 
@@ -426,12 +479,7 @@ Here's an image to understand it better.
   <img src="https://github.com/anrbn/blog/blob/main/images/32.1.jpg">
 </p>
 
->Note: 
-> 1. If a function already exists then in most cases you won't need to set any IAM Policy Binding to the Cloud Function. You'd need `cloudfunctions.functions.list` permission to list out functions existing in the project. The Function could be public which means anyone can access the function. But in some cases the function could be private which means only certain user, group or service account has access to the function. In that case you'd need to set an IAM Policy Binding to the Cloud Function.
-> 2. Listing the functions is optional, you would not need `cloudfunctions.functions.list` permission if you already know the functions available in the region via different ways like function having a public endpoint which give off the function name etc.
-
-Permissions required for Listing Cloud Functions via Cloud Function API (Optional) 
-- `cloudfunctions.functions.list`
+>Note: If a function already exists then in most cases you won't need to set any IAM Policy Binding to the Cloud Function. Chances are they are already invokable by authenticated or non-authenticated principals. The Function could be public which means anyone can access the function. But in some cases the function could be private which means only certain user, group or service account has access to the function. In that case you'd need to set an IAM Policy Binding to the Cloud Function.
 
 ### Updating a Cloud Function via gCloud
 
