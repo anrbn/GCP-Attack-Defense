@@ -362,7 +362,7 @@ If you're updating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
 
 <table>
   <tr>
-   <td colspan="3" align="center"><strong>Cloud Function Deploy via gCloud</strong>
+   <td colspan="3" align="center"><strong>Cloud Function Update via gCloud</strong>
    </td>
   </tr>
   <tr>
@@ -505,13 +505,11 @@ Here's an image to understand it better.
   <img src="https://github.com/anrbn/blog/blob/main/images/33.jpg">
 </p>
 
-Let's call the Cloud Function API using both gRPC and REST to deploy a Cloud Function (Code Upload Source: Cloud Storage). 
+Let's call the Cloud Function API using both gRPC and REST to update a Cloud Function (Code Upload Source: Cloud Storage). 
 
 ### Updating a Cloud Function via Cloud Function API (gRPC)
 
-Here's a little tool I made that uses gRPC to communicate with the Cloud Function API and perform various tasks on Cloud Functions such as deployment, updatation, setting IAM Binding etc all while using the lowest privileges possible.
-
-We will be utilizing this tool to accomplish all related tasks pertaining to Cloud Function and gRPC all through this blog. Before we deploy the function, let's check the permission the user holds first.
+Let's use the tool update a Cloud Function. But first let's confirm we have the permission to update a Cloud Function.
 
 ```powershell
 py.exe .\main.py --project-id <project-id> --checkperm
@@ -520,21 +518,25 @@ py.exe .\main.py --project-id <project-id> --checkperm
   <img src="https://github.com/anrbn/blog/blob/main/images/20.1.png">
 </p>
 
-We only have two permissions ( `iam.serviceAccounts.actAs` & `cloudfunctions.functions.create` ) as you can see above, that's enough for us to deploy a Cloud Function. For every action this tool communicates to Cloud Function API via gRPC (not REST). For uploading the Source Code to the Cloud Function, Cloud Storage is being used as it takes the least permission.
+We do have the `cloudfunctions.functions.update` permission which is enough to update a Cloud Function. However, we have `cloudfunctions.functions.list` permission as well which means we can list the Cloud Functions for a specific region and project. Let's do that first.
 
-Next, we will deploy the function. 
+Listing the Cloud Functions.
 ```powershell
-py.exe .\main.py --project-id <project-id> --location <region> --function-name <function-name> --gsutil-uri <gsutil-uri> --function-entry-point <entry-point> --service-account <sa-account> --deploy
+py.exe .\main.py --project-id <project-id> --location <region> --list
+```
+
+Next, we will update the function. 
+```powershell
+py.exe .\main.py --project-id <project-id> --location <region> --function-name <function-name> --gsutil-uri <gsutil-uri> --function-entry-point <entry-point> --service-account <sa-account> --update
 ```
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/22.png">
 </p>
+Cloud Function has been successfully updated.
 
-Even though a warning pops up that "*Permission cloudfunctions.operations.get denied*" the Cloud Function will be successfully created. The warning is likely due to some internal operations being performed by the Cloud Function service during the creation process.  
+### Updating a Cloud Function via Cloud Function API (REST)
 
-### Deploying a Cloud Function via Cloud Function API (REST)
-
-Here's another way to call the Cloud Function API using REST. Below is a curl command which makes HTTP POST request to the Google Cloud Functions API to create a new Cloud Function using required parameters. 
+Another way to update the Cloud Function is obviously using the REST API. Below is a curl command which makes HTTP POST request to the Google Cloud Functions API to first list the available Cloud Functions. 
 
 ```shell
 curl -X POST \
@@ -573,7 +575,7 @@ Modify the parameters according to your need
   <tr>
    <td>&lt;region>
    </td>
-   <td>The region where the Cloud Function will be deployed. For example, "us-central1".
+   <td>The region where the Cloud Function is located. For example, "us-central1".
    </td>
   </tr>
   <tr>
@@ -602,7 +604,7 @@ Modify the parameters according to your need
   </tr>
 </table>
 
-However, invoking the function will lead to the following error: *Your client does not have permission to get URL.* 
+For some reason if invoking the function leads to the following error: *Your client does not have permission to get URL.* could mean two things either the Function is private, which means only specific principals have access to it or the role:"Cloud Function Invoker" is not assigned to anyone. Not a problem because you can update the permission as well or add to it. The next phase walks you through it. 
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/24.png">
 </p>
