@@ -7,7 +7,7 @@
     - [Deploying a Cloud Function via Cloud Function API (gRPC)](#deploying-a-cloud-function-via-cloud-function-api-grpc)
     - [Deploying a Cloud Function via Cloud Function API (REST)](#deploying-a-cloud-function-via-cloud-function-api-rest)
 - [Phase I.I - Ways to Update a Cloud Function in Google Cloud Platform](#phase-i---ways-to-update-a-cloud-function-in-gcp)
-  - [Ways to upload code in Cloud Function (For Updation)](#ways-to-upload-code-in-cloud-function-in-gcp-for-updation)
+  - [Ways to update code in Cloud Function](#ways-to-update-code-in-cloud-function-in-gcp)
   - [Permission Required for Updating a Cloud Function via gCloud](#permission-required-for-updating-a-cloud-function-via-gcloud)
     - [Updating a Cloud Function via gCloud](#updating-a-cloud-function-via-gcloud) 
   - [Permission Required for Updating a Cloud Function via  Cloud Function API (gRPC & REST)](#permission-required-for-updating-a-cloud-function-via-cloud-function-api-grpc--rest)
@@ -342,7 +342,7 @@ There are three ways to update a Cloud Function in GCP:
 
 For Obvious reasons (discussed in Phase I) we won't be using Cloud Console for any task. ([Reason](#reason-to-not-use-cloud-console))
 
-### Ways to upload code in Cloud Function in GCP (For Updation)
+### Ways to update code in Cloud Function in GCP
 
 If you're updating a Cloud Function in GCP, you can use **Cloud Console, gCloud Command, **or** Cloud Function API** to do so. Regardless of the method you choose, you will need to upload the code into the Cloud Function. There are three different ways to upload the code:
 
