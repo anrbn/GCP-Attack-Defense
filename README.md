@@ -335,7 +335,7 @@ However, invoking the function will lead to the following error: *Your client do
 
 Go over to [Phase II](#phase-ii---ways-to-set-iam-policy-binding-to-a-cloud-function-in-google-cloud-platform) to know how to overcome this issue.
 
-## Phase I.I - Ways to Update a Cloud Function in GCP
+## Phase I.I - Ways to Update a Cloud Function in Google Cloud Platform
 
 > You might notice lots of similarities between Phase I and Phase I.I. Because function deployment and updation is technically similar, both need almost similar permisions, Thus I've described them in the same manner.  
 
