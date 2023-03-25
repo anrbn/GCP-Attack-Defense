@@ -1,3 +1,8 @@
+Research it:
+Listing Cloud Function Information via Cloud Function API (REST)
+Updating a Cloud Function via Cloud Function API (REST)
+
+
 # GCP Cloud Function Abuse Research
 - [Phase I - Ways to Deploy a Cloud Function in Google Cloud Platform](#phase-i---ways-to-deploy-a-cloud-function-in-gcp)
   - [Ways to upload code in Cloud Function](#ways-to-upload-code-in-cloud-function-in-gcp)
