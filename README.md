@@ -423,9 +423,11 @@ gcloud functions list
 For listing Cloud Function Information via Cloud Function API (gRPC), we'll be using the tool 
 
 ```powershell
-py.exe .\main.py --project-id nnnn-374620 --location us-east1 --list
+py.exe .\main.py --project-id abc-123456 --list
 ```
->>--list for getting 
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/34.png">
+</p>
 
 ### Permission Required for Updating a Cloud Function via gCloud
 
