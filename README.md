@@ -438,8 +438,17 @@ py.exe .\main.py --project-id <project-id> --list
   <img src="https://github.com/anrbn/blog/blob/main/images/34.png">
 </p>
 
-Listing Cloud Function Information via Cloud Function API (REST) 
-
+Listing Cloud Function Information via Cloud Function API (REST)
+```shell
+curl --request GET \
+  --header "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  "https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/-/functions"
+```
+One Liner:
+```shell
+curl -s -H "Authorization: Bearer " -H "Content-Type: application/json" "https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/-/functions"
+```
 ### Permission Required for Updating a Cloud Function via gCloud
 
 <table>
