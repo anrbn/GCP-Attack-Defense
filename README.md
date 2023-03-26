@@ -6,6 +6,8 @@ Add missing images
 Improve Phase III - Privilege Escalating via Cloud Function in Google Cloud Platform
 Write: Escalating Privilege to a high level Service Account
 Add Logging for each section
+test it around linux
+requirements.txt
 
 # GCP Cloud Function Abuse Research
 - [Phase I - Ways to Deploy a Cloud Function in Google Cloud Platform](#phase-i---ways-to-deploy-a-cloud-function-in-gcp)
