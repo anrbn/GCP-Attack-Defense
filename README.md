@@ -1,4 +1,5 @@
 Research it:
+Explain the fucntion source code
 API Enabled for actions?
 Write: Escalating Privilege to a high level Service Account
 Add Logging for each section
@@ -1010,6 +1011,12 @@ We'll set an IAM Binding of Policy { member:"<myserviceaccount>" and role:"Cloud
 
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/41.png">
+</p>
+
+Finally we can invoke the code and retrieve the *access_token* to use for privilege escalation.
+
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/42.png">
 </p>
 
 ### Escalating Privilege to a high level Service Account
