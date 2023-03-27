@@ -1,5 +1,5 @@
 Research it:
-Listing Cloud Function Information via Cloud Function API (REST)
+
 Updating a Cloud Function via Cloud Function API (REST)
 API Enabled for actions?
 Add missing images
@@ -451,6 +451,10 @@ One Liner:
 ```shell
 curl -s -H "Authorization: Bearer " -H "Content-Type: application/json" "https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/-/functions"
 ```
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/35.png">
+</p>
+
 ### Permission Required for Updating a Cloud Function via gCloud
 
 <table>
