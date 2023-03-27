@@ -1,4 +1,4 @@
-Research it:
+Research it:z
 API Enabled for actions?
 Add missing images
 Improve Phase III - Privilege Escalating via Cloud Function in Google Cloud Platform
