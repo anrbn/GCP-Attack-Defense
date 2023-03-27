@@ -632,24 +632,44 @@ Cloud Function has been successfully updated.
 
 ### Updating a Cloud Function via Cloud Function API (REST)
 
-Another way to update the Cloud Function is obviously using the REST API. Below is a curl command which makes HTTP POST request to the Google Cloud Functions API to first list the available Cloud Functions. 
+Another way to update the Cloud Function is obviously using the REST API. Below is a curl command which makes HTTP POST request to the Google Cloud Functions API to update an available Cloud Function. 
 
+If you want to update a single parameter (In this case: serviceAccountEmail) in the Cloud Function use the following command: 
 ```shell
-curl -X POST \
+curl -X PATCH \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
-  -d '{"name":"projects/<project-id>/locations/<region>/functions/<function-name>","entryPoint":"<function-entrypoint>","runtime":"python38","serviceAccountEmail":"<service-account-email>","sourceArchiveUrl":"<gs-link-to-zipped-sourcecode>","httpsTrigger":{}}' \
-  https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions?alt=json
-
+  -d '{
+        "serviceAccountEmail": "<service-account-email>",
+      }' \
+  "https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions/<function-name>?updateMask=serviceAccountEmail"
+```
+However, if you want to update multiple parameters (In this case: entryPoint,runtime,serviceAccountEmail,sourceArchiveUrl) in the Cloud Function use the following command:
+```shell
+curl -X PATCH \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "entryPoint": "<function-entrypoint>",
+        "runtime": "python38",
+        "serviceAccountEmail": "<service-account-email>",
+        "sourceArchiveUrl": "<gs-link-to-zipped-sourcecode>"
+      }' \
+  "https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions/<function-name>?updateMask=entryPoint,runtime,serviceAccountEmail,sourceArchiveUrl"
 ```
 Here's the oneliner which can run in `cmd` without any errors.
 
+Update a single Parameter (In this case: serviceAccountEmail):
 ```shell
-curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d "{\"name\":\"projects/<project-id>/locations/<region>/functions/<function-name>\",\"entryPoint\":\"<function-entrypoint>\",\"runtime\":\"python38\",\"serviceAccountEmail\":\"<service-account-email>\",\"sourceArchiveUrl\":\"<gs-link-to-zipped-sourcecode>\",\"httpsTrigger\":{}}" https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions?alt=json
+curl -X PATCH -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d "{\"serviceAccountEmail\": \"<service-account-email>\"}" "https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions/<function-name>?updateMask=serviceAccountEmail"
+```
+Update multiple Parameter (In this case: entryPoint,runtime,serviceAccountEmail,sourceArchiveUrl):
+```shell
+curl -X PATCH -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d "{\"entryPoint\": \"<function-entrypoint>\", \"runtime\": \"python38\", \"serviceAccountEmail\": \"<service-account-email>\", \"sourceArchiveUrl\": \"<gs-link-to-zipped-sourcecode>\"}" "https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions/<function-name>?updateMask=entryPoint,runtime,serviceAccountEmail,sourceArchiveUrl"
 ```
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/23.png">
+  <img src="https://github.com/anrbn/blog/blob/main/images/">
 </p>
 
 Modify the parameters according to your need
@@ -665,13 +685,13 @@ Modify the parameters according to your need
   <tr>
    <td>&lt;project-id>
    </td>
-   <td>The ID of the Google Cloud project where the Cloud Function is located.
+   <td>The ID of the Google Cloud project in which the Cloud Function exists.
    </td>
   </tr>
   <tr>
    <td>&lt;region>
    </td>
-   <td>The region where the Cloud Function is located. For example, "us-central1".
+   <td>The region where the Cloud Function exists. For example, "us-central1".
    </td>
   </tr>
   <tr>
