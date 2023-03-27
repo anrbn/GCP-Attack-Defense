@@ -1016,7 +1016,7 @@ We'll set an IAM Binding of Policy { member:"<myserviceaccount>" and role:"Cloud
 Finally we can invoke the code and retrieve the *access_token* to use for privilege escalation.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/42.png">
+  <img src="https://github.com/anrbn/blog/blob/main/images/42.1.png">
 </p>
 
 ### Escalating Privilege to a high level Service Account
