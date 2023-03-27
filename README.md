@@ -1,9 +1,5 @@
-Start checking from 632
-Post 36,37,38.png into uploads
-
 Research it:
 API Enabled for actions?
-Add missing images
 Write: Escalating Privilege to a high level Service Account
 Add Logging for each section
 test it around linux
