@@ -1,6 +1,4 @@
 Research it:
-
-Updating a Cloud Function via Cloud Function API (REST)
 API Enabled for actions?
 Add missing images
 Improve Phase III - Privilege Escalating via Cloud Function in Google Cloud Platform
@@ -622,6 +620,7 @@ py.exe .\main.py --project-id <project-id> --list
   <img src="https://github.com/anrbn/blog/blob/main/images/">
 </p>
 Next, we will choose a function to update, i'll be going with "func-storage-grpc". 
+
 ```powershell
 py.exe .\main.py --project-id <project-id> --location <region> --function-name <function-name> --gsutil-uri <gsutil-uri> --function-entry-point <entry-point> --service-account <sa-account> --update
 ```
@@ -938,21 +937,19 @@ echo "${response}" | jq -r '.access_token'
 ``` 
 
 ## Phase III - Privilege Escalating via Cloud Function in Google Cloud Platform
-To Privilege Escalate via Cloud Function in Google Cloud Platform we'll be taking the path with least permissions required. 
-- **Deploying the Cloud Function**
-  - Uploading the Code: Cloud Storage
-  - Method we'll be using: Cloud Function API (gRPC)
-- **Setting IAM Policy Binding to the Cloud Function**
-  - Method we'll be using: Cloud Function API (gRPC)
 
-or if a function exists already, you could just update it.
-- **Updating the Cloud Function**
-  - Updating the Code: Cloud Storage
-  - Method we'll be using: Cloud Function API (gRPC)
-- **Listing Info about Cloud Function** (Optional)
-  - Method we'll be using: Cloud Function API (gRPC)
+Whatever was researched and learned will all be put together to Escalate from a low privileged Service Account to a privileged Service Account.
 
-We'll be using the tool to Deploy, Update, List Details and Set IAM Policy Binding to the Cloud Function using Cloud Function API. We'll be calling the Cloud Function API using gRPC.
+To Privilege Escalate via Cloud Function in Google Cloud Platform we'll be taking the path with least permissions required. From what we've seen, the only method that can let us do more with less permission is the Cloud Function API. We'll be calling the Cloud Function API via gRPC from this section on. Since we will be using gRPC it makes proper sense to put the tool into action. 
+
+Scenario: An attacker has gained access to a Service Account key by exploiting a vulnerable CI/CD pipeline or through a successful phishing attack on a developer etc. He logged in with the key using the gcloud CLI and discovered that the service account has limited privileges. From here on out he can Privilege Escalate via various methods, one being Cloud Function. If he chooses to PrivEsc via Cloud Function, he will have two ways to do it.     
+Either:
+- Deploy a New Cloud Function + Set an IAM Policy Binding to it.
+- Update an Existing Cloud Function + Set an IAM Policy Binding to it (Optional).
+
+> Note: Why setting an IAM Policy Binding to an already exisiting function is optional because if a function already exists then chances are it is already invokable by authenticated or non-authenticated principals. The Function could be public which means anyone can access the function. But in some cases the function could be private which means only certain user, group or service account has access to the function. In that case you'd need to update the IAM Policy Binding to the Cloud Function. 
+
+We'll be using the tool to Deploy, Update, List Details and Set IAM Policy Binding to the Cloud Function using Cloud Function API (gRPC).
 Permissions required for Deploying a Cloud Function via Cloud Function API 
 - `iam.serviceAccounts.actAs`
 - `cloudfunctions.functions.create`
@@ -967,6 +964,39 @@ Permissions required for Listing Cloud Functions via Cloud Function API (Optiona
 >Note: One can use either gRPC or REST to make requests to the Cloud Function API, the Cloud Function API will then interact with the Cloud Functions service. The Permissions required to Deploy, Update and Set IAM Policy Binding are same for both gRPC and REST.
 
 ### Deploying the Cloud Function via Cloud Function API (gRPC)
+Command: 
+```powershell
+py.exe .\main.py --project-id <project-id> --location <region> --function-name <function-name> --gsutil-uri <gsutil-uri> --function-entry-point <entry-point> --service-account <sa-account> --deploy
+```
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/18.png">
+</p>
+
+### Listing the Cloud Functions via Cloud Function API (gRPC)
+Command: 
+```powershell
+py.exe .\main.py --project-id <project-id> --list
+```
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/18.png">
+</p>
+
 ### Updating the Cloud Function via Cloud Function API (gRPC)
+Command: 
+```powershell
+py.exe .\main.py --project-id <project-id> --location <region> --function-name <function-name> --gsutil-uri <gsutil-uri> --function-entry-point <entry-point> --service-account <sa-account> --update
+```
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/18.png">
+</p>
+
 ### Setting IAM Policy Binding to the Cloud Function via Cloud Function API (gRPC)
+Command: 
+```powershell
+py.exe .\main.py --project-id <project-id> --location <region> --function-name <function> --setiambinding <principal>
+```
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/18.png">
+</p>
+
 ### Escalating Privilege to a high level Service Account
