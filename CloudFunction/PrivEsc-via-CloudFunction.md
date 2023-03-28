@@ -78,7 +78,7 @@ def anirban(request):
     return access_token
 ```
 
-This is a above function retrieves the access token of the default Service Account of the current cloud function instance. It does so by sending a GET request to the Compute Engine metadata server endpoint at "http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token". The metadata server endpoint returns a JSON response containing the access token. The function then returns the access token to the caller.
+This above function retrieves the access token of the default Service Account of the current cloud function instance. It does so by sending a GET request to the Compute Engine metadata server endpoint at "http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token". The metadata server endpoint returns a JSON response containing the access token. The function then returns the access token to the caller.
 
 ### Permission Required for Deploying a Cloud Function via gCloud
 
@@ -188,8 +188,8 @@ Using tools like gCloud can be convenient, but sometimes gCloud requires additio
 
 When a command is executed, gCloud translates the command into an API request and sends it to respective APIs underneath (Cloud Function API, Compute Engine API etc). The API then processes the request, creates or updates the respective resource, and sends back a response, which gcloud displays in your terminal.
 
-One way to narrow down the permission requirements is to not rely on tools like gCloud to communicate with the APIs at all, but to use communicate with the APIs ourself. 
-APIs can be called via gRPC and REST APIs and can make the process much more precise and efficient in terms of permissions to create resources like Cloud Functions, Compute Engine etc. gRPC and REST API allows us to specify only the necessary permissions for the specific task not more not less.
+One way to narrow down the permission requirements is to not rely on tools like gCloud to communicate with the APIs at all, but to communicate with the APIs ourselves. 
+APIs can be called via gRPC and REST APIs and can make the process much more precise and efficient in terms of permissions to create resources like Cloud Functions, Compute Engine etc. gRPC and REST API allows us to specify only the necessary permissions for the specific task, not more or less.
 
 Let's see how we can do it.
 
@@ -250,7 +250,7 @@ Here's an image to understand it better.
   
 >Note: You might need additional permissions to successfully upload code from the two sources: Local Machine and Cloud Repository via Cloud Function API (gRPC & REST).  However, for the Source: Cloud Storage, the permissions listed are the least that's required. Since it's easier to do it via Cloud Storage, why even bother with the other two? :)
 
-Notice, how when we use Cloud Function API we dont' need any additional permissions (in our case: cloudfunctions.functions.get). We only need the permissions that required for the task. While in case of gCloud we need to have the additional permission (in our case: cloudfunctions.functions.get), although they were not required.
+Notice how when we use Cloud Function API we don't need any additional permissions (in our case: cloudfunctions.functions.get). We only need the permissions that required for the task. While in case of gCloud we need to have the additional permission (in our case: cloudfunctions.functions.get), although they were not required.
 
 If you take a look at the image below, it's clear that of the two methods for deploying a Cloud Function (gCloud and Cloud Function API), Cloud Function API's path requires the least amount of permissions and can easily be chosen over any other method. This is another reason why attackers would tend to use this method rather than relying on gCloud.
 
@@ -264,7 +264,7 @@ Let's call the Cloud Function API using both gRPC and REST to deploy a Cloud Fun
 
 gRPC is an open-source Remote Procedure Call (RPC) framework developed by Google. Won't go into much details of gRPC and step straight into the point.
 
-Here's a little tool [gLess](https://github.com/anrbn/blog/tree/main/tool/gless) that uses gRPC to communicate with the Cloud Function API and perform various tasks on Cloud Functions such as deployment, updatation, setting IAM Binding etc all while using the lowest privileges possible.
+Here's a little tool [gLess](https://github.com/anrbn/blog/tree/main/tool/gless) that uses gRPC to communicate with the Cloud Function API and perform various tasks on Cloud Functions such as deployment, updation, setting IAM Binding etc all while using the lowest privileges possible.
 
 We will be utilizing this [gLess](https://github.com/anrbn/blog/tree/main/tool/gless) to accomplish all related tasks pertaining to Cloud Function and gRPC all through this blog. Before we deploy the function, let's check the permission the user holds first.
 
@@ -289,7 +289,7 @@ Even though a warning pops up that "*Permission cloudfunctions.operations.get de
 
 ### Deploying a Cloud Function via Cloud Function API (REST)
 
-Here's another way to call the Cloud Function API using REST. Below is a curl command which makes HTTP POST request to the Google Cloud Functions API to create a new Cloud Function using required parameters. 
+Here's another way to call the Cloud Function API using REST. Below is a curl command which makes an HTTP POST request to the Google Cloud Functions API to create a new Cloud Function using required parameters. 
 
 ```shell
 curl -X POST \
@@ -299,7 +299,7 @@ curl -X POST \
   https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions?alt=json
 
 ```
-Here's the oneliner which can run in `cmd` without any errors.
+Here's the one liner which can run in `cmd` without any errors.
 
 ```shell
 curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d "{\"name\":\"projects/<project-id>/locations/<region>/functions/<function-name>\",\"entryPoint\":\"<function-entrypoint>\",\"runtime\":\"python38\",\"serviceAccountEmail\":\"<service-account-email>\",\"sourceArchiveUrl\":\"<gs-link-to-zipped-sourcecode>\",\"httpsTrigger\":{}}" https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions?alt=json
@@ -366,7 +366,7 @@ Go over to [Phase II](#phase-ii---ways-to-set-iam-policy-binding-to-a-cloud-func
 
 ## Phase I.I - Ways to Update a Cloud Function in Google Cloud Platform
 
-> You might notice lots of similarities between Phase I and Phase I.I. Because function deployment and updation is technically similar, both need almost similar permisions, Thus I've described them in the same manner.  
+> You might notice lots of similarities between Phase I and Phase I.I. Because function deployment and updation are technically similar, both need almost similar permissions, Thus I've described them in the same manner. Attackers would either choose to Deploy or Update an already existing Cloud Function. Thus this phase is not Phase II but rather Phase I.I.
 
 There are three ways to update a Cloud Function in GCP: 
 1. Cloud Console
@@ -441,7 +441,7 @@ If you're updating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
   </tr>
 </table>
 
-Listing the functions is optional, you would not need the above permissions if you already know the functions name and region via different ways like function having a public endpoint which give off the function name etc.
+Listing the functions is optional, you would not need the above permissions if you already know the functions name and region via different ways like a function having a public endpoint which gives off the function name etc.
 
 ### Listing Cloud Function Information via gCloud and Cloud Function API (gRPC & REST)
 
@@ -539,7 +539,7 @@ Here's an image to understand it better.
   <img src="https://github.com/anrbn/blog/blob/main/images/32.1.jpg">
 </p>
 
->Note: If a function already exists then in most cases you won't need to set any IAM Policy Binding to the Cloud Function. Chances are they are already invokable by authenticated or non-authenticated principals. The Function could be public which means anyone can access the function. But in some cases the function could be private which means only certain user, group or service account has access to the function. In that case you'd need to update the IAM Policy Binding to the Cloud Function.  It is the same command for Setting and Updating the IAM Policy Binding.
+>Note: If a function already exists then in most cases you won't need to set any IAM Policy Binding to the Cloud Function. Chances are they are already invokable by authenticated or non-authenticated principals. The Function could be public which means anyone can access the function. But in some cases the function could be private which means only a certain user, group or service account has access to the function. In that case you'd need to update the IAM Policy Binding to the Cloud Function.  It is the same command for Setting and Updating the IAM Policy Binding.
 
 ### Updating a Cloud Function via gCloud
 
@@ -562,7 +562,7 @@ Here's an image to understand it better.
  </tr>
 </table>
 
->Note: In case you're wondering why "deploy" argument is being used to update a Cloud Function, it's because there is no update command that updates a Cloud Function. Updation is done via "deploy" argument. Update happens when the function name and region is same and the user running the command has `cloudfunctions.function.update` permission.   
+>Note: In case you're wondering why "deploy" argument is being used to update a Cloud Function, it's because there is no update command that updates a Cloud Function. Updation is done via "deploy" argument. Update happens when the function name and region is the same and the user running the command has `cloudfunctions.function.update` permission.   
 
 ### Permission Required for Updating a Cloud Function via Cloud Function API (gRPC & REST)
 
@@ -641,7 +641,7 @@ py.exe .\main.py --project-id <project-id> --list
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/37.png">
 </p>
-Next, we will choose a function to update, i'll be going with "function-1". 
+Next, we will choose a function to update, I'll be going with "function-1". 
 
 ```powershell
 py.exe .\main.py --project-id <project-id> --location <region> --function-name <function-name> --gsutil-uri <gsutil-uri> --function-entry-point <entry-point> --service-account <sa-account> --update
@@ -653,7 +653,7 @@ Cloud Function has been successfully updated.
 
 ### Updating a Cloud Function via Cloud Function API (REST)
 
-Another way to update the Cloud Function is obviously using the REST API. Below is a curl command which makes HTTP POST request to the Google Cloud Functions API to update an available Cloud Function. 
+Another way to update the Cloud Function is obviously using the REST API. Below is a curl command which makes an HTTP POST request to the Google Cloud Functions API to update an available Cloud Function. 
 
 If you want to update a single parameter (In this case: serviceAccountEmail) in the Cloud Function use the following command: 
 ```shell
@@ -678,7 +678,7 @@ curl -X PATCH \
       }' \
   "https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions/<function-name>?updateMask=entryPoint,runtime,serviceAccountEmail,sourceArchiveUrl"
 ```
-Here's the oneliner which can run in `cmd` without any errors.
+Here's the one liner which can run in `cmd` without any errors.
 
 Update a single Parameter (In this case: serviceAccountEmail):
 ```shell
@@ -741,7 +741,7 @@ Modify the parameters according to your need
   </tr>
 </table>
 
-For some reason if invoking the function leads to the following error: *Your client does not have permission to get URL.* could mean two things either the Function is private, which means only specific principals have access to it or the role:"Cloud Function Invoker" is not assigned to anyone. Not a problem because you can update the permission as well or add to it. The next phase walks you through it. 
+For some reason if invoking the function leads to the following error: *Your client does not have permission to get URL.* could mean two things: either the Function is private, which means only specific principals have access to it or the role:"Cloud Function Invoker" is not assigned to anyone. Not a problem because you can update the permission as well or add to it. The next phase walks you through it. 
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/24.png">
 </p>
@@ -834,7 +834,7 @@ curl -X POST \
         }' \
      https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions/<function-name>:setIamPolicy
 ```
-Here's the oneliner which can run in `cmd` without any errors.
+Here's the one liner which can run in `cmd` without any errors.
 
 ```shell
 curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d "{\"policy\":{\"bindings\":[{\"role\":\"roles/cloudfunctions.invoker\",\"members\":[\"allUsers\"]}],\"version\":3}}" https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions/<function-name>:setIamPolicy
@@ -862,7 +862,7 @@ curl -X POST \
         }' \
      https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions/<function-name>:setIamPolicy
 ```
-Here's the oneliner which can run in `cmd` without any errors.
+Here's the one liner which can run in `cmd` without any errors.
 
 ```shell
 curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d "{\"policy\":{\"bindings\":[{\"role\":\"roles/cloudfunctions.invoker\",\"members\":[\"serviceAccount:<service-account>\"]}],\"version\":3}}" https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions/<function-name>:setIamPolicy
@@ -920,7 +920,7 @@ py.exe .\main.py --project-id <project-id> --location <region> --function-name <
 </p>
 
 ### Invoking the Cloud Function
-With the required access in place we can Invoke the Cloud Function. There are two ways to Invoke Cloud Function depending on whether an Authenticated user (Service Account, Group, User) or Unauthenticated user (allUsers) is given the Role:"Cloud Functon Invocation".
+With the required access in place we can Invoke the Cloud Function. There are two ways to Invoke Cloud Function depending on whether an Authenticated user (Service Account, Group, User) or Unauthenticated user (allUsers) is given the Role:"Cloud Function Invoker".
 
 For Unauthenticated Users (allUsers):
 
@@ -948,7 +948,7 @@ Write-Output $response.access_token
   <img src="https://github.com/anrbn/blog/blob/main/images/30.png">
 </p>
   
-Use command below for Linux OS.
+Use the command below for Linux OS.
 ```shell
 access_token=$(gcloud auth print-identity-token)
 headers="Authorization: bearer ${access_token}"
@@ -958,7 +958,7 @@ response=$(curl -sS -X POST -H "${headers}" -d "${body}" -m 70 '<function-invoca
 echo "${response}" | jq -r '.access_token'
 ``` 
 
-## Phase III - Privilege Escalating via Cloud Function in Google Cloud Platform
+## Phase III - Privilege Escalation via Cloud Function in Google Cloud Platform
 
 Whatever was researched and learned will all be put together to Escalate from a low privileged Service Account to a privileged Service Account.
 
@@ -969,7 +969,7 @@ Either:
 - Deploy a New Cloud Function + Set an IAM Policy Binding to it.
 - Update an Existing Cloud Function + Set an IAM Policy Binding to it (Optional).
 
-> Note: Why setting an IAM Policy Binding to an already exisiting function is optional because if a function already exists then chances are it is already invokable by authenticated or non-authenticated principals. The Function could be public which means anyone can access the function. But in some cases the function could be private which means only certain user, group or service account has access to the function. In that case you'd need to update the IAM Policy Binding to the Cloud Function. 
+> Note: Why setting an IAM Policy Binding to an already existing function is optional because if a function already exists then chances are it is already invokable by authenticated or non-authenticated principals. The Function could be public which means anyone can access the function. But in some cases the function could be private which means only a certain user, group or service account has access to the function. In that case you'd need to update the IAM Policy Binding to the Cloud Function. 
 
 We'll be using [gLess](https://github.com/anrbn/blog/tree/main/tool/gless) to Deploy, Update, List Details and Set IAM Policy Binding to the Cloud Function using Cloud Function API (gRPC).
 
@@ -987,7 +987,7 @@ Permissions required for Updating a Cloud Function via Cloud Function API
 Permissions required for Listing Cloud Functions via Cloud Function API (Optional) 
 - `cloudfunctions.functions.list`
 
->Note: One can use either gRPC or REST to make requests to the Cloud Function API, the Cloud Function API will then interact with the Cloud Functions service. The Permissions required to Deploy, Update and Set IAM Policy Binding are same for both gRPC and REST.
+>Note: One can use either gRPC or REST to make requests to the Cloud Function API, the Cloud Function API will then interact with the Cloud Functions service. The Permissions required to Deploy, Update and Set IAM Policy Binding are the same for both gRPC and REST.
 
 ### Deploying the Cloud Function via Cloud Function API (gRPC)
 
@@ -1016,7 +1016,7 @@ Command:
 py.exe .\main.py --project-id <project-id> --location <region> --function-name <function-name> --gsutil-uri <gsutil-uri> --function-entry-point <entry-point> --service-account <sa-account> --update
 ```
 
-From the listed functions let's go with "function-1". We will update the function to add a new Service Account which has Editor Role in the project. The Function will now be updated, if we be specific then its actually the Service Account being updated. 
+From the listed functions let's go with "function-1". We will update the function to add a new Service Account which has Editor Role in the project. The Function will now be updated, if we are specific then its actually the Service Account being updated.
 
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/38.png">
