@@ -1,2 +1,0 @@
-google-cloud-functions
-google-auth
