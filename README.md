@@ -3,18 +3,20 @@
     <h1 style="margin-left: 10px;">Google Cloud Platform - Attack & Defense</h1>
 </div>
 
+This project is committed to documenting various attack and detection vectors that may be encountered within the Google Cloud Platform (GCP) environment. By cataloging these potential security threats, the project aims to provide well documented research for users to better understand the attack and defense mechanism in Google Cloud. 
 
+This project also hopes to aid professionals in further research on Google Cloud.
 
 ## Tools
 - [gLess](https://github.com/anrbn/GCP-Attack-Defense/tree/main/tool/gless)
 
 ## Research
 - [Cloud Function](https://github.com/anrbn/GCP-Attack-Defense/tree/main/CloudFunction)
-    - [Privilege Escalation via Cloud Functions](https://github.com/anrbn/GCP-Attack-Defense/blob/main/CloudFunction/PrivEsc-via-CloudFunction.md)
+    - [Privilege Escalation via Cloud Functions - Attack & Detection](https://github.com/anrbn/GCP-Attack-Defense/blob/main/CloudFunction/PrivEsc-via-CloudFunction.md)
 
 ## Upcoming
 - [Cloud Function](https://github.com/anrbn/GCP-Attack-Defense/tree/main/CloudFunction)
-    - [Concealing Cloud Function Source Code]()
+    - [Hiding in Plain Sight: Cloud Function Source Code Concealment]()
 
 
     
