@@ -1121,7 +1121,7 @@ Since, the Source Code in Cloud Function is the root cause for the Privilege Esc
 
 Where does the Source Code reside apart from the Cloud Function? It resides in the Cloud Storage in ZIP Format inside a specific folder structure within the Google Cloud Storage bucket.
 
-Function Structure: gcf-sources-<project_number>-<region>/<function_name>-<unique_identifier>/<version>/function-source.zip
+Function Structure: `gcf-sources-<project_number>-<region>/<function_name>-<unique_identifier>/<version>/function-source.zip`
 
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/45.png">
