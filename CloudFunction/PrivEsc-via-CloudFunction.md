@@ -80,6 +80,8 @@ def anirban(request):
 
 This above function retrieves the access token of the default Service Account of the current cloud function instance. It does so by sending a GET request to the Compute Engine metadata server endpoint at "http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token". The metadata server endpoint returns a JSON response containing the access token. The function then returns the access token to the caller.
 
+>Note: The metadata server is an internal server within the GCP infrastructure. It is used by VMs running on Google Compute Engine and other GCP services to access instance-specific metadata, such as instance attributes, network configurations, and authentication tokens for Google Cloud APIs. The Metadata server can be accessed only internally on the hostname metadata.google.internal (169.254.169.254). It is not accessible from the public internet.
+
 ### Permission Required for Deploying a Cloud Function via gCloud
 
 Let's start with the first step of deploying/creating a Cloud Function. As always every action in GCP requires you to have a certain amount of Permissions. 
@@ -1079,4 +1081,29 @@ gcloud auth activate-service-account --key-file="C:/Users/Administrator/Download
 
 After you've activated the Service Account, you can now run commands as the activated service account user. If the Service Account has Editor level permission one can perform a wide range of actions on Google Cloud resources without any restrictions.
 
-  
+
+Detection: 
+Detecting this attack is quite hard but not impossible, it'd require manual effort to detect it. Below is an image which lays out every possible path an attacker can take to get access to an *access_token*. 
+
+> Download the image and zoom in to see the details. ([Image](https://github.com/anrbn/blog/blob/main/images/17.png))
+
+If you look at the image carefully you'd find, from Deploying/Updating to Invoking the Function every action done is normal and can be done by a legitimate user as well. So how do we detect this? 
+
+There's a thing in Detection Engineering, if something doesn't make sense, take the end result and start looking at the scenario from backwards. You'd eventually arrive at a conclusion.
+
+The Attacker's end result was to Escalate Privileges. So, I took the end result (Privilege Escalation) and started to question my way backwards.
+
+How did the attacker escalate privileges? Well, he got access to the *access_token* and then used it to escalate privileges. 
+How did the attacker got access to the *access_token*? He invoked the function and got the *access_token*.
+How does Invoking a Function get you the *access_token*? Well, there must be something in the Cloud Function that does that.
+
+That something is the "Source Code", which prints the access_token. The root cause for the Attacker to successfully Privilege Escalate is the Cloud Function Source Code, which prints the *access_token*.
+
+Once again let's work our way back.
+
+How does the Source Code in Cloud Function get access to the access_token? It sends HTTP GET request to the Google Compute Engine metadata server to obtain an access token for the default service account of the current instance, which then is returned as the output of the function.
+
+So a request is being sent to the Google Compute Engine metadata server. Can we detect Cloud Function sending request to the Google Compute Engine metadata server?
+
+Unfortunately No, we can't. From what I've researched, I've found Google doesn't log requests to the metadata server neither VPC Flow Logs nor Google Cloud Audit Logs gave any indication of the Cloud Function sending requests to the Metadata Server. This is a major deficiency in GCP Logging and Monitoring which can be exploited by an attacker.
+
