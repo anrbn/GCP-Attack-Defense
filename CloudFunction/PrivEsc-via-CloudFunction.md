@@ -36,6 +36,8 @@ requirements.txt
   - [Deploying the Cloud Function via Cloud Function API (gRPC)](#deploying-the-cloud-function-via-cloud-function-api-grpc)
   - [Setting IAM Policy Binding to the Cloud Function via Cloud Function API (gRPC)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-grpc-1)
   - [Escalating Privilege to a high level Service Account](#escalating-privilege-to-a-high-level-service-account)
+- [Detecting the Attack (Partially)](#detecting-the-attack-partially)
+- [References and Resources](#references-and-resources)
 
 ## Phase I - Ways to Deploy a Cloud Function in GCP
 
@@ -1082,7 +1084,8 @@ gcloud auth activate-service-account --key-file="C:/Users/Administrator/Download
 After you've activated the Service Account, you can now run commands as the activated service account user. If the Service Account has Editor level permission one can perform a wide range of actions on Google Cloud resources without any restrictions.
 
 
-Detection: 
+### Detecting the Attack (Partially)
+
 Detecting this attack is quite hard but not impossible, it'd require manual effort to detect it. Below is an image which lays out every possible path an attacker can take to get access to an *access_token*. 
 
 <p>
@@ -1097,29 +1100,28 @@ There's a thing in Detection Engineering, if something doesn't make sense, take 
 
 The Attacker's end result was to Escalate Privileges. So, I took the end result (Privilege Escalation) and started to question my way backwards.
 
-How did the attacker escalate privileges? Well, he got access to the *access_token* and then used it to escalate privileges. 
-
-How did the attacker got access to the *access_token*? He invoked the function and got the *access_token*.
+**Question** How did the attacker escalate privileges? Well, he got access to the *access_token* and then used it to escalate privileges. 
+**Question** How did the attacker got access to the *access_token*? He invoked the function and got the *access_token*.
 
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/43.png">
 </p>
 
-How does Invoking a Function get you the *access_token*? Well, there must be something in the Cloud Function that does that.
+**Question** How does Invoking a Function get you the *access_token*? Well, there must be something in the Cloud Function that does that.
 
 That something is the "Source Code", which prints the access_token. The root cause for the Attacker to successfully Privilege Escalate is the Cloud Function Source Code, which prints the *access_token*.
 
 Once again let's work our way back.
 
-How does the Source Code in Cloud Function get access to the access_token? It sends HTTP GET request to the Google Compute Engine metadata server to obtain an access token for the default service account of the current instance, which then is returned as the output of the function.
+**Question** How does the Source Code in Cloud Function get access to the access_token? It sends HTTP GET request to the Google Compute Engine metadata server to obtain an access token for the default service account of the current instance, which then is returned as the output of the function.
 
 So a request is being sent to the Google Compute Engine metadata server. Can we detect Cloud Function sending request to the Google Compute Engine metadata server? 
 
 Unfortunately no, we can't. From what I've researched, Google doesn't log requests to the metadata server neither VPC Flow Logs nor Google Cloud Audit Logs gives any indication of the Cloud Function sending requests to the Metadata Server. This is a major deficiency in GCP Logging and Monitoring which can be exploited by attackers.
 
-Since, the Source Code in Cloud Function is the root cause for the Privilege Escalation, we can analyse the source code itself to detect the attack. Now back to questions.
+Since, the Source Code in Cloud Function is the root cause for the Privilege Escalation, we can analyze the source code itself to detect the attack. Now back to questions.
 
-Where does the Source Code reside apart from the Cloud Function? It resides in the Cloud Storage in ZIP Format inside a specific folder structure within the Google Cloud Storage bucket.
+**Question** Where does the Source Code reside apart from the Cloud Function? It resides in the Cloud Storage in ZIP Format inside a specific folder structure within the Google Cloud Storage bucket.
 
 Function Structure: `gcf-sources-<project_number>-<region>/<function_name>-<unique_identifier>/<version>/function-source.zip`
 
@@ -1160,3 +1162,9 @@ Function Structure: `gcf-sources-<project_number>-<region>/<function_name>-<uniq
    </td>
   </tr>
 </table>
+
+One can implement automated tools and processes to identify potentially malicious code or security vulnerabilities in the source code. Pattern matching can be used to detect if the code is accessing the metadata server. However, a sophisticated attacker may attempt to obfuscate their code to hide any direct reference to the metadata server or use other methods to make it difficult to detect such requests in the source code. There is another technique I've researched **"Concealing Cloud Function Source Code"** , which let's attackers totally hide their malicious code with no artifact left that can point to the Malicious source code ever used. I'll be posting about it soon.
+
+Detecting malicious source code by querying the Google Cloud Storage bucket might not be the most efficient or comprehensive approach, due to Google's Insufficient logging, attackers can leverage this technique and still stay under the radar. I hope Google brings logging any requests sent to the metadata server in the future.
+
+### References and Resources
