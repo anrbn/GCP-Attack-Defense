@@ -28,6 +28,7 @@
     - [Escalating Privilege to a high level Service Account](#escalating-privilege-to-a-high-level-service-account)
 - [Detect](#Detect)
   - [Manual Source Code Review (Inefficient)](#manual-source-code-review-inefficient)
+  - [Any Possible Third Party Logging? (tl;dr: No)](#any-possible-third-party-logging-tldr-no)
 - [References and Resources](#references-and-resources)
 
 # Attack
@@ -1080,7 +1081,9 @@ After you've activated the Service Account, you can now run commands as the acti
 
 ## Manual Source Code Review (Inefficient)
 
-Detecting this attack is quite hard but not impossible, it'd require manual effort to detect it. Below is an image which lays out every possible path an attacker can take to get access to an *access_token*. 
+Detecting this attack is quite complicated due to lack of Log Sources. Google has no logging for detecting any requests made to the Metadata Server letting the attacker fly under the radar. However there is a working manual detection discussed in this part. 
+
+Below is an image which lays out every possible path an attacker can take to get access to an *access_token*. 
 
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/44.jpg">
@@ -1164,6 +1167,10 @@ Detection:
 However, a sophisticated attacker may attempt to obfuscate their code to hide any direct reference to the metadata server or use other methods to make it difficult to detect such requests in the source code. There is another technique I've researched **"Concealing Cloud Function Source Code"** , which let's attackers totally hide their malicious code with no artifact left that can point to the Malicious source code ever used. I'll be posting about it soon.
 
 Detecting malicious source code by querying the Google Cloud Storage bucket might not be the most efficient or comprehensive approach, due to Google's Insufficient logging, attackers can leverage this technique and still stay under the radar. I hope Google brings logging any requests sent to the metadata server in the future.
+
+## Any Possible Third Party Logging? (tl;dr: No)
+
+The last thing that comes into mind is third party logging. 
 
 ## References and Resources
 
