@@ -1079,7 +1079,7 @@ After you've activated the Service Account, you can now run commands as the acti
 
 # Detect
 
-## Manual Source Code Review (Inefficient)
+### Manual Source Code Review (Inefficient)
 
 Detecting this attack is quite complicated due to lack of Log Sources. Google has no logging for detecting any requests made to the Metadata Server letting the attacker fly under the radar. However there is a working manual detection discussed in this part. 
 
@@ -1168,7 +1168,7 @@ However, a sophisticated attacker may attempt to obfuscate their code to hide an
 
 Detecting malicious source code by querying the Google Cloud Storage bucket might not be the most efficient or comprehensive approach, due to Google's Insufficient logging, attackers can leverage this technique and still stay under the radar. I hope Google brings logging any requests sent to the metadata server in the future.
 
-## Any Possible Third Party Logging? (tl;dr: No)
+### Any Possible Third Party Logging? (tl;dr: No)
 
 The last thing that comes into mind is third party logging. 
 
