@@ -1123,6 +1123,10 @@ Where does the Source Code reside apart from the Cloud Function? It resides in t
 
 Function Structure: gcf-sources-<project_number>-<region>/<function_name>-<unique_identifier>/<version>/function-source.zip
 
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/45.png">
+</p>
+
 <table>
   <tr>
    <td>&lt;project_number>
