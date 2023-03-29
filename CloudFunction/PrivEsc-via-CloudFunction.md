@@ -1094,7 +1094,13 @@ There's a thing in Detection Engineering, if something doesn't make sense, take 
 The Attacker's end result was to Escalate Privileges. So, I took the end result (Privilege Escalation) and started to question my way backwards.
 
 How did the attacker escalate privileges? Well, he got access to the *access_token* and then used it to escalate privileges. 
+
 How did the attacker got access to the *access_token*? He invoked the function and got the *access_token*.
+
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/43.png">
+</p>
+
 How does Invoking a Function get you the *access_token*? Well, there must be something in the Cloud Function that does that.
 
 That something is the "Source Code", which prints the access_token. The root cause for the Attacker to successfully Privilege Escalate is the Cloud Function Source Code, which prints the *access_token*.
@@ -1103,7 +1109,6 @@ Once again let's work our way back.
 
 How does the Source Code in Cloud Function get access to the access_token? It sends HTTP GET request to the Google Compute Engine metadata server to obtain an access token for the default service account of the current instance, which then is returned as the output of the function.
 
-So a request is being sent to the Google Compute Engine metadata server. Can we detect Cloud Function sending request to the Google Compute Engine metadata server?
-
-Unfortunately No, we can't. From what I've researched, I've found Google doesn't log requests to the metadata server neither VPC Flow Logs nor Google Cloud Audit Logs gave any indication of the Cloud Function sending requests to the Metadata Server. This is a major deficiency in GCP Logging and Monitoring which can be exploited by an attacker.
+So a request is being sent to the Google Compute Engine metadata server. Can we detect Cloud Function sending request to the Google Compute Engine metadata server? 
+Unfortunately no, we can't. From what I've researched, Google doesn't log requests to the metadata server neither VPC Flow Logs nor Google Cloud Audit Logs gives any indication of the Cloud Function sending requests to the Metadata Server. This is a major deficiency in GCP Logging and Monitoring which can be exploited by attackers.
 
