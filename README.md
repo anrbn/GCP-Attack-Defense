@@ -18,5 +18,6 @@ This project also hopes to aid professionals in further research on Google Cloud
 - [Cloud Function](https://github.com/anrbn/GCP-Attack-Defense/tree/main/CloudFunction)
     - [Hiding in Plain Sight: Cloud Function Source Code Concealment]()
 
+If you have any questions regarding any materials in this project, please don't hesitate to reach out to me via [Twitter](https://twitter.com/corvuscr0w) or [LinkedIn](https://www.linkedin.com/in/anrbnds/). I'm always happy to help and provide support. Additionally, if you come across any issues or mistakes while reading the materials/using the tools, please feel free to submit an issue on the GitHub repository, and I'll work on addressing it as soon as possible. Thank you for your support! :)
 
     
