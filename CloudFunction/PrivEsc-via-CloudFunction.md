@@ -1162,7 +1162,11 @@ Function Structure: `gcf-sources-<project_number>-<region>/<function_name>-<uniq
   </tr>
 </table>
 
-One can implement automated tools and processes to identify potentially malicious code or security vulnerabilities in the source code. Pattern matching can be used to detect if the code is accessing the metadata server. However, a sophisticated attacker may attempt to obfuscate their code to hide any direct reference to the metadata server or use other methods to make it difficult to detect such requests in the source code. There is another technique I've researched **"Concealing Cloud Function Source Code"** , which let's attackers totally hide their malicious code with no artifact left that can point to the Malicious source code ever used. I'll be posting about it soon.
+Detection: 
+1. One can implement automated tools and processes to identify potentially malicious code or security vulnerabilities in the source code. 
+2. Pattern matching can be used to detect if the code is accessing the metadata server. 
+
+However, a sophisticated attacker may attempt to obfuscate their code to hide any direct reference to the metadata server or use other methods to make it difficult to detect such requests in the source code. There is another technique I've researched **"Concealing Cloud Function Source Code"** , which let's attackers totally hide their malicious code with no artifact left that can point to the Malicious source code ever used. I'll be posting about it soon.
 
 Detecting malicious source code by querying the Google Cloud Storage bucket might not be the most efficient or comprehensive approach, due to Google's Insufficient logging, attackers can leverage this technique and still stay under the radar. I hope Google brings logging any requests sent to the metadata server in the future.
 
