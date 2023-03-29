@@ -1172,4 +1172,4 @@ Detecting malicious source code by querying the Google Cloud Storage bucket migh
 
 ## References and Resources
 
-1. [Privilege Escalation in Google Cloud Platform – Part 1 (IAM)](https://rhinosecuritylabs.com/gcp/privilege-escalation-google-cloud-platform-part-1/)
+[Rhino Security Labs - Privilege Escalation in Google Cloud Platform – Part 1 (IAM)](https://rhinosecuritylabs.com/gcp/privilege-escalation-google-cloud-platform-part-1/)
