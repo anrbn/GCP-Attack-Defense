@@ -1171,3 +1171,5 @@ However, a sophisticated attacker may attempt to obfuscate their code to hide an
 Detecting malicious source code by querying the Google Cloud Storage bucket might not be the most efficient or comprehensive approach, due to Google's Insufficient logging, attackers can leverage this technique and still stay under the radar. I hope Google brings logging any requests sent to the metadata server in the future.
 
 ## References and Resources
+
+1. [Privilege Escalation in Google Cloud Platform – Part 1 (IAM)](https://rhinosecuritylabs.com/gcp/privilege-escalation-google-cloud-platform-part-1/)
