@@ -1083,8 +1083,7 @@ gcloud auth activate-service-account --key-file="C:/Users/Administrator/Download
 
 After you've activated the Service Account, you can now run commands as the activated service account user. If the Service Account has Editor level permission one can perform a wide range of actions on Google Cloud resources without any restrictions.
 
-
-### Detecting the Attack (Partially)
+## Detecting the Attack (Partially)
 
 Detecting this attack is quite hard but not impossible, it'd require manual effort to detect it. Below is an image which lays out every possible path an attacker can take to get access to an *access_token*. 
 
@@ -1167,4 +1166,4 @@ One can implement automated tools and processes to identify potentially maliciou
 
 Detecting malicious source code by querying the Google Cloud Storage bucket might not be the most efficient or comprehensive approach, due to Google's Insufficient logging, attackers can leverage this technique and still stay under the radar. I hope Google brings logging any requests sent to the metadata server in the future.
 
-### References and Resources
+## References and Resources
