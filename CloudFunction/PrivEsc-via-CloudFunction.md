@@ -1,4 +1,4 @@
-# Privilege Escalation via Cloud Functions in GCP - Attack & Detection
+# Privilege Escalation via Cloud Functions - Attack & Detection
 - [Attack](#Attack)
   - [Phase I - Ways to Deploy a Cloud Function in Google Cloud Platform](#phase-i---ways-to-deploy-a-cloud-function-in-gcp)
     - [Ways to upload code in Cloud Function](#ways-to-upload-code-in-cloud-function-in-gcp)
