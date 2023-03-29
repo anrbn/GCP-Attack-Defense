@@ -1,43 +1,36 @@
-Research it:
-
-
-
-The pathway diagram
-API Enabled for actions?
-Add Logging for each section
-
-test it around linux
-requirements.txt
-
-# GCP Cloud Function Abuse Research
-- [Phase I - Ways to Deploy a Cloud Function in Google Cloud Platform](#phase-i---ways-to-deploy-a-cloud-function-in-gcp)
-  - [Ways to upload code in Cloud Function](#ways-to-upload-code-in-cloud-function-in-gcp)
-  - [Permission Required for Deploying a Cloud Function via gCloud](#permission-required-for-deploying-a-cloud-function-via-gcloud)
-    - [Deploying a Cloud Function via gCloud](#deploying-a-cloud-function-via-gcloud) 
-  - [Permission Required for Deploying a Cloud Function via  Cloud Function API (gRPC & REST)](#permission-required-for-deploying-a-cloud-function-via-cloud-function-api-grpc--rest)
-    - [Deploying a Cloud Function via Cloud Function API (gRPC)](#deploying-a-cloud-function-via-cloud-function-api-grpc)
-    - [Deploying a Cloud Function via Cloud Function API (REST)](#deploying-a-cloud-function-via-cloud-function-api-rest)
-- [Phase I.I - Ways to Update a Cloud Function in Google Cloud Platform](#phase-ii---ways-to-update-a-cloud-function-in-google-cloud-platform)
-  - [Ways to update code in Cloud Function](#ways-to-update-code-in-cloud-function-in-gcp)
-  - [Permission Required for Listing Cloud Functions via gCloud and Cloud Function API (gRPC & REST)](#permission-required-for-listing-cloud-function-information-via-gcloud-and-cloud-function-api-grpc--rest)
-     - [Listing Cloud Function Information via gCloud and Cloud Function API (gRPC & REST)](#listing-cloud-function-information-via-gcloud-and-cloud-function-api-grpc--rest) 
-  - [Permission Required for Updating a Cloud Function via gCloud](#permission-required-for-updating-a-cloud-function-via-gcloud)
-    - [Updating a Cloud Function via gCloud](#updating-a-cloud-function-via-gcloud) 
-  - [Permission Required for Updating a Cloud Function via Cloud Function API (gRPC & REST)](#permission-required-for-updating-a-cloud-function-via-cloud-function-api-grpc--rest)
-    - [Updating a Cloud Function via Cloud Function API (gRPC)](#updating-a-cloud-function-via-cloud-function-api-grpc)
-    - [Updating a Cloud Function via Cloud Function API (REST)](#updating-a-cloud-function-via-cloud-function-api-rest)
-- [Phase II - Ways to Set IAM Policy Binding to a Cloud Function in Google Cloud Platform](#phase-ii---ways-to-set-iam-policy-binding-to-a-cloud-function-in-google-cloud-platform)
-  - [Permission Required to Set IAM Policy Binding to a Cloud Function](#permission-required-to-set-iam-policy-binding-to-a-cloud-function)
-    - [Setting IAM Policy Binding to the Cloud Function via gCloud](#setting-iam-policy-binding-to-the-cloud-function-via-gcloud)
-    - [Setting IAM Policy Binding to the Cloud Function via Cloud Function API (REST)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-rest)
-    - [Setting IAM Policy Binding to the Cloud Function  via Cloud Function API (gRPC)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-grpc)
-  - [Invoking the Cloud Function](#invoking-the-cloud-function)
-- [Phase III - Privilege Escalating via Cloud Function in Google Cloud Platform](#phase-iii---privilege-escalation-via-cloud-function-in-google-cloud-platform)
-  - [Deploying the Cloud Function via Cloud Function API (gRPC)](#deploying-the-cloud-function-via-cloud-function-api-grpc)
-  - [Setting IAM Policy Binding to the Cloud Function via Cloud Function API (gRPC)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-grpc-1)
-  - [Escalating Privilege to a high level Service Account](#escalating-privilege-to-a-high-level-service-account)
-- [Detecting the Attack (Partially)](#detecting-the-attack-partially)
+# Privilege Escalation via Cloud Functions in GCP - Attack & Detection
+- [Attack](#Attack)
+  - [Phase I - Ways to Deploy a Cloud Function in Google Cloud Platform](#phase-i---ways-to-deploy-a-cloud-function-in-gcp)
+    - [Ways to upload code in Cloud Function](#ways-to-upload-code-in-cloud-function-in-gcp)
+    - [Permission Required for Deploying a Cloud Function via gCloud](#permission-required-for-deploying-a-cloud-function-via-gcloud)
+      - [Deploying a Cloud Function via gCloud](#deploying-a-cloud-function-via-gcloud) 
+    - [Permission Required for Deploying a Cloud Function via  Cloud Function API (gRPC & REST)](#permission-required-for-deploying-a-cloud-function-via-cloud-function-api-grpc--rest)
+      - [Deploying a Cloud Function via Cloud Function API (gRPC)](#deploying-a-cloud-function-via-cloud-function-api-grpc)
+      - [Deploying a Cloud Function via Cloud Function API (REST)](#deploying-a-cloud-function-via-cloud-function-api-rest)
+  - [Phase I.I - Ways to Update a Cloud Function in Google Cloud Platform](#phase-ii---ways-to-update-a-cloud-function-in-google-cloud-platform)
+    - [Ways to update code in Cloud Function](#ways-to-update-code-in-cloud-function-in-gcp)
+    - [Permission Required for Listing Cloud Functions via gCloud and Cloud Function API (gRPC & REST)](#permission-required-for-listing-cloud-function-information-via-gcloud-and-cloud-function-api-grpc--rest)
+      - [Listing Cloud Function Information via gCloud and Cloud Function API (gRPC & REST)](#listing-cloud-function-information-via-gcloud-and-cloud-function-api-grpc--rest) 
+    - [Permission Required for Updating a Cloud Function via gCloud](#permission-required-for-updating-a-cloud-function-via-gcloud)
+      - [Updating a Cloud Function via gCloud](#updating-a-cloud-function-via-gcloud) 
+    - [Permission Required for Updating a Cloud Function via Cloud Function API (gRPC & REST)](#permission-required-for-updating-a-cloud-function-via-cloud-function-api-grpc--rest)
+      - [Updating a Cloud Function via Cloud Function API (gRPC)](#updating-a-cloud-function-via-cloud-function-api-grpc)
+      - [Updating a Cloud Function via Cloud Function API (REST)](#updating-a-cloud-function-via-cloud-function-api-rest)
+  - [Phase II - Ways to Set IAM Policy Binding to a Cloud Function in Google Cloud Platform](#phase-ii---ways-to-set-iam-policy-binding-to-a-cloud-function-in-google-cloud-platform)
+    - [Permission Required to Set IAM Policy Binding to a Cloud Function](#permission-required-to-set-iam-policy-binding-to-a-cloud-function)
+      - [Setting IAM Policy Binding to the Cloud Function via gCloud](#setting-iam-policy-binding-to-the-cloud-function-via-gcloud)
+      - [Setting IAM Policy Binding to the Cloud Function via Cloud Function API (REST)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-rest)
+      - [Setting IAM Policy Binding to the Cloud Function  via Cloud Function API (gRPC)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-grpc)
+    - [Invoking the Cloud Function](#invoking-the-cloud-function)
+  - [Phase III - Privilege Escalating via Cloud Function in Google Cloud Platform](#phase-iii---privilege-escalation-via-cloud-function-in-google-cloud-platform)
+    - [Deploying the Cloud Function via Cloud Function API (gRPC)](#deploying-the-cloud-function-via-cloud-function-api-grpc)
+    - [Setting IAM Policy Binding to the Cloud Function via Cloud Function API (gRPC)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-grpc-1)
+    - [Escalating Privilege to a high level Service Account](#escalating-privilege-to-a-high-level-service-account)
+- [Detect](#Detect)
+  - [Manual Source Code Review (Inefficient)](#manual-source-code-review-inefficient)
 - [References and Resources](#references-and-resources)
+
+# Attack
 
 ## Phase I - Ways to Deploy a Cloud Function in GCP
 
@@ -1083,7 +1076,9 @@ gcloud auth activate-service-account --key-file="C:/Users/Administrator/Download
 
 After you've activated the Service Account, you can now run commands as the activated service account user. If the Service Account has Editor level permission one can perform a wide range of actions on Google Cloud resources without any restrictions.
 
-## Detecting the Attack (Partially)
+# Detect
+
+## Manual Source Code Review (Inefficient)
 
 Detecting this attack is quite hard but not impossible, it'd require manual effort to detect it. Below is an image which lays out every possible path an attacker can take to get access to an *access_token*. 
 
