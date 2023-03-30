@@ -969,7 +969,9 @@ Either:
 
 > Note: Why setting an IAM Policy Binding to an already existing function is optional because if a function already exists then chances are it is already invokable by authenticated or non-authenticated principals. The Function could be public which means anyone can access the function. But in some cases the function could be private which means only a certain user, group or service account has access to the function. In that case you'd need to update the IAM Policy Binding to the Cloud Function. 
 
-We'll be using [gLess](https://github.com/anrbn/blog/tree/main/tool/gless) to Deploy, Update, List Details and Set IAM Policy Binding to the Cloud Function using Cloud Function API (gRPC).
+We'll be using [gLess](https://github.com/anrbn/blog/tree/main/tool/gless) to Deploy, Update, List Details and Set IAM Policy Binding to the Cloud Function using Cloud Function API (gRPC). 
+  
+If you wish to utilize the REST API for this purpose, then you could use the above curl commands which use REST API or use these set of exceptional [scripts](https://github.com/RhinoSecurityLabs/GCP-IAM-Privilege-Escalation/tree/master/ExploitScripts) developed by Rhino Security Labs which does all of the below actions via REST API.
 
 Permissions required for Deploying a Cloud Function via Cloud Function API 
 - `iam.serviceAccounts.actAs`
