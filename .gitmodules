@@ -1,0 +1,3 @@
+[submodule "tool/gLess"]
+	path = tool/gLess
+	url = https://github.com/anrbn/gLess.git
