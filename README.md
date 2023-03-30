@@ -8,7 +8,7 @@ This project is committed to documenting various attack and detection vectors th
 This project also hopes to aid professionals in further research on Google Cloud.
 
 ## Tools
-- [gLess](https://github.com/anrbn/GCP-Attack-Defense/tree/main/tool/gless)
+- [gLess](https://github.com/anrbn/gLess)
 
 ## Research
 - [Cloud Function](https://github.com/anrbn/GCP-Attack-Defense/tree/main/CloudFunction)
