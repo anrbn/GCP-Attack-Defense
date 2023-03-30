@@ -25,5 +25,5 @@ If you have any questions regarding any materials in this project, please don't 
 - [x] Tool/gLess - Code to check if user has permission to create and download "Service Account Key"
 - [ ] Tool/gLess - Tool usage 
 - [ ] Tool/gLess - Code to enable certain API/Services
-- [ ] Tool/gLess - Code that removes any reliance on "Servicemanagement API" to check if certain APIs are enabled.
+- [ ] Tool/gLess - Code that removes reliance on any API/Service to check if certain services are enabled.
 
