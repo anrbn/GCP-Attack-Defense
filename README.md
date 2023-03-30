@@ -22,7 +22,8 @@ This project also hopes to aid professionals in further research on Google Cloud
 If you have any questions regarding any materials in this project, please don't hesitate to reach out to me via [Twitter](https://twitter.com/corvuscr0w) or [LinkedIn](https://www.linkedin.com/in/anrbnds/). I'm always happy to help and provide support. Additionally, if you come across any issues or mistakes while reading the materials/using the tools, please feel free to submit an issue on the GitHub repository, and I'll work on addressing it as soon as possible. Thank you for your support! :)
 
 ## Updates 
-- [x] Tool/gLess -  Code to check if user has permission to create and download "Service Account Key"
-- [ ] Tool/gLess -  Tool usage 
-- [ ] Tool/gLess -  Code to enable certain API/Services
+- [x] Tool/gLess - Code to check if user has permission to create and download "Service Account Key"
+- [ ] Tool/gLess - Tool usage 
+- [ ] Tool/gLess - Code to enable certain API/Services
+- [ ] Tool/gLess - Code that removes any reliance on "Servicemanagement API" to check if certain APIs are enabled.
 
