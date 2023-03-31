@@ -132,8 +132,8 @@ Dependent API of:
   - storage-api.googleapis.com (Google Cloud Storage JSON API)
 
 > Note:
-> 1. Make sure the above APIs are enabled for you to successfully deploy, update and Bind IAM Policy to a Cloud Function via gCloud. 
-> 2. Doesn't matter if you're deploying a Cloud Function from your local machine or from Cloud Storage or Cloud Repository, you need to enable the above APIs.
+> 1. Make sure the above APIs (cloudfunctions.googleapis.com, cloudbuild.googleapis.com, cloudresourcemanager.googleapis.com) are enabled for you to successfully deploy, update and Bind IAM Policy to a Cloud Function via gCloud. 
+> 2. Doesn't matter if you're deploying a Cloud Function from your local machine or from Cloud Storage or Cloud Repository, you need to enable the above three APIs.
 
 **List of permissions that's required to "Deploy a Cloud Function via gCloud"**
 
