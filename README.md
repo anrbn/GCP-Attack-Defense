@@ -25,5 +25,5 @@ If you have any questions regarding any materials in this project, please don't 
 - [x] Tool/gLess - Code to check if user has permission to create and download "Service Account Key"
 - [x] Research/CloudFunction - Cloud Function - Source Code Concealment
 - [ ] Tool/gLess - Code to enable certain API/Services
-- [ ] Tool/gLess - Code that removes reliance on any API/Service to check if certain services are enabled.
+- [x] Tool/gLess - Code that removes reliance on any API/Service to check if certain services are enabled.
 - [ ] Research/CloudFunction - How is gCloud with broad roles able to enable services without even enabling Service usage API?
