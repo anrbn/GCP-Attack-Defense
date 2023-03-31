@@ -105,7 +105,7 @@ Command to enable APIs via gCloud:
 gcloud services list
 gcloud services enable cloudbuild.googleapis.com
 ```
->You'd need "servicemanagement.services.enable" permission to be able to enable APIs.
+>You'd need "" permission to be able to enable APIs.
 
 When you enable a specific API, it might automatically enable other APIs that the primary API depends on for its functionality. These are called "Dependent APIs."
 
