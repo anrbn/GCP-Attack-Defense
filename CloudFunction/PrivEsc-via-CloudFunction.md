@@ -17,7 +17,7 @@
       - [Updating a Cloud Function via Cloud Function API (gRPC)](#updating-a-cloud-function-via-cloud-function-api-grpc)
       - [Updating a Cloud Function via Cloud Function API (REST)](#updating-a-cloud-function-via-cloud-function-api-rest)
   - [Phase II - Ways to Set IAM Policy Binding to a Cloud Function in Google Cloud Platform](#phase-ii---ways-to-set-iam-policy-binding-to-a-cloud-function-in-google-cloud-platform)
-    - [APIs and Permissions Required to Set IAM Policy Binding to a Cloud Function](#apis-and-permissions-required-to-set-iam-policy-binding-to-a-cloud-function)
+    - [APIs and Permissions Required to Set IAM Policy Binding to a Cloud Function via gCloud & Cloud Function API (gRPC & REST)](#apis-and-permissions-required-to-set-iam-policy-binding-to-a-cloud-function-via-gcloud--cloud-function-api-grpc--rest)
       - [Setting IAM Policy Binding to the Cloud Function via gCloud](#setting-iam-policy-binding-to-the-cloud-function-via-gcloud)
       - [Setting IAM Policy Binding to the Cloud Function via Cloud Function API (REST)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-rest)
       - [Setting IAM Policy Binding to the Cloud Function  via Cloud Function API (gRPC)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-grpc)
@@ -836,7 +836,7 @@ To set up IAM permissions for your Cloud Function, you can add one or more membe
 Now, there's a special member called `allUsers` that represents anyone on the internet. You can grant the member : `allUsers` the role : `Cloud Function Invoker`. This will allow anyone on the internet to invoke the Cloud Function without requiring authentication. However we'll stick to giving a specific service account the permission `Cloud Function Invoker`. 
 Invoking a Cloud Function using the `allUsers` binding, the function's logs will show the request came from an unauthenticated source, making it suspicious in some cases. On the other hand, if a service account is used, the logs will show request coming from an authorized source, reducing any suspicion.
 
-### APIs and Permissions Required to Set IAM Policy Binding to a Cloud Function via gCloud & Cloud Function API
+### APIs and Permissions Required to Set IAM Policy Binding to a Cloud Function via gCloud & Cloud Function API (gRPC & REST)
 
 **List of APIs that needs to be enabled to "Bind an IAM Policy to a Cloud Function via gCloud"**
 <table>
