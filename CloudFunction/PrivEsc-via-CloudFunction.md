@@ -242,7 +242,7 @@ Which means `cloudfunctions.functions.get` permission allows a user or service a
 
 Using tools like gCloud can be convenient, but sometimes gCloud requires additional permissions beyond what is actually needed for the task at hand as you saw above. This can result in unnecessarily permission requirements for users. 
 
-When a command is executed, gCloud translates the command into an API request and sends it to respective APIs underneath (Cloud Function API, Compute Engine API etc). The API then processes the request, creates or updates the respective resource, and sends back a response, which gcloud displays in your terminal.
+When a command is executed, gCloud translates the command into an API request and sends it to respective APIs (Cloud Function API, Compute Engine API etc). The API then processes the request, creates or updates the respective resource, and sends back a response, which gcloud displays in your terminal.
 
 One way to narrow down the permission requirements is to not rely on tools like gCloud to communicate with the APIs at all, but to communicate with the APIs ourselves. 
 APIs can be called via gRPC and REST APIs and can make the process much more precise and efficient in terms of permissions to create resources like Cloud Functions, Compute Engine etc. gRPC and REST API allows us to specify only the necessary permissions for the specific task, not more or less.
@@ -333,9 +333,9 @@ Let's call the Cloud Function API using both gRPC and REST to deploy a Cloud Fun
 
 gRPC is an open-source Remote Procedure Call (RPC) framework developed by Google. Won't go into much details of gRPC and step straight into the point.
 
-Here's a little tool [gLess](https://github.com/anrbn/blog/tree/main/tool/gless) that uses gRPC to communicate with the Cloud Function API and perform various tasks on Cloud Functions such as deployment, updation, setting IAM Binding etc all while using the lowest privileges possible.
+Here's a little tool [gLess](https://github.com/anrbn/gLess) that uses gRPC to communicate with the Cloud Function API and perform various tasks on Cloud Functions such as deployment, updation, setting IAM Binding etc all while using the lowest permissions possible.
 
-We will be utilizing this [gLess](https://github.com/anrbn/blog/tree/main/tool/gless) to accomplish all related tasks pertaining to Cloud Function and gRPC all through this blog. Before we deploy the function, let's check the permission the user holds first.
+We will be utilizing this [gLess](https://github.com/anrbn/gLess) to accomplish all related tasks pertaining to Cloud Function and gRPC all through this blog. Before we deploy the function, let's check the permission the user holds first.
 
 ```powershell
 py.exe .\main.py --project-id <project-id> --checkperm
@@ -344,7 +344,7 @@ py.exe .\main.py --project-id <project-id> --checkperm
   <img src="https://github.com/anrbn/blog/blob/main/images/20.1.png">
 </p>
 
-We only have two permissions ( `iam.serviceAccounts.actAs` & `cloudfunctions.functions.create` ) as you can see above, that's enough for us to deploy a Cloud Function. For every action [gLess](https://github.com/anrbn/blog/tree/main/tool/gless) communicates to Cloud Function API via gRPC (not REST). For uploading the Source Code to the Cloud Function, Cloud Storage is being used as it takes the least permission.
+We only have two permissions ( `iam.serviceAccounts.actAs` & `cloudfunctions.functions.create` ) as you can see above, that's enough for us to deploy a Cloud Function. For every action [gLess](https://github.com/anrbn/gLess) communicates to Cloud Function API via gRPC (not REST). For uploading the Source Code to the Cloud Function, Cloud Storage is being used as it takes the least permission.
 
 Next, we will deploy the function. 
 ```powershell
@@ -520,7 +520,7 @@ Listing Cloud Function Information via gCloud
 gcloud functions list
 ```
 
-For listing Cloud Function Information via Cloud Function API (gRPC), we'll be using [gLess](https://github.com/anrbn/blog/tree/main/tool/gless) 
+For listing Cloud Function Information via Cloud Function API (gRPC), we'll be using [gLess](https://github.com/anrbn/gLess) 
 
 ```powershell
 py.exe .\main.py --project-id <project-id> --list
@@ -721,7 +721,7 @@ Let's call the Cloud Function API using both gRPC and REST to update a Cloud Fun
 
 ### Updating a Cloud Function via Cloud Function API (gRPC)
 
-Let's use [gLess](https://github.com/anrbn/blog/tree/main/tool/gless) to update a Cloud Function. But first let's confirm we have the permission to update a Cloud Function as well as list their information.
+Let's use [gLess](https://github.com/anrbn/gLess) to update a Cloud Function. But first let's confirm we have the permission to update a Cloud Function as well as list their information.
 
 ```powershell
 py.exe .\main.py --project-id <project-id> --checkperm
@@ -853,7 +853,7 @@ When you create a Cloud Function in GCP, it is not immediately accessible for in
 To set up IAM permissions for your Cloud Function, you can add one or more members to a Cloud Function's IAM policy. Members can be individual user accounts, groups of users, or service accounts. You can assign roles to these members, which determine the actions they can perform on the function. 
 
 Now, there's a special member called `allUsers` that represents anyone on the internet. You can grant the member : `allUsers` the role : `Cloud Function Invoker`. This will allow anyone on the internet to invoke the Cloud Function without requiring authentication. However we'll stick to giving a specific service account the permission `Cloud Function Invoker`. 
-Invoking a Cloud Function using the `allUsers` binding, the function's logs will show the request came from an unauthenticated source, making it suspicious in some cases. On the other hand, if a service account is used, the logs will show request coming from an authorized source, reducing any suspicion.
+Invoking a Cloud Function using the `allUsers` binding, will let the function's logs show the request coming from an unauthenticated source, making it suspicious in some cases. On the other hand, if a service account is used, the logs will show request coming from an authorized source, reducing any suspicion.
 
 ### APIs and Permissions Required to Set IAM Policy Binding to a Cloud Function via gCloud & Cloud Function API (gRPC & REST)
 
@@ -930,7 +930,7 @@ gcloud functions add-iam-policy-binding <function-name> --region=<region> --memb
   </table>
 
 Above gCloud command grants the principal:"allUsers" the role:"Cloud Function Invoker", it binds the Policy to the resource:"Google Cloud Functions" , allowing all users, even unauthenticated 
-(--member=allUsers) to invoke the specified function (&lt;function-name>) in the specified region (--region=&lt;region>). It requires you to have both `cloudfunctions.functions.getIamPolicy` & `cloudfunctions.functions.setIamPolicy` permissions. We can narrow down the permission to just one, using Cloud Function API.
+(--member=allUsers) to invoke the specified function (&lt;function-name>) in the specified region (--region=&lt;region>). gCloud requires you to have both `cloudfunctions.functions.getIamPolicy` & `cloudfunctions.functions.setIamPolicy` permissions to successfully bind an IAM Policy to a function. We can narrow down the permission to just one, using Cloud Function API.
 
 ### Setting IAM Policy Binding to the Cloud Function via Cloud Function API (REST)
 
@@ -1027,7 +1027,7 @@ Modify the parameters according to your need
 
 ### Setting IAM Policy Binding to the Cloud Function via Cloud Function API (gRPC)
 
-We'll be using [gLess](https://github.com/anrbn/blog/tree/main/tool/gless) to add the IAM policy binding of principal:"allUsers/Service Account" and role:"Cloud Function Invoker" to the Cloud Function. gLess will set the IAM Binding successfully only if you're passing a Service Account as prinicpal or passing "allUsers". 
+We'll be using [gLess](https://github.com/anrbn/gLess) to add the IAM policy binding of principal:"allUsers/Service Account" and role:"Cloud Function Invoker" to the Cloud Function. gLess will set the IAM Binding successfully only if you're passing a Service Account as prinicpal or passing "allUsers". 
 
 ```powershell
 py.exe .\main.py --project-id <project-id> --location <region> --function-name <function> --setiambinding <principal>
@@ -1083,7 +1083,7 @@ echo "${response}" | jq -r '.access_token'
 
 Whatever was researched and learned will all be put together to Escalate from a low privileged Service Account to a privileged Service Account.
 
-To Privilege Escalate via Cloud Function in Google Cloud Platform we'll be taking the path with least permissions required. From what we've seen, the only method that can let us do more with less permission is the Cloud Function API. We'll be calling the Cloud Function API via gRPC from this section on. Since we will be using gRPC it makes proper sense to put [gLess](https://github.com/anrbn/blog/tree/main/tool/gless) into action. 
+To Privilege Escalate via Cloud Function in Google Cloud Platform we'll be taking the path with least permissions required. From what we've seen, the only method that can let us do more with less permission is the Cloud Function API. We'll be calling the Cloud Function API via gRPC from this section on. Since we will be using gRPC it makes proper sense to put [gLess](https://github.com/anrbn/gLess) into action. 
 
 *Scenario: An attacker has gained access to a Service Account key by exploiting a vulnerable CI/CD pipeline or through a successful phishing attack on a developer etc. He logged in with the key using the gcloud CLI and discovered that the service account has limited privileges. From here on out he can Privilege Escalate via various methods, one being Cloud Function. If he chooses to PrivEsc via Cloud Function, he will have two ways to do it.*     
 Either:
@@ -1092,7 +1092,7 @@ Either:
 
 > Note: Why setting an IAM Policy Binding to an already existing function is optional because if a function already exists then chances are it is already invokable by authenticated or non-authenticated principals. The Function could be public which means anyone can access the function. But in some cases the function could be private which means only a certain user, group or service account has access to the function. In that case you'd need to update the IAM Policy Binding to the Cloud Function. 
 
-We'll be using [gLess](https://github.com/anrbn/blog/tree/main/tool/gless) to Deploy, Update, List Details and Set IAM Policy Binding to the Cloud Function using Cloud Function API (gRPC). 
+We'll be using [gLess](https://github.com/anrbn/gLess) to Deploy, Update, List Details and Set IAM Policy Binding to the Cloud Function using Cloud Function API (gRPC). 
   
 If you wish to utilize the REST API for this purpose, then you could use the above curl commands which use REST API or use these set of exceptional [scripts](https://github.com/RhinoSecurityLabs/GCP-IAM-Privilege-Escalation/tree/master/ExploitScripts) developed by Rhino Security Labs which does all of the below actions via REST API.
 
@@ -1139,7 +1139,7 @@ Command:
 py.exe .\main.py --project-id <project-id> --location <region> --function-name <function-name> --gsutil-uri <gsutil-uri> --function-entry-point <entry-point> --service-account <sa-account> --update
 ```
 
-From the listed functions let's go with "function-1". We will update the function to add a new Service Account which has Editor Role in the project. The Function will now be updated, if we are specific then its actually the Service Account being updated.
+From the listed functions let's go with "function-1". We will update the function to add a new Service Account which has Editor Role in the project. The Function will now be updated, if we be specific then its actually just the Function's Service Account being updated.
 
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/38.png">
@@ -1153,7 +1153,7 @@ Command:
 ```powershell
 py.exe .\main.py --project-id <project-id> --location <region> --function-name <function> --setiambinding <principal>
 ```
-We'll set an IAM Binding of Policy { member:"<myserviceaccount>" and role:"Cloud Function Invoker" }  to both the Cloud Functions created and updated.
+We'll set an IAM Binding of Policy { member:"&lt;myserviceaccount>" and role:"Cloud Function Invoker" }  to both the Cloud Functions created and updated.
 
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/41.png">
@@ -1167,7 +1167,7 @@ Finally we can invoke the code and retrieve the *access_token* to use for privil
 
 ### Escalating Privilege to a High Level Service Account
 
-With the access to the *access_token* what can we do? Well, a lot. One being authenticating and accessing various GCP APIs, services and resources, such as Google Cloud Storage, Google Cloud Compute Engine, and Google Kubernetes Engine etc. The gCloud argument --access-token-file let's specify a file which has the *access_token* and then allows you to perform actions and access resources in GCP as the user or service account associated with the token. 
+With the access to the *access_token* what can we do? Well, a lot. One being authenticating and accessing various GCP APIs, services and resources, such as Google Cloud Storage, Google Cloud Compute Engine, and Google Kubernetes Engine etc. The gCloud argument --access-token-file let's us specify a file which has the *access_token* and then allows you to perform actions and access resources in GCP as the user or service account associated with the token. 
 
 Below is a Powershell Command that will put the the *access_token* into a txt file, to be used later with gCloud.
 
@@ -1185,9 +1185,9 @@ gcloud projects list --access-token-file=C:\Users\Administrator\code.txt
 ```
 >You might encounter an error *"ERROR: gcloud crashed (UnicodeDecodeError): 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte"* if you use the above command. This has something to do with the gCloud version in use.
 
-There's another way to make use of *access_token* and that is to download the Service Account Key (Key of the Service Account you just compromised) in JSON format, and then use gCloud to activate the Service Account Key and make requests, access the GCP Resources without any errors. 
+There's another way to make use of *access_token* and that is to download the Service Account Key in JSON format. It could be any Key, Service Account you just compromised or Service Account Key with high privileges. We can then use gCloud to activate the Service Account Key and make requests, access the GCP Resources without any errors. 
 
-[gLess](https://github.com/anrbn/blog/tree/main/tool/gless) communicates to the Identity and Access Management (IAM) API via gRPC and lets you to create and download the Service Account Key in JSON Format. 
+[gLess](https://github.com/anrbn/gLess) communicates to the Identity and Access Management (IAM) API via gRPC and lets you to create and download the Service Account Key in JSON Format. 
 
 Once you've downloaded the JSON Key file for the Service Account you can authenticate and activate it via gCloud. 
 
@@ -1222,28 +1222,29 @@ There's a thing in Detection Engineering, if something doesn't make sense, take 
 
 The Attacker's end result was to Escalate Privileges. So, I took the end result (Privilege Escalation) and started to question my way backwards.
 
-**Question** How did the attacker escalate privileges? Well, he got access to the *access_token* and then used it to escalate privileges. 
-**Question** How did the attacker got access to the *access_token*? He invoked the function and got the *access_token*.
+**Question:** How did the attacker escalate privileges? Well, he got access to the *access_token* and then used it to escalate privileges. 
+
+**Question:** How did the attacker got access to the *access_token*? He invoked the function and got the *access_token*.
 
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/43.png">
 </p>
 
-**Question** How does Invoking a Function get you the *access_token*? Well, there must be something in the Cloud Function that does that.
+**Question:** How does Invoking a Function get you the *access_token*? Well, there must be something in the Cloud Function that does that.
 
 That something is the "Source Code", which prints the access_token. The root cause for the Attacker to successfully Privilege Escalate is the Cloud Function Source Code, which prints the *access_token*.
 
 Once again let's work our way back.
 
-**Question** How does the Source Code in Cloud Function get access to the access_token? It sends HTTP GET request to the Google Compute Engine metadata server to obtain an access token for the default service account of the current instance, which then is returned as the output of the function.
+**Question:** How does the Source Code in Cloud Function get access to the access_token? It sends HTTP GET request to the Metadata server to obtain an access token for the default service account of the current instance, which then is returned as the output of the function.
 
-So a request is being sent to the Google Compute Engine metadata server. Can we detect Cloud Function sending request to the Google Compute Engine metadata server? 
+So a request is being sent to the Google Compute Engine metadata server. Can we detect Cloud Function sending request to the Metadata server? 
 
 Unfortunately no, we can't. From what I've researched, Google doesn't log requests to the metadata server neither VPC Flow Logs nor Google Cloud Audit Logs gives any indication of the Cloud Function sending requests to the Metadata Server. This is a major deficiency in GCP Logging and Monitoring which can be exploited by attackers.
 
 Since, the Source Code in Cloud Function is the root cause for the Privilege Escalation, we can analyze the source code itself to detect the attack. Now back to questions.
 
-**Question** Where does the Source Code reside apart from the Cloud Function? It resides in the Cloud Storage in ZIP Format inside a specific folder structure within the Google Cloud Storage bucket.
+**Question:** Where does the Source Code reside apart from the Cloud Function? It resides in the Cloud Storage in ZIP Format inside a specific folder structure within the Google Cloud Storage bucket.
 
 Function Structure: `gcf-sources-<project_number>-<region>/<function_name>-<unique_identifier>/<version>/function-source.zip`
 
@@ -1289,7 +1290,7 @@ Detection:
 1. One can implement automated tools and processes to identify potentially malicious code or security vulnerabilities in the source code. 
 2. Pattern matching can be used to detect if the code is accessing the metadata server. 
 
-However, a sophisticated attacker may attempt to obfuscate their code to hide any direct reference to the metadata server or use other methods to make it difficult to detect such requests in the source code. There is another technique I've researched **"Cloud Function Source Code Concealment"** , which let's attackers totally hide their malicious code with no artifact left that can point to the Malicious source code ever used. I'll be posting about it soon.
+However, a sophisticated attacker may attempt to obfuscate their code to hide any direct reference to the metadata server or use other methods to make it difficult to detect such requests in the source code. There is another technique I've researched **"Cloud Function Source Code Concealment"** , which let's attackers totally hide their malicious code with no artifact left that can point to the malicious source code. I'll be posting about it soon.
 
 Detecting malicious source code by querying the Google Cloud Storage bucket might not be the most efficient or comprehensive approach, due to Google's Insufficient logging, attackers can leverage this technique and still stay under the radar. I hope Google brings logging any requests sent to the metadata server in the future.
 
