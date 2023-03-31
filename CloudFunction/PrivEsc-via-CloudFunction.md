@@ -2,22 +2,22 @@
 - [Attack](#Attack)
   - [Phase I - Ways to Deploy a Cloud Function in Google Cloud Platform](#phase-i---ways-to-deploy-a-cloud-function-in-gcp)
     - [Ways to upload code in Cloud Function](#ways-to-upload-code-in-cloud-function-in-gcp)
-    - [Permission Required for Deploying a Cloud Function via gCloud](#permission-required-for-deploying-a-cloud-function-via-gcloud)
+    - [APIs and Permissions Required for Deploying a Cloud Function via gCloud](#apis-and-permissions-required-for-deploying-a-cloud-function-via-gcloud)
       - [Deploying a Cloud Function via gCloud](#deploying-a-cloud-function-via-gcloud) 
-    - [Permission Required for Deploying a Cloud Function via  Cloud Function API (gRPC & REST)](#permission-required-for-deploying-a-cloud-function-via-cloud-function-api-grpc--rest)
+    - [APIs and Permissions Required for Deploying a Cloud Function via  Cloud Function API (gRPC & REST)](#apis-and-permissions-required-for-deploying-a-cloud-function-via-cloud-function-api-grpc--rest)
       - [Deploying a Cloud Function via Cloud Function API (gRPC)](#deploying-a-cloud-function-via-cloud-function-api-grpc)
       - [Deploying a Cloud Function via Cloud Function API (REST)](#deploying-a-cloud-function-via-cloud-function-api-rest)
   - [Phase I.I - Ways to Update a Cloud Function in Google Cloud Platform](#phase-ii---ways-to-update-a-cloud-function-in-google-cloud-platform)
     - [Ways to update code in Cloud Function](#ways-to-update-code-in-cloud-function-in-gcp)
-    - [Permission Required for Listing Cloud Functions via gCloud and Cloud Function API (gRPC & REST)](#permission-required-for-listing-cloud-function-information-via-gcloud-and-cloud-function-api-grpc--rest)
+    - [APIs and Permissions Required for Listing Cloud Functions via gCloud and Cloud Function API (gRPC & REST)](#apis-and-permissions-required-for-listing-cloud-function-information-via-gcloud-and-cloud-function-api-grpc--rest)
       - [Listing Cloud Function Information via gCloud and Cloud Function API (gRPC & REST)](#listing-cloud-function-information-via-gcloud-and-cloud-function-api-grpc--rest) 
-    - [Permission Required for Updating a Cloud Function via gCloud](#permission-required-for-updating-a-cloud-function-via-gcloud)
+    - [APIs and Permissions Required for Updating a Cloud Function via gCloud](#apis-and-permissions-required-for-updating-a-cloud-function-via-gcloud)
       - [Updating a Cloud Function via gCloud](#updating-a-cloud-function-via-gcloud) 
-    - [Permission Required for Updating a Cloud Function via Cloud Function API (gRPC & REST)](#permission-required-for-updating-a-cloud-function-via-cloud-function-api-grpc--rest)
+    - [APIs and Permissions Required for Updating a Cloud Function via Cloud Function API (gRPC & REST)](#apis-and-permissions-required-for-updating-a-cloud-function-via-cloud-function-api-grpc--rest)
       - [Updating a Cloud Function via Cloud Function API (gRPC)](#updating-a-cloud-function-via-cloud-function-api-grpc)
       - [Updating a Cloud Function via Cloud Function API (REST)](#updating-a-cloud-function-via-cloud-function-api-rest)
   - [Phase II - Ways to Set IAM Policy Binding to a Cloud Function in Google Cloud Platform](#phase-ii---ways-to-set-iam-policy-binding-to-a-cloud-function-in-google-cloud-platform)
-    - [Permission Required to Set IAM Policy Binding to a Cloud Function](#permission-required-to-set-iam-policy-binding-to-a-cloud-function)
+    - [APIs and Permissions Required to Set IAM Policy Binding to a Cloud Function](#apis-and-permissions-required-to-set-iam-policy-binding-to-a-cloud-function)
       - [Setting IAM Policy Binding to the Cloud Function via gCloud](#setting-iam-policy-binding-to-the-cloud-function-via-gcloud)
       - [Setting IAM Policy Binding to the Cloud Function via Cloud Function API (REST)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-rest)
       - [Setting IAM Policy Binding to the Cloud Function  via Cloud Function API (gRPC)](#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-grpc)
@@ -77,7 +77,7 @@ This above function retrieves the access token of the default Service Account of
 
 >Note: The metadata server is an internal server within the GCP infrastructure. It is used by VMs running on Google Compute Engine and other GCP services to access instance-specific metadata, such as instance attributes, network configurations, and authentication tokens for Google Cloud APIs. The Metadata server can be accessed only internally on the hostname metadata.google.internal (169.254.169.254). It is not accessible from the public internet.
 
-### Permission Required for Deploying a Cloud Function via gCloud
+### APIs and Permissions Required for Deploying a Cloud Function via gCloud
 
 Let's start with the first step of deploying/creating a Cloud Function. As always every action in GCP requires you to have a certain amount of Permissions. 
 #### Here's the list of least number of permissions that's required to "Deploy a Cloud Function via gCloud"
@@ -190,7 +190,7 @@ APIs can be called via gRPC and REST APIs and can make the process much more pre
 
 Let's see how we can do it.
 
-### Permission Required for Deploying a Cloud Function via Cloud Function API (gRPC & REST)
+### APIs and Permissions Required for Deploying a Cloud Function via Cloud Function API (gRPC & REST)
 
 <table>
   <tr>
@@ -382,7 +382,7 @@ If you're updating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
 
 <p><img src="https://github.com/anrbn/blog/blob/main/images/31.jpg"></p>
 
-### Permission Required for Listing Cloud Function Information via gCloud and Cloud Function API (gRPC & REST)
+### APIs and Permissions Required for Listing Cloud Function Information via gCloud and Cloud Function API (gRPC & REST)
 
 <table>
   <tr>
@@ -472,7 +472,7 @@ curl -s -H "Authorization: Bearer " -H "Content-Type: application/json" "https:/
   <img src="https://github.com/anrbn/blog/blob/main/images/35.png">
 </p>
 
-### Permission Required for Updating a Cloud Function via gCloud
+### APIs and Permissions Required for Updating a Cloud Function via gCloud
 
 <table>
   <tr>
@@ -561,7 +561,7 @@ Here's an image to understand it better.
 
 >Note: In case you're wondering why "deploy" argument is being used to update a Cloud Function, it's because there is no update command that updates a Cloud Function. Updation is done via "deploy" argument. Update happens when the function name and region is the same and the user running the command has `cloudfunctions.function.update` permission.   
 
-### Permission Required for Updating a Cloud Function via Cloud Function API (gRPC & REST)
+### APIs and Permissions Required for Updating a Cloud Function via Cloud Function API (gRPC & REST)
 
 <table>
   <tr>
@@ -754,7 +754,7 @@ To set up IAM permissions for your Cloud Function, you can add one or more membe
 Now, there's a special member called `allUsers` that represents anyone on the internet. You can grant the member : `allUsers` the role : `Cloud Function Invoker`. This will allow anyone on the internet to invoke the Cloud Function without requiring authentication. However we'll stick to giving a specific service account the permission `Cloud Function Invoker`. 
 Invoking a Cloud Function using the `allUsers` binding, the function's logs will show the request came from an unauthenticated source, making it suspicious in some cases. On the other hand, if a service account is used, the logs will show request coming from an authorized source, reducing any suspicion.
 
-### Permission Required to Set IAM Policy Binding to a Cloud Function
+### APIs and Permissions Required to Set IAM Policy Binding to a Cloud Function
 
 In order to grant the "Principals" a "Role", the user or service account performing the operation must have the certain permissions as listed in the table below. 
 Here's the list of least number of permissions that's required to give a member or group the role `Cloud Function Invoker` to Invoke a Cloud Function (gCloud & Cloud Function API):
