@@ -43,7 +43,9 @@ There are three ways to deploy a Cloud Function in GCP:
 #### Reason to not use Cloud Console:
 While Cloud Console may seem user-friendly for creating resources in GCP, we won't be using it. The reason being, creating resources in GCP often involves navigating through different pages, each with its own set of permissions. Depending on the user's level of access, they may not be able to view or access certain pages necessary to create a particular resource. It's important to have a number of permissions in place to ensure that a user can perform the actions they need to within the GCP environment. 
 
-Our focus in this blog is on creating a Cloud Function using the least privileges possible. That's also the reason why attackers tend to use the gCloud command and Cloud Function API (via gRPC or REST) to create resources. Furthermore, attackers mainly gain access to a GCP environment using stolen or compromised authentication tokens (auth_tokens). Cloud Console doesn't support authentication via auth_tokens. As a result, attackers may prefer to use the gCloud command or directly call the Cloud Function API via gRPC or REST API to create resources because they offer more flexibility in terms of authentication and control.
+While in case of gCloud or Cloud Function API a user for example, can create a Cloud Function with a narrow set of permissions, which is not possible in case of Cloud Console. Cloud Function API narrows down the permissions even more, and that is a great thing. (See [APIs and Permissions Required for Deploying a Cloud Function via Cloud Function API (gRPC & REST)](#apis-and-permissions-required-for-deploying-a-cloud-function-via-cloud-function-api-grpc--rest) for more details)
+
+Attackers mainly gain access to a GCP environment using stolen or compromised authentication tokens (auth_tokens) or Service Account Keys. Cloud Console doesn't support authentication via auth_tokens neither Service Account Key. As a result, attackers may prefer to use the gCloud command or directly call the Cloud Function API via gRPC or REST API to create resources because they offer more flexibility in terms of authentication and control, and require narrow set of permissions.
 
 ### Ways to upload code in Cloud Function in GCP
 
@@ -79,8 +81,46 @@ This above function retrieves the access token of the default Service Account of
 
 ### APIs and Permissions Required for Deploying a Cloud Function via gCloud
 
-Let's start with the first step of deploying/creating a Cloud Function. As always every action in GCP requires you to have a certain amount of Permissions. 
-#### Here's the list of least number of permissions that's required to "Deploy a Cloud Function via gCloud"
+Let's start with the first step of deploying/creating a Cloud Function. But before that, in GCP there are two steps to perform an action (deploy/update etc) on a service (Cloud Function).
+
+1. Before you interact with a particular service, the corresponding API must be enabled for your project. 
+2. Then, you need to have the required permissions or roles associated with your account to perform specific actions.
+
+**List of APIs that needs to be enabled to "Deploy a Cloud Function via gCloud"**
+<table>
+  <tr>
+    <td>cloudfunctions.googleapis.com (Cloud Functions API)</td>
+  </tr>
+  <tr>
+    <td>cloudbuild.googleapis.com (Cloud Build API)</td>
+  </tr>
+  <tr>
+    <td>cloudresourcemanager.googleapis.com (Cloud Resource Manager API)</td>
+  </tr>
+</table>
+
+When you enable a specific API, it might automatically enable other APIs that the primary API depends on for its functionality. These are called "Dependent APIs."
+
+Dependent API of:
+- cloudfunctions.googleapis.com (Cloud Functions API):
+  - logging.googleapis.com (Cloud Logging API)
+  - pubsub.googleapis.com (Cloud Pub/Sub API)
+  - source.googleapis.com (Legacy Cloud Source Repositories API)
+  - storage-api.googleapis.com (Google Cloud Storage JSON API)
+  - storage-component.googleapis.com (Cloud Storage)
+
+- cloudbuild.googleapis.com (Cloud Build API)
+  - containerregistry.googleapis.com (Container Registry API)
+  - logging.googleapis.com (Cloud Logging API)
+  - pubsub.googleapis.com (Cloud Pub/Sub API)
+  - storage-api.googleapis.com (Google Cloud Storage JSON API)
+
+> Note:
+> 1. Make sure the above APIs are enabled for you to successfully deploy, update and Bind IAM Policy to a Cloud Function via gCloud. 
+> 2. Doesn't matter if you're deploying a Cloud Function from your local machine or from Cloud Storage or Cloud Repository, you need to enable the above APIs.
+> 3. I didn't include any script that programmatically enables any APIs. You'd have to do it manually. However, I did add some checks that checks if you have the required APIs enabled before you proceed to the next step. 
+
+**List of permissions that's required to "Deploy a Cloud Function via gCloud"**
 
 <table>
   <tr>
@@ -138,7 +178,7 @@ Let's start with the first step of deploying/creating a Cloud Function. As alway
   </tr>
 </table>
 
-Here's an image to understand it better.
+#### Here's an image to understand it better.
 
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/8a.jpg">
@@ -173,7 +213,7 @@ Here's the deployment of cloud function via gCloud deploy command in action
   <img src="https://github.com/anrbn/blog/blob/main/images/18.png">
 </p>
 
-Every permission mentioned in the [list](#heres-the-list-of-least-number-of-permissions-thats-required-to-deploy-a-cloud-function-via-gcloud) seems to do something which is quite clear from their name. But here's something I found really strange, why is there a need for  `cloudfunctions.functions.get` permission for creating a Cloud Function? As far as the documentation goes the description for the permission `cloudfunctions.functions.get` says view functions. ([Link](https://cloud.google.com/functions/docs/reference/iam/permissions))
+Every permission mentioned in the [image](#heres-an-image-to-understand-it-better) seems to do something which is quite clear from their name. But here's something I found really strange, why is there a need for  `cloudfunctions.functions.get` permission for creating a Cloud Function? As far as the documentation goes the description for the permission `cloudfunctions.functions.get` says view functions. ([Link](https://cloud.google.com/functions/docs/reference/iam/permissions))
 
 <p>
   <img src="https://github.com/anrbn/blog/blob/main/images/1.JPG">
@@ -191,6 +231,19 @@ APIs can be called via gRPC and REST APIs and can make the process much more pre
 Let's see how we can do it.
 
 ### APIs and Permissions Required for Deploying a Cloud Function via Cloud Function API (gRPC & REST)
+
+**List of APIs that needs to be enabled to "Deploy a Cloud Function via Cloud Function API (gRPC & REST)"**
+
+<table>
+  <tr>
+    <td>cloudfunctions.googleapis.com (Cloud Functions API)</td>
+  </tr>
+  <tr>
+    <td>cloudbuild.googleapis.com (Cloud Build API)</td>
+  </tr>
+</table>
+
+**List of permissions that's required to "Deploy a Cloud Function via Cloud Function API (gRPC & REST)"**
 
 <table>
   <tr>
@@ -384,36 +437,36 @@ If you're updating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
 
 ### APIs and Permissions Required for Listing Cloud Function Information via gCloud and Cloud Function API (gRPC & REST)
 
+**List of APIs that needs to be enabled to "List Cloud Functions via gCloud"**
+
 <table>
   <tr>
-   <td colspan="3" align="center"><strong>Listing Cloud Function Name</strong>
-   </td>
+    <td>cloudfunctions.googleapis.com (Cloud Functions API)</td>
   </tr>
   <tr>
-   <td><strong>via gCloud</strong>
-   </td>
-   <td><strong>via Cloud Function API (gRPC & REST)</strong>
-   </td>
-
+    <td>cloudbuild.googleapis.com (Cloud Build API)</td>
   </tr>
   <tr>
-   <td>cloudfunctions.functions.list
-   </td>
-   <td>cloudfunctions.functions.list
-   </td>
-
-  </tr>
-  <tr>
-   <td>cloudfunctions.locations.list
-   </td>
-   <td>
-   </td>
+    <td>cloudresourcemanager.googleapis.com (Cloud Resource Manager API)</td>
   </tr>
 </table>
 
+**List of APIs that needs to be enabled to "List Cloud Functions via Cloud Function API (gRPC & REST)"**
+
 <table>
   <tr>
-   <td colspan="3" align="center"><strong>Listing Cloud Function Region/Location</strong>
+    <td>cloudfunctions.googleapis.com (Cloud Functions API)</td>
+  </tr>
+  <tr>
+    <td>cloudbuild.googleapis.com (Cloud Build API)</td>
+  </tr>
+</table>
+
+**List of permissions that's required to "List Cloud Functions via gCloud and Cloud Function API (gRPC & REST)"**
+
+<table>
+  <tr>
+   <td colspan="3" align="center"><strong>Listing Cloud Function Details</strong>
    </td>
   </tr>
   <tr>
@@ -426,12 +479,12 @@ If you're updating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
   <tr>
    <td>cloudfunctions.functions.list
    </td>
-   <td>cloudfunctions.locations.list
+   <td>cloudfunctions.functions.list
    </td>
 
   </tr>
   <tr>
-   <td>cloudfunctions.functions.list
+   <td>cloudfunctions.locations.list
    </td>
    <td>
    </td>
@@ -473,6 +526,22 @@ curl -s -H "Authorization: Bearer " -H "Content-Type: application/json" "https:/
 </p>
 
 ### APIs and Permissions Required for Updating a Cloud Function via gCloud
+
+**List of APIs that needs to be enabled to "Update Cloud Functions via gCloud"**
+
+<table>
+  <tr>
+    <td>cloudfunctions.googleapis.com (Cloud Functions API)</td>
+  </tr>
+  <tr>
+    <td>cloudbuild.googleapis.com (Cloud Build API)</td>
+  </tr>
+  <tr>
+    <td>cloudresourcemanager.googleapis.com (Cloud Resource Manager API)</td>
+  </tr>
+</table>
+
+**List of permissions that's required to "Update a Cloud Function via gCloud"**
 
 <table>
   <tr>
@@ -562,6 +631,19 @@ Here's an image to understand it better.
 >Note: In case you're wondering why "deploy" argument is being used to update a Cloud Function, it's because there is no update command that updates a Cloud Function. Updation is done via "deploy" argument. Update happens when the function name and region is the same and the user running the command has `cloudfunctions.function.update` permission.   
 
 ### APIs and Permissions Required for Updating a Cloud Function via Cloud Function API (gRPC & REST)
+
+**List of APIs that needs to be enabled to "Update Cloud Functions via Cloud Function API (gRPC & REST)"**
+
+<table>
+  <tr>
+    <td>cloudfunctions.googleapis.com (Cloud Functions API)</td>
+  </tr>
+  <tr>
+    <td>cloudbuild.googleapis.com (Cloud Build API)</td>
+  </tr>
+</table>
+
+**List of permissions that's required to "Update a Cloud Function via Cloud Function API (gRPC & REST)"**
 
 <table>
   <tr>
@@ -754,14 +836,37 @@ To set up IAM permissions for your Cloud Function, you can add one or more membe
 Now, there's a special member called `allUsers` that represents anyone on the internet. You can grant the member : `allUsers` the role : `Cloud Function Invoker`. This will allow anyone on the internet to invoke the Cloud Function without requiring authentication. However we'll stick to giving a specific service account the permission `Cloud Function Invoker`. 
 Invoking a Cloud Function using the `allUsers` binding, the function's logs will show the request came from an unauthenticated source, making it suspicious in some cases. On the other hand, if a service account is used, the logs will show request coming from an authorized source, reducing any suspicion.
 
-### APIs and Permissions Required to Set IAM Policy Binding to a Cloud Function
+### APIs and Permissions Required to Set IAM Policy Binding to a Cloud Function via gCloud & Cloud Function API
+
+**List of APIs that needs to be enabled to "Bind an IAM Policy to a Cloud Function via gCloud"**
+<table>
+  <tr>
+    <td>cloudfunctions.googleapis.com (Cloud Functions API)</td>
+  </tr>
+  <tr>
+    <td>cloudbuild.googleapis.com (Cloud Build API)</td>
+  </tr>
+  <tr>
+    <td>cloudresourcemanager.googleapis.com (Cloud Resource Manager API)</td>
+  </tr>
+</table>
+
+**List of APIs that needs to be enabled to "Bind an IAM Policy to a Cloud Function via Cloud Function API (gRPC & REST)"**
+<table>
+  <tr>
+    <td>cloudfunctions.googleapis.com (Cloud Functions API)</td>
+  </tr>
+  <tr>
+    <td>cloudbuild.googleapis.com (Cloud Build API)</td>
+  </tr>
+</table>
 
 In order to grant the "Principals" a "Role", the user or service account performing the operation must have the certain permissions as listed in the table below. 
-Here's the list of least number of permissions that's required to give a member or group the role `Cloud Function Invoker` to Invoke a Cloud Function (gCloud & Cloud Function API):
+Here's the list of permissions required to bind an IAM Policy of a certain principal (user/group/allUsers etc) and role `Cloud Function Invoker`:
 
 <table>
   <tr>
-   <td colspan="3" align="center"><strong>Cloud Function Invoke via gCloud</strong></td>
+   <td colspan="3" align="center"><strong>Binding IAM Policy via gCloud</strong></td>
   </tr>
   <td>cloudfunctions.functions.getIamPolicy</td>
   <tr>
@@ -770,7 +875,7 @@ Here's the list of least number of permissions that's required to give a member 
 
 <table style="float: left">
   <tr>
-   <td colspan="3"align="center"><strong>Cloud Function Invoke via Cloud Function API (REST & gRPC)</strong></td>
+   <td colspan="3"align="center"><strong>Binding IAM Policy via Cloud Function API (REST & gRPC)</strong></td>
   </tr>
   <td>cloudfunctions.functions.setIamPolicy</td>
 </table>
