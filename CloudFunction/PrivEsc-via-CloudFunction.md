@@ -252,7 +252,7 @@ Notice how when we use Cloud Function API we don't need any additional permissio
 If you take a look at the image below, it's clear that of the two methods for deploying a Cloud Function (gCloud and Cloud Function API), Cloud Function API's path requires the least amount of permissions and can easily be chosen over any other method. This is another reason why attackers would tend to use this method rather than relying on gCloud.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/19.1.jpg">
+  <img src="https://github.com/anrbn/blog/blob/main/images/19.1a.jpg">
 </p>
 
 Let's call the Cloud Function API using both gRPC and REST to deploy a Cloud Function (Code Upload Source: Cloud Storage). 
@@ -533,7 +533,7 @@ curl -s -H "Authorization: Bearer " -H "Content-Type: application/json" "https:/
 Here's an image to understand it better.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/32.1.jpg">
+  <img src="https://github.com/anrbn/blog/blob/main/images/32.1a.jpg">
 </p>
 
 >Note: If a function already exists then in most cases you won't need to set any IAM Policy Binding to the Cloud Function. Chances are they are already invokable by authenticated or non-authenticated principals. The Function could be public which means anyone can access the function. But in some cases the function could be private which means only a certain user, group or service account has access to the function. In that case you'd need to update the IAM Policy Binding to the Cloud Function.  It is the same command for Setting and Updating the IAM Policy Binding.
@@ -613,7 +613,7 @@ Here's an image to understand it better.
 Here's an image to understand it better.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/33.jpg">
+  <img src="https://github.com/anrbn/blog/blob/main/images/33a.jpg">
 </p>
 
 Let's call the Cloud Function API using both gRPC and REST to update a Cloud Function (Code Upload Source: Cloud Storage). 
@@ -778,7 +778,7 @@ Here's the list of least number of permissions that's required to give a member 
 Here's an image to understand it better.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/10.jpg">
+  <img src="https://github.com/anrbn/blog/blob/main/images/10a.jpg">
 </p>
 
 Once again Cloud Function API (REST & gRPC) stands out as it requires less amount of permission to give a member or group the role `Cloud Function Invoker` to Invoke a Cloud Function. 
@@ -1087,7 +1087,7 @@ Detecting this attack is quite complicated due to lack of Log Sources. Google ha
 Below is an image which lays out every possible path an attacker can take to get access to an *access_token*. 
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/44.jpg">
+  <img src="https://github.com/anrbn/blog/blob/main/images/44a.jpg">
 </p>
 
 > Download the pdf and zoom in to see the details. ([File](https://github.com/anrbn/GCP-Attack-Defense/blob/main/misc/attack-path.pdf))
