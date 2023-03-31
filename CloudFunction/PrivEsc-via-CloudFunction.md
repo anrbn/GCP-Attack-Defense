@@ -99,6 +99,14 @@ Let's start with the first step of deploying/creating a Cloud Function. But befo
   </tr>
 </table>
 
+Command to enable APIs via gCloud:
+
+```powershell
+gcloud services list
+gcloud services enable cloudbuild.googleapis.com
+```
+>You'd need "servicemanagement.services.enable" permission to be able to enable APIs.
+
 When you enable a specific API, it might automatically enable other APIs that the primary API depends on for its functionality. These are called "Dependent APIs."
 
 Dependent API of:
@@ -118,7 +126,7 @@ Dependent API of:
 > Note:
 > 1. Make sure the above APIs are enabled for you to successfully deploy, update and Bind IAM Policy to a Cloud Function via gCloud. 
 > 2. Doesn't matter if you're deploying a Cloud Function from your local machine or from Cloud Storage or Cloud Repository, you need to enable the above APIs.
-> 3. I didn't include any script that programmatically enables any APIs. You'd have to do it manually. However, I did add some checks that checks if you have the required APIs enabled before you proceed to the next step. 
+> 3. I didn't include any script that programmatically enables any APIs, because most of the APIs would already be enabled in an Enterprise Environment. On top of that to enable an API you'd either need "Service Management API" or "Service Usage API" to be enabled, and that is a rabbit hole I dont want to get into. However, I did add some checks that checks if you have the required APIs enabled before you proceed to the next step. 
 
 **List of permissions that's required to "Deploy a Cloud Function via gCloud"**
 
