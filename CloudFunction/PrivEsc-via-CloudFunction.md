@@ -81,7 +81,7 @@ This above function retrieves the access token of the default Service Account of
 
 ### APIs and Permissions Required for Deploying a Cloud Function via gCloud
 
-Let's start with the first step of deploying/creating a Cloud Function. But before that, in GCP there are two steps to perform an action (deploy/update etc) on a service (Cloud Function).
+Let's start with the first step of deploying/creating a Cloud Function. But before that, in GCP there are two steps to perform an action on a service.
 
 1. Before you interact with a particular service, the corresponding API must be enabled for your project. 
 2. Then, you need to have the required permissions or roles associated with your account to perform specific actions.
@@ -105,7 +105,15 @@ Command to enable APIs via gCloud:
 gcloud services list
 gcloud services enable cloudbuild.googleapis.com
 ```
->You'd need "" permission to be able to enable APIs.
+For every action in GCP you'd require permissions, and it is same for above commands as well.
+
+Permissions needed to list enabled APIs
+- serviceusage.services.list
+
+Permissions needed to enable APIs
+- serviceusage.services.enable
+
+You might encounter an error that reads: *Service Usage API has not been used in project <project-number> before or it is disabled*, this means you need to enable the Service Usage API for your project. Although the Service Usage API is enabled by default in most cases, it may be disabled in some scenarios. If Service Usage API is disabled, you'd need project-level permissions, such as roles/owner or roles/editor etc, to enable it. 
 
 When you enable a specific API, it might automatically enable other APIs that the primary API depends on for its functionality. These are called "Dependent APIs."
 
@@ -126,7 +134,6 @@ Dependent API of:
 > Note:
 > 1. Make sure the above APIs are enabled for you to successfully deploy, update and Bind IAM Policy to a Cloud Function via gCloud. 
 > 2. Doesn't matter if you're deploying a Cloud Function from your local machine or from Cloud Storage or Cloud Repository, you need to enable the above APIs.
-> 3. I didn't include any script that programmatically enables any APIs, because most of the APIs would already be enabled in an Enterprise Environment. On top of that to enable an API you'd either need "Service Management API" or "Service Usage API" to be enabled, and that is a rabbit hole I dont want to get into. However, I did add some checks that checks if you have the required APIs enabled before you proceed to the next step. 
 
 **List of permissions that's required to "Deploy a Cloud Function via gCloud"**
 
