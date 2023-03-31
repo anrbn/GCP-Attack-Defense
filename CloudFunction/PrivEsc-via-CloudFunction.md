@@ -141,7 +141,7 @@ Let's start with the first step of deploying/creating a Cloud Function. As alway
 Here's an image to understand it better.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/8.jpg">
+  <img src="https://github.com/anrbn/blog/blob/main/images/8a.jpg">
 </p>
 
 ### Deploying a Cloud Function via gCloud
@@ -242,7 +242,7 @@ Let's see how we can do it.
 Here's an image to understand it better.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/9.jpg">
+  <img src="https://github.com/anrbn/blog/blob/main/images/9a.jpg">
 </p>
   
 >Note: You might need additional permissions to successfully upload code from the two sources: Local Machine and Cloud Repository via Cloud Function API (gRPC & REST).  However, for the Source: Cloud Storage, the permissions listed are the least that's required. Since it's easier to do it via Cloud Storage, why even bother with the other two? :)
