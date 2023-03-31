@@ -113,7 +113,11 @@ Permissions needed to list enabled APIs
 Permissions needed to enable APIs
 - serviceusage.services.enable
 
-You might encounter an error that reads: *Service Usage API has not been used in project <project-number> before or it is disabled*, this means you need to enable the Service Usage API for your project. Although the Service Usage API is enabled by default in most cases, it may be disabled in some scenarios. If Service Usage API is disabled, you'd need project-level permissions, such as roles/owner or roles/editor etc, to enable it. 
+You might encounter an error that reads: *Service Usage API has not been used in project <project-number> before or it is disabled*, this means you need to enable the Service Usage API for your project. Although the Service Usage API is enabled by default in most cases, it may be disabled in some scenarios. If Service Usage API is disabled, you'd need project-level permissions, such as roles/owner or roles/editor etc, to enable it. It's confusing so here's an image that explains it better.
+
+<p>
+  <img src="https://github.com/anrbn/blog/blob/main/images/46.jpg">
+</p>
 
 When you enable a specific API, it might automatically enable other APIs that the primary API depends on for its functionality. These are called "Dependent APIs."
 
