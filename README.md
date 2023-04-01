@@ -27,3 +27,4 @@ If you have any questions regarding any materials in this project, please don't 
 - [ ] Tool/gLess - Code to enable certain API/Services
 - [x] Tool/gLess - Code that removes reliance on any API/Service to check if certain services are enabled.
 - [ ] Research/CloudFunction - How is gCloud with broad roles able to enable services without even enabling Service usage API?
+- [ ] Tool/gLess - Include Support for REST API 
