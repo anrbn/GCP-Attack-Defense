@@ -2,3 +2,6 @@
 	path = tool/gLess
 	url = https://github.com/anrbn/gLess.git
 
+[submodule "gLess"]
+	path = gLess
+	url = https://github.com/anrbn/gLess.git
