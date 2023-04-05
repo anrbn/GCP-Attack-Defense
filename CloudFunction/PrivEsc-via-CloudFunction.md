@@ -59,7 +59,7 @@ There are three different ways to upload the code:
 2. Cloud Storage
 3. Cloud Repository
 
-<p><img src="https://github.com/anrbn/blog/blob/main/images/7.jpg"></p>
+<p><img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/7.jpg"></p>
 
 In our case, since we are using Cloud Function to Privilege Escalate, we will upload a malicious code to the Cloud Function. Here is the code we will be uploading.
 
@@ -116,7 +116,7 @@ Permissions needed to enable APIs
 You might encounter an error that reads: *Service Usage API has not been used in project <project-number> before or it is disabled*, this means you need to enable the Service Usage API for your project. Although the Service Usage API is enabled by default in most cases, it may be disabled in some scenarios. If Service Usage API is disabled, you'd need project-level permissions, such as roles/owner or roles/editor etc, to enable it. It's confusing so here's an image that explains it better.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/46.jpg">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/46.jpg">
 </p>
 
 When you enable a specific API, it might automatically enable other APIs that the primary API depends on for its functionality. These are called "Dependent APIs."
@@ -200,7 +200,7 @@ Dependent API of:
 #### Here's an image to understand it better.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/8b.jpg">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/8b.jpg">
 </p>
 
 ### Deploying a Cloud Function via gCloud
@@ -229,13 +229,13 @@ Dependent API of:
 Here's the deployment of cloud function via gCloud deploy command in action
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/18.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/18.png">
 </p>
 
 Every permission mentioned in the [image](#heres-an-image-to-understand-it-better) seems to do something which is quite clear from their name. But here's something I found really strange, why is there a need for  `cloudfunctions.functions.get` permission for creating a Cloud Function? As far as the documentation goes the description for the permission `cloudfunctions.functions.get` says view functions. ([Link](https://cloud.google.com/functions/docs/reference/iam/permissions))
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/1.JPG">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/1.JPG">
 </p>
 
 Which means `cloudfunctions.functions.get` permission allows a user or service account to view metadata about a Cloud Function, such as its name, runtime, entry point, trigger settings, and other configuration details. What I guess is, it may be a default behavior of gCloud to include this permission when creating a function but it is not necessary for the creation of the function.
@@ -314,7 +314,7 @@ Let's see how we can do it.
 Here's an image to understand it better.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/9b.jpg">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/9b.jpg">
 </p>
   
 >Note: You might need additional permissions to successfully upload code from the two sources: Local Machine and Cloud Repository via Cloud Function API (gRPC & REST).  However, for the Source: Cloud Storage, the permissions listed are the least that's required. Since it's easier to do it via Cloud Storage, why even bother with the other two? :)
@@ -324,7 +324,7 @@ Notice how when we use Cloud Function API we don't need any additional permissio
 If you take a look at the image below, it's clear that of the two methods for deploying a Cloud Function (gCloud and Cloud Function API), Cloud Function API's path requires the least amount of permissions and can easily be chosen over any other method. This is another reason why attackers would tend to use this method rather than relying on gCloud.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/19.1b.jpg">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/19.1b.jpg">
 </p>
 
 Let's call the Cloud Function API using both gRPC and REST to deploy a Cloud Function (Code Upload Source: Cloud Storage). 
@@ -341,7 +341,7 @@ We will be utilizing this [gLess](https://github.com/anrbn/gLess) to accomplish 
 py.exe .\main.py --project-id <project-id> --checkperm
 ```
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/20.1.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/20.1.png">
 </p>
 
 We only have two permissions ( `iam.serviceAccounts.actAs` & `cloudfunctions.functions.create` ) as you can see above, that's enough for us to deploy a Cloud Function. For every action [gLess](https://github.com/anrbn/gLess) communicates to Cloud Function API via gRPC (not REST). For uploading the Source Code to the Cloud Function, Cloud Storage is being used as it takes the least permission.
@@ -351,7 +351,7 @@ Next, we will deploy the function.
 py.exe .\main.py --project-id <project-id> --location <region> --function-name <function-name> --gsutil-uri <gsutil-uri> --function-entry-point <entry-point> --service-account <sa-account> --deploy
 ```
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/22.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/22.png">
 </p>
 
 Even though a warning pops up that "*Permission cloudfunctions.operations.get denied*" the Cloud Function will be successfully created. The warning is likely due to some internal operations being performed by the Cloud Function service during the creation process.  
@@ -375,7 +375,7 @@ curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/js
 ```
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/23.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/23.png">
 </p>
 
 Modify the parameters according to your need.
@@ -428,7 +428,7 @@ Modify the parameters according to your need.
 
 However, invoking the function will lead to the following error: *Your client does not have permission to get URL.* 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/24.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/24.png">
 </p>
 
 Go over to [Phase II](#phase-ii---ways-to-set-iam-policy-binding-to-a-cloud-function-in-google-cloud-platform) to know how to overcome this issue.
@@ -452,7 +452,7 @@ If you're updating a Cloud Function in GCP, you can use **Cloud Console, gCloud 
 2. Cloud Storage
 3. Cloud Repository
 
-<p><img src="https://github.com/anrbn/blog/blob/main/images/31.jpg"></p>
+<p><img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/31.jpg"></p>
 
 ### APIs and Permissions Required for Listing Cloud Function Information via gCloud and Cloud Function API (gRPC & REST)
 
@@ -526,7 +526,7 @@ For listing Cloud Function Information via Cloud Function API (gRPC), we'll be u
 py.exe .\main.py --project-id <project-id> --list
 ```
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/34.1.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/34.1.png">
 </p>
 
 Listing Cloud Function Information via Cloud Function API (REST)
@@ -541,7 +541,7 @@ One Liner:
 curl -s -H "Authorization: Bearer " -H "Content-Type: application/json" "https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/-/functions"
 ```
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/35.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/35.png">
 </p>
 
 ### APIs and Permissions Required for Updating a Cloud Function via gCloud
@@ -621,7 +621,7 @@ curl -s -H "Authorization: Bearer " -H "Content-Type: application/json" "https:/
 Here's an image to understand it better.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/32.1b.jpg">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/32.1b.jpg">
 </p>
 
 >Note: If a function already exists then in most cases you won't need to set any IAM Policy Binding to the Cloud Function. Chances are they are already invokable by authenticated or non-authenticated principals. The Function could be public which means anyone can access the function. But in some cases the function could be private which means only a certain user, group or service account has access to the function. In that case you'd need to update the IAM Policy Binding to the Cloud Function.  It is the same command for Setting and Updating the IAM Policy Binding.
@@ -714,7 +714,7 @@ Here's an image to understand it better.
 Here's an image to understand it better.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/33b.jpg">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/33b.jpg">
 </p>
 
 Let's call the Cloud Function API using both gRPC and REST to update a Cloud Function (Code Upload Source: Cloud Storage). 
@@ -727,7 +727,7 @@ Let's use [gLess](https://github.com/anrbn/gLess) to update a Cloud Function. Bu
 py.exe .\main.py --project-id <project-id> --checkperm
 ```
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/36.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/36.png">
 </p>
 
 We do have the `cloudfunctions.functions.update` & `iam.serviceAccounts.actAs` permission which is enough to update a Cloud Function. However, we have `cloudfunctions.functions.list` permission as well which means we can list Cloud Functions information. Let's do that first.
@@ -737,7 +737,7 @@ Listing Cloud Functions Information.
 py.exe .\main.py --project-id <project-id> --list
 ```
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/37.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/37.png">
 </p>
 Next, we will choose a function to update, I'll be going with "function-1". 
 
@@ -745,7 +745,7 @@ Next, we will choose a function to update, I'll be going with "function-1".
 py.exe .\main.py --project-id <project-id> --location <region> --function-name <function-name> --gsutil-uri <gsutil-uri> --function-entry-point <entry-point> --service-account <sa-account> --update
 ```
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/38.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/38.png">
 </p>
 Cloud Function has been successfully updated.
 
@@ -788,7 +788,7 @@ curl -X PATCH -H "Authorization: Bearer <token>" -H "Content-Type: application/j
 ```
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/39.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/39.png">
 </p>
 
 Modify the parameters according to your need
@@ -841,7 +841,7 @@ Modify the parameters according to your need
 
 For some reason if invoking the function leads to the following error: *Your client does not have permission to get URL.* could mean two things: either the Function is private, which means only specific principals have access to it or the role:"Cloud Function Invoker" is not assigned to anyone. Not a problem because you can update the permission as well or add to it. The next phase walks you through it. 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/24.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/24.png">
 </p>
 
 ## Phase II - Ways to Set IAM Policy Binding to a Cloud Function in Google Cloud Platform
@@ -902,7 +902,7 @@ Here's the list of permissions required to bind an IAM Policy of a certain princ
 Here's an image to understand it better.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/10a.jpg">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/10a.jpg">
 </p>
 
 Once again Cloud Function API (REST & gRPC) stands out as it requires less amount of permission to give a member or group the role `Cloud Function Invoker` to Invoke a Cloud Function. 
@@ -1034,10 +1034,10 @@ py.exe .\main.py --project-id <project-id> --location <region> --function-name <
 py.exe .\main.py --project-id <project-id> --location <region> --function-name <function> --setiambinding allUsers
 ```
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/28.1.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/28.1.png">
 </p>
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/27.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/27.png">
 </p>
 
 ### Invoking the Cloud Function
@@ -1050,7 +1050,7 @@ curl <function-invocation-url>
 ```
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/29.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/29.png">
 </p>
 
 For Authenticated Users (Service Account, Group, User):
@@ -1066,7 +1066,7 @@ $response = Invoke-RestMethod -Method POST -Uri '<function-invocation-url>' -Hea
 Write-Output $response.access_token
 ```
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/30.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/30.png">
 </p>
   
 Use the command below for Unix based OS.
@@ -1121,7 +1121,7 @@ Command:
 py.exe .\main.py --project-id <project-id> --location <region> --function-name <function-name> --gsutil-uri <gsutil-uri> --function-entry-point <entry-point> --service-account <sa-account> --deploy
 ```
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/40.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/40.png">
 </p>
 
 ### Listing the Cloud Functions via Cloud Function API (gRPC)
@@ -1130,7 +1130,7 @@ Command:
 py.exe .\main.py --project-id <project-id> --list
 ```
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/37.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/37.png">
 </p>
 
 ### Updating the Cloud Function via Cloud Function API (gRPC)
@@ -1142,7 +1142,7 @@ py.exe .\main.py --project-id <project-id> --location <region> --function-name <
 From the listed functions let's go with "function-1". We will update the function to add a new Service Account which has Editor Role in the project. The Function will now be updated, if we be specific then its actually just the Function's Service Account being updated.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/38.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/38.png">
 </p>
 
 ### Setting IAM Policy Binding to the Cloud Function via Cloud Function API (gRPC)
@@ -1156,13 +1156,13 @@ py.exe .\main.py --project-id <project-id> --location <region> --function-name <
 We'll set an IAM Binding of Policy { member:"&lt;myserviceaccount>" and role:"Cloud Function Invoker" }  to both the Cloud Functions created and updated.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/41.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/41.png">
 </p>
 
 Finally we can invoke the code and retrieve the *access_token* to use for privilege escalation.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/42.1.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/42.1.png">
 </p>
 
 ### Escalating Privilege to a High Level Service Account
@@ -1197,7 +1197,7 @@ Command to Activate the Service Account via gcloud:
 gcloud auth activate-service-account --key-file="C:/Users/Administrator/Downloads/service_account.json" 
 ```
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/17.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/17.png">
 </p>
 
 After you've activated the Service Account, you can now run commands as the activated service account user. If the Service Account has Editor level permission one can perform a wide range of actions on Google Cloud resources without any restrictions.
@@ -1211,7 +1211,7 @@ Detecting this attack is quite complicated due to lack of Log Sources. Google ha
 Below is an image which lays out every possible path an attacker can take to get access to an *access_token*. 
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/44a.jpg">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/44a.jpg">
 </p>
 
 > Download the pdf and zoom in to see the details. ([File](https://github.com/anrbn/GCP-Attack-Defense/blob/main/misc/attack-path.pdf))
@@ -1227,7 +1227,7 @@ The Attacker's end result was to Escalate Privileges. So, I took the end result 
 **Question:** How did the attacker got access to the *access_token*? He invoked the function and got the *access_token*.
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/43.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/43.png">
 </p>
 
 **Question:** How does Invoking a Function get you the *access_token*? Well, there must be something in the Cloud Function that does that.
@@ -1249,7 +1249,7 @@ Since, the Source Code in Cloud Function is the root cause for the Privilege Esc
 Function Structure: `gcf-sources-<project_number>-<region>/<function_name>-<unique_identifier>/<version>/function-source.zip`
 
 <p>
-  <img src="https://github.com/anrbn/blog/blob/main/images/45.png">
+  <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/45.png">
 </p>
 
 <table>
