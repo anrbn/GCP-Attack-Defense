@@ -914,6 +914,13 @@ Anyways here's the gCloud command that grants `Cloud Function Invoker` role to a
 ```shell
 gcloud functions add-iam-policy-binding <function-name> --region=<region> --member=allUsers --role=roles/cloudfunctions.invoker
 ```
+Above gCloud command grants the principal:"allUsers" the role:"Cloud Function Invoker", it binds the Policy to the resource:"Google Cloud Functions" , allowing all users, even unauthenticated (--member=allUsers) to invoke the specified function (&lt;function-name>) in the specified region (--region=&lt;region>). 
+
+Here's the gCloud command that grants `Cloud Function Invoker` role to a Service Account.
+  
+```shell
+gcloud functions add-iam-policy-binding <function-name> --region=<region> --member="serviceAccount:<service_account>" --role="roles/cloudfunctions.invoker"
+```
 <table>
  <tr>
    <td>&lt;function-name>
@@ -927,10 +934,15 @@ gcloud functions add-iam-policy-binding <function-name> --region=<region> --memb
    <td>The region where the Cloud Function was deployed. For example, "us-central1".
    </td>
   </tr>
+  <tr>
+   <td>&lt;service-account>
+   </td>
+   <td>Service Account you want to grant "Cloud Function Invoker" role to.
+   </td>
+  </tr>
   </table>
-
-Above gCloud command grants the principal:"allUsers" the role:"Cloud Function Invoker", it binds the Policy to the resource:"Google Cloud Functions" , allowing all users, even unauthenticated 
-(--member=allUsers) to invoke the specified function (&lt;function-name>) in the specified region (--region=&lt;region>). gCloud requires you to have both `cloudfunctions.functions.getIamPolicy` & `cloudfunctions.functions.setIamPolicy` permissions to successfully bind an IAM Policy to a function. We can narrow down the permission to just one, using Cloud Function API.
+ 
+gCloud requires you to have both `cloudfunctions.functions.getIamPolicy` & `cloudfunctions.functions.setIamPolicy` permissions to successfully bind an IAM Policy to a function. There is no need for `cloudfunctions.functions.getIamPolicy` permission in setting an IAM Policy, `cloudfunctions.functions.setIamPolicy` is the one that sets it, let's narrow down the permission to just `cloudfunctions.functions.setIamPolicy`, using Cloud Function API.
 
 ### Setting IAM Policy Binding to the Cloud Function via Cloud Function API (REST)
 
@@ -962,7 +974,7 @@ curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/js
 ```
 >Note: You can't input a Service Account in place of allUsers as principal name and expect it to work because in GCP IAM, members are identified using a prefix that specifies the type of the member, such as user: for a Google account, group: for a Google group, or serviceAccount: for a service account. Thus when a specific service account is being added in the policy it should have a prefix "serviceAccount" same goes for user and group.
 
-curl command that binds the policy principal:"<service-account>" and role:"Cloud Function Invoker" to a Cloud Function:
+curl command that binds the policy principal:"&lt;service-account>" and role:"Cloud Function Invoker" to a Cloud Function:
 
 ```shell
 curl -X POST \
