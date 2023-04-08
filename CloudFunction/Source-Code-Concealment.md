@@ -259,6 +259,7 @@ curl -H "my-header: anirban-gcp" https://<your-region>-<your-project-id>.cloudfu
 <p><img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/Source-Code-Concealment/4.png"></p>
 
 Earlier, upon looking the at the Source Code, the **Source Code looked Non-Malicious**. But when we triggered the Cloud Function, the **Malicious Source Code was being executed**.
+
 Now, upon looking the at the Source Code, the **Source Code looks Non-Malicious**. But when we trigger the Cloud Function, the **Non-Malicious Source Code is being executed**.
 
 There is no artifact left of the Malicious Source Code used in the Cloud Function. The Cloud Function Source Code is now properly concealed.
