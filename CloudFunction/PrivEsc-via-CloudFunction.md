@@ -49,7 +49,7 @@ Attackers mainly gain access to a GCP environment using stolen or compromised au
 
 ### Ways to upload code in Cloud Function in GCP
 
-If you're creating a Cloud Function in GCP, you can usee **Cloud Console, gCloud Command, **or** Cloud Function API** to do so. Regardless of the method you choose, you will need to upload the code into the Cloud Function. 
+If you're creating a Cloud Function in GCP, you can use **Cloud Console, gCloud Command, **or** Cloud Function API** to do so. Regardless of the method you choose, you will need to upload the code into the Cloud Function. 
 
 The code uploaded to a cloud function helps define the behavior and functionality of the function. Code can include the logic for processing incoming requests, performing specific tasks, accessing external resources, and returning responses etc. The code is responsible for executing the main function that is triggered when the function is invoked, and it can interact with various services and APIs based on the needs of the function. The Code allows the function to perform a specific action or set of actions in response to an event or request. In short the code is what makes a Cloud Function - "Function". 
 
