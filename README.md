@@ -24,7 +24,8 @@ If you have any questions regarding any materials in this project, please don't 
 ## Todo 
 - [x] Tool/gLess - Code to check if user has permission to create and download "Service Account Key"
 - [x] Research/CloudFunction - Cloud Function - Source Code Concealment
-- [ ] Tool/gLess - Code to enable certain API/Services
 - [x] Tool/gLess - Code that removes reliance on any API/Service to check if certain services are enabled.
-- [ ] Research/CloudFunction - How is gCloud with broad roles able to enable services without even enabling Service usage API?
+- [x] Research/CloudFunction/Source-Code-Concealment - Hiding in Plain Sight: Source Code Concealment in Cloud Functions
+- [ ] Tool/gLess - Code to enable certain API/Services
+- [ ] Research/CloudFunction/PrivEsc-via-CloudFunction - How is gCloud with broad roles able to enable services without even enabling Service usage API?
 - [ ] Tool/gLess - Include Support for REST API 
