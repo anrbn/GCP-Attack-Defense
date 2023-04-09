@@ -531,9 +531,9 @@ py.exe .\main.py --project-id <project-id> --list
 
 Listing Cloud Function Information via Cloud Function API (REST)
 ```shell
-curl --request GET \
-  --header "Authorization: Bearer YOUR_ACCESS_TOKEN" \
-  --header "Content-Type: application/json" \
+curl -X GET \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
   "https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/-/functions"
 ```
 One Liner:
