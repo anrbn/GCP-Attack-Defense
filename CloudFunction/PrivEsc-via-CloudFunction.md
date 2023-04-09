@@ -538,7 +538,7 @@ curl -X GET \
 ```
 One Liner:
 ```shell
-curl -s -H "Authorization: Bearer " -H "Content-Type: application/json" "https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/-/functions"
+curl -s -H "Authorization: Bearer <token>" -H "Content-Type: application/json" "https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/-/functions"
 ```
 <p>
   <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/35.png">
