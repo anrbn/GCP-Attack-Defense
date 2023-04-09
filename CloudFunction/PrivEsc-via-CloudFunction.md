@@ -1226,7 +1226,7 @@ Below is an image which lays out every possible path an attacker can take to get
   <img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/PrivEsc-via-CloudFunction/44a.jpg">
 </p>
 
-> Download the pdf and zoom in to see the details. ([File](https://github.com/anrbn/GCP-Attack-Defense/blob/main/misc/attack-path.pdf))
+> Download the pdf and zoom in to see the details. ([File](https://github.com/anrbn/GCP-Attack-Defense/blob/main/misc/CloudFunction/PrivEsc-via-CloudFunction/attack-path.pdf))
 
 If you look at the image carefully you'd find, from Deploying/Updating to Invoking the Function every action done is normal and can be done by a legitimate user as well. So how do we detect this? 
 
