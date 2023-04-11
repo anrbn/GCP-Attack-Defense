@@ -20,7 +20,7 @@ Cloud Function Source Code Concealment is a technique which enables an attacker 
 
 Here's a high level overview of the Cloud Function Deployment and Updation process.
 
-<p><img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/Source-Code-Concealment/11.jpg"></p> 
+<p><img src="https://drive.google.com/uc?id=1TarBMsPnTokDl2ufd8PR3tf2jjsfCk_o"></p> 
 
 Source Code Concealment targets the Storage Object "function-source.zip" within the Cloud Storage Bucket where the source code is saved following the Function Deployment or Update process. In this attack we remove the malicious zip file from the Cloud Storage Bucket and replace it with a non-malicious zip file. This updates the Cloud Function with Non-malicious code but if we invoke the function endpoint it'll execute the malicious code. (depending on the presence of specific [conditions](#we-will-modify-the-malicious-code-now-to-introduce-the-conditions)). The malicious code once deleted from the Cloud Storage will be completely deleted leaving no artifacts or trace behind.
 
@@ -28,7 +28,7 @@ Source Code Concealment targets the Storage Object "function-source.zip" within 
 
 Here's a high level overview of the Source Code Concealment process.
 
-<p><img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/Source-Code-Concealment/12.jpg"></p> 
+<p><img src="https://drive.google.com/uc?id=1aAQCgvDsXLDkJW_TY12xLwLXCtbWd14j"></p>
 
 If an attacker wants to abuse Cloud Function for malicious purpose be it Privilege Escalation, Persistence, Impact etc. they typically have three primary options to choose from:
 - Deploy a Cloud Function.
@@ -210,15 +210,15 @@ gcloud storage cp <local-path-of-non-malicious-sourcecode> gs://gcf-sources-<pro
 gsutils cp <local-path-of-non-malicious-sourcecode> gs://gcf-sources-<project_number>-<region>/<function_name>-<unique_identifier>/version-1/
 ```
 
-<p><img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/Source-Code-Concealment/1.png"></p> 
+<p><img src="https://drive.google.com/uc?id=1xzQoEFDkcrDgV1DII81hcQH52Oy0hk6X"></p>
 
 Now when the Function is examined the Source Code would look Non-malicious.
 
-<p><img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/Source-Code-Concealment/2.png"></p> 
+<p><img src="https://drive.google.com/uc?id=1FKRS1M8YqT3YdV4VR5AEhAFpyxeE_48n"></p>
 
 Let's invoke the Cloud Function and see which code is being executed.
 
-<p><img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/Source-Code-Concealment/3.png"></p> 
+<p><img src="https://drive.google.com/uc?id=1OAkVb8x-Zq-mD6oe9kZYxRxeN40iQg1j"></p>
 
 Upon looking at the Source Code we can see that the Source Code looks Non-Malicious. But when we invoke the Cloud Function, the Malicious Source Code is being executed. 
 
@@ -304,7 +304,7 @@ Now we can invoke the Function Endpoint and see the output.
 curl -H "my-header: anirban-gcp" https://<your-region>-<your-project-id>.cloudfunctions.net/<function-name>
 ```
 
-<p><img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/Source-Code-Concealment/4a.png"></p>
+<p><img src="https://drive.google.com/uc?id=13RnUXX6jVEjIPju3uZvv5XdK0h3mS7yt"></p>
 
 Notice how the malicious output is being returned only when we use the header "my-header" and header value "anirban-gcp". This is a better approach to conceal the Source Code.
 
@@ -369,7 +369,7 @@ gsutils cp gs://gcf-sources-<project_number>-<region>/<function_name>-<unique_id
 
 > **Note: Do not Delete the Original Source Code, it'll be required later. Please ensure you store a copy of the original code in a separate folder, without modifying it.**
 
-<p><img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/Source-Code-Concealment/5.png"></p>
+<p><img src="https://drive.google.com/uc?id=11Aa-VBRUFrD2DtjU19bDV5s40EVpTzLL"></p>
 
 #### II. Identify the Entry Point of the target function
 
@@ -389,7 +389,7 @@ py.exe .\main.py --project-id <project-id> --list
 curl -s -H "Authorization: Bearer <token>" -H "Content-Type: application/json" "https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/-/functions"
 ```
 
-<p><img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/Source-Code-Concealment/6.png"></p>
+<p><img src="https://drive.google.com/uc?id=1XsPgvvrkRoxgbctSbz0YYBJOt07fUfCW"></p>
 
 #### III. Insert the Malicious code using conditions (if-else)
 
@@ -402,7 +402,7 @@ Insert the malicious code using conditional statements (if-else) in the next lin
     else:
         <put the rest of the original code here>
 ```
-<p><img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/Source-Code-Concealment/7a.png"></p>
+<p><img src="https://drive.google.com/uc?id=1IS2RActgusEsQ-Ftwi8hvFQ2cw5TxSA_"></p>
 
 With the Malicious source code ready, we can now update the Cloud Function. Before you update the Malicious source code, make sure you have a copy of the original Cloud Function code that you're targeting, it'll be required in the next step.
 
@@ -431,7 +431,7 @@ curl https://<your-region>-<your-project-id>.cloudfunctions.net/<function-name>
 curl -H "my-header: wrong-header-value" https://<your-region>-<your-project-id>.cloudfunctions.net/<function-name>
 curl -H "my-header: header-value" https://<your-region>-<your-project-id>.cloudfunctions.net/<function-name>
 ```
-<p><img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/Source-Code-Concealment/8.png"></p>
+<p><img src="https://drive.google.com/uc?id=1Y5QkmxVr2w4eS1Wh4r6n5d54ULcq1xED"></p>
 
 Now we are good to go ahead and Conceal the Source Code of the Cloud Function.
 
@@ -474,14 +474,14 @@ gcloud storage cp <local-path-of-non-malicious-sourcecode> gs://gcf-sources-<pro
 gsutils cp <local-path-of-non-malicious-sourcecode> gs://gcf-sources-<project_number>-<region>/<function_name>-<unique_identifier>/version-1/
 ```
 
-<p><img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/Source-Code-Concealment/9.png"></p> 
+<p><img src="https://drive.google.com/uc?id=1p4KVCV3zhug1Z8FCOi0Pr5nCOmcRvbBo"></p>
 
 Now when the Function is examined the Source Code would look Non-malicious
-<p><img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/Source-Code-Concealment/10.png"></p> 
+<p><img src="https://drive.google.com/uc?id=16c3Zih5wig_Rp6UmW_KmKwvolgVDqBoR"></p>
 
 Let's invoke the Cloud Function and see which code is being executed.
 
-<p><img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/Source-Code-Concealment/8.png"></p> 
+<p><img src="https://drive.google.com/uc?id=1Y5QkmxVr2w4eS1Wh4r6n5d54ULcq1xED"></p>
 
 The Source Code has been successfully Concealed once again. Upon looking at the Source Code we can see that the Source Code looks Non-Malicious. And upon invocation the Non-Malicious Source Code is being executed, but if the correct header and header value is present in the request the Malicious code is executed. This is exactly what we wanted. 
 
@@ -509,6 +509,6 @@ protoPayload.authorizationInfo.permission="storage.objects.create" AND
 protoPayload.authorizationInfo.resource:function-source.zip AND
 NOT protoPayload.authenticationInfo.principalEmail:gcf-admin-robot.iam.gserviceaccount.com
 ```
-
-<p><img src="https://github.com/anrbn/GCP-Attack-Defense/blob/main/images/CloudFunction/Source-Code-Concealment/13.png"></p> 
+ 
+<p><img src="https://drive.google.com/uc?id=14ti24yCTCvAtIfcWIYyXZQRbaEJ6PPZp"></p>
 
