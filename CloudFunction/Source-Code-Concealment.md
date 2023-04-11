@@ -1,4 +1,4 @@
-# Defense Evasion via Source Code Concealment in Cloud Functions
+# Defense Evasion via Source Code Concealment in Cloud Functions - Attack & Detection
 
 - [Attack](#attack)
   - [Way I - Deploy a Cloud Function in Google Cloud Platform](#way-i---deploy-a-cloud-function-in-google-cloud-platform)
