@@ -13,9 +13,6 @@ This project also hopes to aid professionals in further research on Google Cloud
 ## Research
 - [Cloud Function](https://github.com/anrbn/GCP-Attack-Defense/tree/main/CloudFunction)
     - [Privilege Escalation via Cloud Functions](https://github.com/anrbn/GCP-Attack-Defense/blob/main/CloudFunction/PrivEsc-via-CloudFunction.md)
-
-## Upcoming
-- [Cloud Function](https://github.com/anrbn/GCP-Attack-Defense/tree/main/CloudFunction)
     - [Hiding in Plain Sight: Source Code Concealment in Cloud Functions]()
 
 ## Questions and Issues
