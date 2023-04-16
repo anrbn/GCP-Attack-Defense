@@ -1,4 +1,8 @@
-<img src="https://drive.google.com/uc?id=1Wbo_bQY--JQBfhWr4v80CIeWOKgT6TFP">
+<div style="display: inline-flex; align-items: center;">
+    <img src="https://logos-world.net/wp-content/uploads/2021/02/Google-Cloud-Emblem.png" alt="Google Cloud Platform" width="200" height="auto">
+    <h1 style="margin-left: 10px;">Google Cloud Platform - Attack & Defense Research</h1>
+</div>
+
 
 This project is committed to documenting various attack and detection vectors that may be encountered within the Google Cloud Platform (GCP) environment. By cataloging these potential security threats, the project aims to provide well documented research for users to better understand the attack and defense mechanism in Google Cloud. 
 
