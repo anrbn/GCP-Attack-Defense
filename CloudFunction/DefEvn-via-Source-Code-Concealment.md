@@ -485,7 +485,6 @@ Let's invoke the Cloud Function and see which code is being executed.
 
 The Source Code has been successfully Concealed once again. Upon looking at the Source Code we can see that the Source Code looks Non-Malicious. And upon invocation the Non-Malicious Source Code is being executed, but if the correct header and header value is present in the request the Malicious code is executed. This is exactly what we wanted. 
 
-
 >Tip: If you delete the function-source.zip file from Cloud Storage you won't be able to view the Source Code in Cloud Console, but the Cloud Function would work fine.
 
 # Detect
@@ -493,9 +492,9 @@ The Source Code has been successfully Concealed once again. Upon looking at the 
 ### GCF Service Agent
 
 
-As I stated above, "there are no artifacts or traces left behind that could potentially point to the malicious source code ever used". So how do we detect this attack? Well, there is one way.
+As I stated above, "there are no artifacts or traces left behind that could potentially point to the malicious source code ever used". If we can never find out the malicious source code how do we even detect this attack? Answer: via Google Cloud Functions (GCF) Service Agent.
 
-The Service Account `service-PROJECT_NUMBER@gcf-admin-robot.iam.gserviceaccount.com` is a Google Cloud Functions (GCF) Service Agent, which is responsible for administrative tasks related to Google Cloud Functions. These tasks include deploying, updating, deleting, and managing function resources, such as uploading and replacing *function-source.zip* files in Cloud Storage. It is a system-generated service account which is created when you enable the Cloud Functions API in your project, and it is managed internally by Google Cloud. It is automatically assigned the necessary permissions to manage resources associated with Google Cloud Functions within the project.
+The Service Account `service-<project-number>@gcf-admin-robot.iam.gserviceaccount.com` is a Google Cloud Functions (GCF) Service Agent, which is responsible for administrative tasks related to Google Cloud Functions. These tasks include deploying, updating, deleting, and managing function resources, such as uploading and replacing *function-source.zip* files in Cloud Storage. It is a system-generated service account which is created when you enable the Cloud Functions API in your project, and it is managed internally by Google Cloud. It is automatically assigned the necessary permissions to manage resources associated with Google Cloud Functions within the project.
 
 This can be the key factor in detecting the potential "Source Code Concealment" attack. Since the upload and replacement of *function-source.zip* files in Cloud Storage is typically handled by the Google Cloud Functions Service Agent, `service-PROJECT_NUMBER@gcf-admin-robot.iam.gserviceaccount.com`, any actions involving the deletion or replacement of the function-source.zip object in the bucket by an account other than the aforementioned service agent could indicate this attack in play.
 
@@ -512,3 +511,10 @@ NOT protoPayload.authenticationInfo.principalEmail:gcf-admin-robot.iam.gservicea
  
 <p><img src="https://drive.google.com/uc?id=14ti24yCTCvAtIfcWIYyXZQRbaEJ6PPZp"></p>
 
+There is a flag called `--impersonate-service-account` which is used to impersonate a service account when executing the command. This is useful in situations where you want to perform actions on behalf of a service account without directly using the service account's key file. 
+
+```powershell
+gcloud storage cp <local-path-of-non-malicious-sourcecode> gs://gcf-sources-<project_number>-<region>/<function_name>-<unique_identifier>/<updated-version>/ --impersonate-service-account <service-account>
+```
+
+Now one can argue that adversaries can use the `--impersonate-service-account` flag to copy and replace the source code as the Google Cloud Functions (GCF) Service Agent, thus breaking our detection. We'll the answer is they can't. The GCF Service Agent is non-impersonable and if you try to impersonate it, you'll be getting an error.
