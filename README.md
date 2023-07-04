@@ -1,12 +1,12 @@
 <div style="display: inline-flex; align-items: center;">
     <img src="https://logos-world.net/wp-content/uploads/2021/02/Google-Cloud-Emblem.png" alt="Google Cloud Platform" width="200" height="auto">
-    <h1 style="margin-left: 10px;">Google Cloud Platform & Workspace - Attack & Defense Research</h1>
+    <h1 style="margin-left: 10px;">Google Cloud & Workspace - Attack & Defense Research</h1>
 </div>
 
 
-This project is committed to documenting various attack and detection vectors that may be encountered within the Google Cloud Platform (GCP) and Google Workspace. By cataloging these potential security threats, the project aims to provide well documented research for users to better understand the attack and defense mechanism in Google Cloud. 
+This project is committed to documenting various attack and detection vectors that may be encountered within the Google Cloud Platform (GCP) and Google Workspace. By cataloging these potential security threats, the project aims to provide well documented research for users to better understand the attack and defense mechanism in Google Cloud and Workspace. 
 
-This project also hopes to aid professionals in further research on Google Cloud.
+This project also hopes to aid professionals in further research on both Google Cloud and Workspace.
 
 ## Tools
 - [gLess](https://github.com/anrbn/gLess)
