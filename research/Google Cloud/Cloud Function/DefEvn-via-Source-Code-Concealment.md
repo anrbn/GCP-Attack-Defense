@@ -14,7 +14,7 @@
 
 # Attack
 
-Cloud Functions are a prime target for Privilege Escalation which is evidently clear by past research "[Privilege Escalation via Cloud Functions](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google Cloud/Cloud Function/PrivEsc-via-CloudFunction.md)". One way to detect Cloud Function abuse was to download the source code from Cloud Storage, where it is saved following the Function Deployment or Update process and analyzing it. In this post, I will be introducing an interesting technique I came across while researching [Privilege Escalation via Cloud Functions](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google Cloud/Cloud Function/PrivEsc-via-CloudFunction.md) which can disrupt that detection technique and ultimately prevent any alert. I named this technique "Source Code Concealment".
+Cloud Functions are a prime target for Privilege Escalation which is evidently clear by past research "[Privilege Escalation via Cloud Functions](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/PrivEsc-via-CloudFunction.md)". One way to detect Cloud Function abuse was to download the source code from Cloud Storage, where it is saved following the Function Deployment or Update process and analyzing it. In this post, I will be introducing an interesting technique I came across while researching [Privilege Escalation via Cloud Functions](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/PrivEsc-via-CloudFunction.md) which can disrupt that detection technique and ultimately prevent any alert. I named this technique "Source Code Concealment".
 
 Cloud Function Source Code Concealment is a technique which enables an attacker to effectively Conceal or Hide malicious source code in Cloud Function by replacing it with non-malicious code. This technique ensures that no artifacts or traces are left behind that could potentially point to the malicious source code ever used, thus letting the attacker evade any security measures and maintain a stealthy presence within the Google Cloud Environment.
 
@@ -45,9 +45,9 @@ Before you Deploy a Cloud Function make sure you have:
 
 1. The necessary APIs and Permissions required for Deploying a Cloud Function (gCloud or Cloud Function API (gRPC & REST)).
 
-    - [APIs and Permissions required for Deploying Cloud Function via gCloud](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google Cloud/Cloud Function/PrivEsc-via-CloudFunction.md#apis-and-permissions-required-for-deploying-a-cloud-function-via-gcloud)
+    - [APIs and Permissions required for Deploying Cloud Function via gCloud](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/PrivEsc-via-CloudFunction.md#apis-and-permissions-required-for-deploying-a-cloud-function-via-gcloud)
 
-    - [APIs and Permissions required for Deploying Cloud Function via Cloud Function API (gRPC & REST)](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google Cloud/Cloud Function/PrivEsc-via-CloudFunction.md#apis-and-permissions-required-for-deploying-a-cloud-function-via-cloud-function-api-grpc--rest)
+    - [APIs and Permissions required for Deploying Cloud Function via Cloud Function API (gRPC & REST)](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/PrivEsc-via-CloudFunction.md#apis-and-permissions-required-for-deploying-a-cloud-function-via-cloud-function-api-grpc--rest)
 
 2. The Malicious source code and Non-malicious source code in place.
 
@@ -98,17 +98,17 @@ Once you have the gsutil URI of the malicious zip file go ahead Deploy a Functio
 
 ### Deploying and Setting IAM Policy to a Cloud Function via gCloud or Cloud Function API (gRPC & REST)
 
-Command to [Deploy Cloud Function via gCloud](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google Cloud/Cloud Function/PrivEsc-via-CloudFunction.md#deploying-a-cloud-function-via-gcloud):
+Command to [Deploy Cloud Function via gCloud](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/PrivEsc-via-CloudFunction.md#deploying-a-cloud-function-via-gcloud):
 ```powershell
 gcloud functions deploy <function-name> --runtime=python38 --source=<gs-link-of-malicious-sourcecode> --entry-point=<function-entrypoint> --trigger-http --service-account=<service-account-email>
 ```
 
-Command to [Deploy Cloud Function via Cloud Function API (gRPC)](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google Cloud/Cloud Function/PrivEsc-via-CloudFunction.md#deploying-a-cloud-function-via-cloud-function-api-grpc):
+Command to [Deploy Cloud Function via Cloud Function API (gRPC)](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/PrivEsc-via-CloudFunction.md#deploying-a-cloud-function-via-cloud-function-api-grpc):
 ```powershell
 py.exe .\main.py --project-id <project-id> --location <region> --function-name <function-name> --gsutil-uri <gs-link-of-malicious-sourcecode> --function-entry-point <entry-point> --service-account <sa-account> --deploy
 ```
 
-Command to [Deploy Cloud Function via Cloud Function API (REST)](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google Cloud/Cloud Function/PrivEsc-via-CloudFunction.md#deploying-a-cloud-function-via-cloud-function-api-rest):
+Command to [Deploy Cloud Function via Cloud Function API (REST)](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/PrivEsc-via-CloudFunction.md#deploying-a-cloud-function-via-cloud-function-api-rest):
 ```powershell
 curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d "{\"name\":\"projects/<project-id>/locations/<region>/functions/<function-name>\",\"entryPoint\":\"<function-entrypoint>\",\"runtime\":\"python38\",\"serviceAccountEmail\":\"<service-account-email>\",\"sourceArchiveUrl\":\"<gs-link-of-malicious-sourcecode>\",\"httpsTrigger\":{}}" https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions?alt=json
 ```
@@ -116,7 +116,7 @@ curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/js
 #### After Deploying the Function successfully, bind an IAM Policy to the Cloud Function so principals can Invoke it
 
 Command to set an IAM Policy Binding to the Cloud Function via [gCloud](
-https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google Cloud/Cloud Function/PrivEsc-via-CloudFunction.md#setting-iam-policy-binding-to-the-cloud-function-via-gcloud)
+https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/PrivEsc-via-CloudFunction.md#setting-iam-policy-binding-to-the-cloud-function-via-gcloud)
 
 ```powershell
 
@@ -129,7 +129,7 @@ gcloud functions add-iam-policy-binding <function-name> --region=<region> --memb
 ```
 
 Command to set an IAM Policy Binding to the Cloud Function via [Cloud Function API (gRPC)](
-https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google Cloud/Cloud Function/PrivEsc-via-CloudFunction.md#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-grpc)
+https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/PrivEsc-via-CloudFunction.md#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-grpc)
 
 ```powershell
 
@@ -141,7 +141,7 @@ py.exe .\main.py --project-id <project-id> --location <region> --function-name <
 ```
 
 Command to set an IAM Policy Binding to the Cloud Function via [Cloud Function API (REST)](
-https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google Cloud/Cloud Function/PrivEsc-via-CloudFunction.md#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-rest)
+https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/PrivEsc-via-CloudFunction.md#setting-iam-policy-binding-to-the-cloud-function-via-cloud-function-api-rest)
 
 ```powershell
 
@@ -281,22 +281,22 @@ Once again, deploy the Cloud Function but this time with the above modified "Mal
 
 Once you have the gsutil URI of the modified malicious zip file go ahead Deploy a Function via any method (gCloud or Cloud Function API)
 
-Command to [deploy Cloud Function via gCloud](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google Cloud/Cloud Function/PrivEsc-via-CloudFunction.md#deploying-a-cloud-function-via-gcloud):
+Command to [deploy Cloud Function via gCloud](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/PrivEsc-via-CloudFunction.md#deploying-a-cloud-function-via-gcloud):
 ```powershell
 gcloud functions deploy <function-name> --runtime=python38 --source=<gs-link-of-modified-malicious-sourcecode> --entry-point=<function-entrypoint> --trigger-http --service-account=<service-account-email>
 ```
 
-Command to [deploy Cloud Function via Cloud Function API (gRPC)](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google Cloud/Cloud Function/PrivEsc-via-CloudFunction.md#deploying-a-cloud-function-via-cloud-function-api-grpc):
+Command to [deploy Cloud Function via Cloud Function API (gRPC)](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/PrivEsc-via-CloudFunction.md#deploying-a-cloud-function-via-cloud-function-api-grpc):
 ```powershell
 py.exe .\main.py --project-id <project-id> --location <region> --function-name <function-name> --gsutil-uri <gs-link-of-modified-malicious-sourcecode> --function-entry-point <entry-point> --service-account <sa-account> --deploy
 ```
 
-Command to [deploy Cloud Function via Cloud Function API (REST)](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google Cloud/Cloud Function/PrivEsc-via-CloudFunction.md#deploying-a-cloud-function-via-cloud-function-api-rest):
+Command to [deploy Cloud Function via Cloud Function API (REST)](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/PrivEsc-via-CloudFunction.md#deploying-a-cloud-function-via-cloud-function-api-rest):
 ```powershell
 curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d "{\"name\":\"projects/<project-id>/locations/<region>/functions/<function-name>\",\"entryPoint\":\"<function-entrypoint>\",\"runtime\":\"python38\",\"serviceAccountEmail\":\"<service-account-email>\",\"sourceArchiveUrl\":\"<gs-link-of-modified-malicious-sourcecode>\",\"httpsTrigger\":{}}" https://cloudfunctions.googleapis.com/v1/projects/<project-id>/locations/<region>/functions?alt=json
 ```
 
-After Deploying the Function successfully and [Binding an IAM Policy to the Cloud Function](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google Cloud/Cloud Function/PrivEsc-via-CloudFunction.md#phase-ii---ways-to-set-iam-policy-binding-to-a-cloud-function-in-google-cloud-platform) (so principals can Invoke it). Repeat the Step 1, 2 & 3 to [Conceal the Source Code](#concealing-the-source-code-via-gcloud) again. 
+After Deploying the Function successfully and [Binding an IAM Policy to the Cloud Function](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/PrivEsc-via-CloudFunction.md#phase-ii---ways-to-set-iam-policy-binding-to-a-cloud-function-in-google-cloud-platform) (so principals can Invoke it). Repeat the Step 1, 2 & 3 to [Conceal the Source Code](#concealing-the-source-code-via-gcloud) again. 
 
 Now we can invoke the Function Endpoint and see the output.
 
@@ -320,9 +320,9 @@ Before you Update a Cloud Function make sure you have:
 
 1. The necessary APIs and Permissions required for Updating a Cloud Function (gCloud or Cloud Function API (gRPC & REST)).
 
-    - [APIs and Permissions required for Updating a Cloud Function via gCloud](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google Cloud/Cloud Function/PrivEsc-via-CloudFunction.md#apis-and-permissions-required-for-updating-a-cloud-function-via-gcloud)
+    - [APIs and Permissions required for Updating a Cloud Function via gCloud](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/PrivEsc-via-CloudFunction.md#apis-and-permissions-required-for-updating-a-cloud-function-via-gcloud)
 
-    - [APIs and Permissions required for Updating a Cloud Function via Cloud Function API (gRPC & REST)](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google Cloud/Cloud Function/PrivEsc-via-CloudFunction.md#apis-and-permissions-required-for-updating-a-cloud-function-via-cloud-function-api-grpc--rest)
+    - [APIs and Permissions required for Updating a Cloud Function via Cloud Function API (gRPC & REST)](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/PrivEsc-via-CloudFunction.md#apis-and-permissions-required-for-updating-a-cloud-function-via-cloud-function-api-grpc--rest)
 
 2. The Malicious source code and Non-malicious source code in place.
 
