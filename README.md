@@ -11,12 +11,12 @@ This project also hopes to aid professionals in further research on both Google 
 ## Tools
 - [gLess](https://github.com/anrbn/gLess)
 
-## Google Cloud Research
+## Google Cloud (GCP)
 - [Cloud Function](https://github.com/anrbn/GCP-Attack-Defense/tree/main/research/Google%20Cloud/Cloud%20Function)
     - [Privilege Escalation via Cloud Functions (ID: TA0004)](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/PrivEsc-via-CloudFunction.md)
     - [Defense Evasion via Source Code Concealment in Cloud Functions (ID: T1564)](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/DefEvn-via-Source-Code-Concealment.md)
 
-## Google Workspace Research
+## Google Workspace
 - [Apps Script](https://github.com/anrbn/GCP-Attack-Defense/tree/main/research/Google%20Workspace/Apps%20Script)
     - [Persistence via Apps Script (ID: TA0004)](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Workspace/Apps%20Script/Persistence-via-AppsScript.md)
 
