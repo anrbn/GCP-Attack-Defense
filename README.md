@@ -4,7 +4,7 @@
 </div>
 
 
-This project is committed to documenting various attack and detection vectors that may be encountered within the Google Cloud Platform (GCP) and Google Workspace environment. By cataloging these potential security threats, the project aims to provide well documented research for users to better understand the attack and defense mechanism in Google Cloud. 
+This project is committed to documenting various attack and detection vectors that may be encountered within the Google Cloud Platform (GCP) and Google Workspace. By cataloging these potential security threats, the project aims to provide well documented research for users to better understand the attack and defense mechanism in Google Cloud. 
 
 This project also hopes to aid professionals in further research on Google Cloud.
 
