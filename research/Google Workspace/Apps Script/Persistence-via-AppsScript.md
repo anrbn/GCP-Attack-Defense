@@ -14,6 +14,14 @@
 
 # Attack
 
+Google Apps Script is a cloud-based scripting language for light-weight application development in the Google Workspace platform. It provides easy ways to automate tasks across Google products and third-party services. Using Google Apps Script one can automate processes and workflow, integrate with external APIs and data sources, and create functions that can be used within Google Workspace applications like Google Sheets, Google Docs, and Google Forms. It also lets us create custom web apps and publish them to the Google Workspace Marketplace.
+
+Simply, Google Apps Script can be used to:
+- Create custom functions and macros for Google Sheets
+- Send emails and calendar invites
+- Connect to REST APIs and data sources
+- Create user interfaces and dialogs etc.
+
 Cloud Functions are a prime target for Privilege Escalation which is evidently clear by past research "[Privilege Escalation via Cloud Functions](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google Cloud/Cloud Function/PrivEsc-via-CloudFunction.md)". One way to detect Cloud Function abuse was to download the source code from Cloud Storage, where it is saved following the Function Deployment or Update process and analyzing it. In this post, I will be introducing an interesting technique I came across while researching [Privilege Escalation via Cloud Functions](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google Cloud/Cloud Function/PrivEsc-via-CloudFunction.md) which can disrupt that detection technique and ultimately prevent any alert. I named this technique "Source Code Concealment".
 
 Cloud Function Source Code Concealment is a technique which enables an attacker to effectively Conceal or Hide malicious source code in Cloud Function by replacing it with non-malicious code. This technique ensures that no artifacts or traces are left behind that could potentially point to the malicious source code ever used, thus letting the attacker evade any security measures and maintain a stealthy presence within the Google Cloud Environment.
