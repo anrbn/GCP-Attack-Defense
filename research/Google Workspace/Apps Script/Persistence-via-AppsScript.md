@@ -14,6 +14,9 @@
 
 # Attack
 
+https://developers.google.com/apps-script/guides/triggers
+https://developers.google.com/apps-script/reference/script
+
 Google Apps Script is a cloud-based scripting language for light-weight application development in the Google Workspace platform. It provides easy ways to automate tasks across Google products and third-party services. Using Google Apps Script one can automate processes and workflow, integrate with external APIs and data sources, and create functions that can be used within Google Workspace applications like Google Sheets, Google Docs, and Google Forms. It also lets us create custom web apps and publish them to the Google Workspace Marketplace.
 
 Simply, Google Apps Script can be used to:
