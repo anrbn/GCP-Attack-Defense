@@ -22,3 +22,5 @@ https://cloud.google.com/compute/docs/instances/ssh?_ga=2.263044300.-1952421504.
 Here's an Usecase to clear the confusion.
 
 Consider a scenario where a project contains multiple VMs - some for development and testing, while others for production. The development team needs access to all VMs for updates and debugging, so their keys are added to the project metadata. However, a third-party auditor requires access only to a specific production VM to review system logs. In this case, the auditor's key would be added to the instance-specific metadata of that particular VM, ensuring restricted access.
+
+How OS Login comes into the picture? how does it change the SSH key management?
