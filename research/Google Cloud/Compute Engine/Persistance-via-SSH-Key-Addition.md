@@ -1,4 +1,5 @@
 CHECKTHIS
+https://cloud.google.com/compute/docs/instances/ssh?_ga=2.263044300.-1952421504.1688797993
 
 In UNIX-based VMs, one way of maintaining persistent access typically involves logging into the system and manually adding an SSH public key to the "**authorized_keys**" file. This method, while direct, can be somewhat tedious. However, in Google Cloud Platform (GCP) one can add the SSH public key directly to the **Instance Metadata** or in the **Project Metadata**. GCP then automatically updates the authorized_keys file thus simplifying the overall process.
 
@@ -8,21 +9,11 @@ In GCP, Public SSH Keys can be stored at two levels: **Project Metadata** and **
 
 - **Instance Metadata:** Keys stored here are specific to an Individual VM. This allows for more granular control, ensuring that only designated individuals or services can access a particular instance.
 
-What is default GCP Behvaiour in case of 
-- SSH from the Console:
-- SSH from the gCloud:
-
-Take into account Windows
-https://cloud.google.com/compute/docs/instances/ssh?_ga=2.263044300.-1952421504.1688797993
-
 Here's an Usecase to clear the confusion.
 
 Consider a scenario where a project contains multiple VMs - some for development and testing, while others for production. The development team needs access to all VMs for updates and debugging, so their keys are added to the project metadata. However, a third-party auditor requires access only to a specific production VM to review system logs. In this case, the auditor's key would be added to the instance-specific metadata of that particular VM, ensuring restricted access.
 
-How OS Login comes into the picture? how does it change the SSH key management?
-
-
-
+# Login to a VM 
 
 **SSH from the Console:**
 - Key Generation: The Google Cloud Console dynamically generates a temporary key pair for the SSH session.
@@ -54,3 +45,7 @@ How OS Login comes into the picture? how does it change the SSH key management?
     Once a new Public Key is created, it's not appended but overwritten.
   
   - Private Key: Find it on your local machine at ~/.ssh/google_compute_engine (Unix) or C:\Users\<username>\.ssh (Windows).
+
+**SSH from the SSH:**
+
+How OS Login comes into the picture? how does it change the SSH key management?
