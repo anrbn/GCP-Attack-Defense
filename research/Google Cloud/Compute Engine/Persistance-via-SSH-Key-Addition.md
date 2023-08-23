@@ -16,15 +16,19 @@ In GCP, Public SSH Keys can be stored at two levels: **Project Metadata** and **
 # Handling SSH Logins in Compute Engine
 
 **SSH from Google Console:**
-- **Key Generation**: The Google Cloud Console dynamically generates a temporary key pair for the SSH session.
 
-- **Key Validity**: The Public and Private Key are temporary. Once the SSH session ends, browser or the SSH window is closed, the Public Key is removed from the ~/.ssh/authorized_keys file. The Private Key in the browser session is also discarded.
+- **Key Generation**:
+  1. The Google Cloud Console dynamically generates a temporary Private and Public Key
+  2. The Public Key is added to the Instance Metadata if OS Login is enabled at Project Level. Else if OS Login is disabled or Project Metadata (depending on OS Login being Enabled or ) as well as adds the Public Key in ~/.ssh/authorized_keys inside the VM.
+
+- **Key Validity**: The Public and Private Key are temporary. Once the SSH session ends, browser or the SSH window is closed, the Public Key is removed from the ~/.ssh/authorized_keys file from the VM. The Private Key in the browser session is also discarded.
+
+- **Metadata**: If OS Login is disabled, Compute Engine adds the Public Key in the Project Metadata. If OS Login is enabled the Public Key is added in Instance Metadata.
 
 - **Key Location**:
-  - Public Key: Public Key can viewed in ~/.ssh/authorized_keys or by quering the Metadata Server. 
-    ```powershell
-    curl "http://metadata.google.internal/computeMetadata/v1/instance/attributes/ssh-keys" -H "Metadata-Flavor: Google"
-    ```
+
+  - Public Key: ~/.ssh/authorized_keys inside the VM. 
+
   - Private Key: Private Key is not exposed to the user and is kept in the browser's memory for the duration of the SSH session. This is not easily retrievable, as it's stored in the browser session and is discarded after the session ends.
 
 **SSH from gCloud:**
@@ -35,9 +39,9 @@ In GCP, Public SSH Keys can be stored at two levels: **Project Metadata** and **
 
   If either one of Private Key (google_compute_engine) or Public Key (google_compute_engine.pub) don't exist gCloud will create new Private and Public Key.
 
-- **Key Validity**: The Public and Private Key don't have a expiration time. They remain valid until they are explicitly revoked or removed from the authorized_keys file.
+- **Key Validity**: The Public and Private Key don't have a expiration time. They remain valid until they are explicitly revoked or removed from the authorized_keys file inside the VM.
 
-- **Metadata**: If OS Login is disabled, Compute Engine puts the Public Key in the Project Metadata. If OS Login is enabled the Public Key is kept in Instance Metadata.
+- **Metadata**: If OS Login is disabled, Compute Engine adds the Public Key in the Project Metadata. If OS Login is enabled the Public Key is added in Instance Metadata.
 
 - **Key Location**:
 
