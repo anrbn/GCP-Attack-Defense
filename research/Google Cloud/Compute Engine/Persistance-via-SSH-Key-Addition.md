@@ -13,7 +13,7 @@ Here's an Usecase to clear the confusion.
 
 Consider a scenario where a project contains multiple VMs - some for development and testing, while others for production. The development team needs access to all VMs for updates and debugging, so their keys are added to the project metadata. However, a third-party auditor requires access only to a specific production VM to review system logs. In this case, the auditor's key would be added to the instance-specific metadata of that particular VM, ensuring restricted access.
 
-# Login to a VM 
+# How GCP handles different types of SSH Login into a VM 
 
 **SSH from the Console:**
 - Key Generation: The Google Cloud Console dynamically generates a temporary key pair for the SSH session.
@@ -43,9 +43,21 @@ Consider a scenario where a project contains multiple VMs - some for development
   - Public Key: Find it on your local machine at ~/.ssh/google_compute_engine.pub or C:\Users\<username>\.ssh (Windows).
     
     Once a new Public Key is created, it's not appended but overwritten.
-  
+
   - Private Key: Find it on your local machine at ~/.ssh/google_compute_engine (Unix) or C:\Users\<username>\.ssh (Windows).
 
 **SSH from the SSH:**
 
-How OS Login comes into the picture? how does it change the SSH key management?
+# Methods to add SSH Keys for Persisting in VM
+
+- **Method 1. authorized_key**: Adding the Public Keys directly in the ~/.ssh/authorized_key file by logging in to the specific Instance.
+- **Method 2. Project Metadata**: Adding the Public Keys in Project Metadata which will be added to every Instance by GCP.
+- **Method 3. Instance Metadata**: Adding the Public Keys in Instance Metadata which will be added to the specific Instance by GCP.
+
+<IMAGE>
+
+It's worth noting that GCP provides a security feature named "**Block project-wide SSH keys**". When activated for a VM, this feature prevents the automatic import of SSH keys from the Project Metadata, thereby rendering "Method 2" useless. However, if "Block project-wide SSH keys" is enabled/checked, GCP can still import SSH keys from the Instance Metadata and add it in ~/.ssh/authorized_key file.
+
+<IMAGE>
+
+# How OS Login comes into the picture? how does it change the SSH key management?
