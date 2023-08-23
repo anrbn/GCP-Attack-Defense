@@ -1,7 +1,7 @@
 CHECKTHIS
 https://cloud.google.com/compute/docs/instances/ssh?_ga=2.263044300.-1952421504.1688797993
 
-In UNIX-based VMs, one way of maintaining persistent access typically involves logging into the system and manually adding an SSH public key to the "**authorized_keys**" file. This method, while direct, can be somewhat tedious. However, in Google Cloud Platform (GCP) one can add the SSH public key directly to the **Instance Metadata** or in the **Project Metadata**. GCP then automatically updates the authorized_keys file thus simplifying the overall process.
+In UNIX-based VMs, one way of maintaining persistent access typically involves logging into the system and manually adding an SSH public key to the "**authorized_keys**" file. This method, while direct, can be somewhat tedious. However, in Google Cloud Platform (GCP) one can add the SSH public key directly to the **Instance Metadata** or in the **Project Metadata**. Compute Engine then automatically updates the authorized_keys file thus simplifying the overall process.
 
 In GCP, Public SSH Keys can be stored at two levels: **Project Metadata** and **Instance Metadata.**
 
@@ -13,7 +13,7 @@ Here's an Usecase to clear the confusion.
 
 Consider a scenario where a project contains multiple VMs - some for development and testing, while others for production. The development team needs access to all VMs for updates and debugging, so their keys are added to the project metadata. However, a third-party auditor requires access only to a specific production VM to review system logs. In this case, the auditor's key would be added to the instance-specific metadata of that particular VM, ensuring restricted access.
 
-# How GCP handles different types of SSH Login into a VM 
+# How Compute Engine handles different types of SSH Login into a VM 
 
 **SSH from the Console:**
 - Key Generation: The Google Cloud Console dynamically generates a temporary key pair for the SSH session.
@@ -51,12 +51,12 @@ Consider a scenario where a project contains multiple VMs - some for development
 # Methods to add SSH Keys for Persisting in VM
 
 - **Method 1. authorized_key**: Adding the Public Keys directly in the ~/.ssh/authorized_key file by logging in to the specific Instance.
-- **Method 2. Project Metadata**: Adding the Public Keys in Project Metadata which will be added to every Instance by GCP.
-- **Method 3. Instance Metadata**: Adding the Public Keys in Instance Metadata which will be added to the specific Instance by GCP.
+- **Method 2. Project Metadata**: Adding the Public Keys in Project Metadata which will be added to every Instance by Compute Engine.
+- **Method 3. Instance Metadata**: Adding the Public Keys in Instance Metadata which will be added to the specific Instance by Compute Engine.
 
 <IMAGE>
 
-It's worth noting that GCP provides a security feature named "**Block project-wide SSH keys**". When activated for a VM, this feature prevents the automatic import of SSH keys from the Project Metadata, thereby rendering "Method 2" useless. However, if "Block project-wide SSH keys" is enabled/checked, GCP can still import SSH keys from the Instance Metadata and add it in ~/.ssh/authorized_key file.
+It's worth noting that Compute Engine provides a security feature named "**Block project-wide SSH keys**". When activated for a VM, this feature prevents the automatic import of SSH keys from the Project Metadata, thereby rendering "Method 2" useless. However, if "Block project-wide SSH keys" is enabled/checked, Compute Engine can still import SSH keys from the Instance Metadata and add it in ~/.ssh/authorized_key file.
 
 <IMAGE>
 
