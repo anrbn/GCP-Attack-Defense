@@ -1,3 +1,14 @@
+gcloud auth login admin@glaciersprings.net
+ssh-keygen -t rsa -f C:\Users\Administrator\.ssh\my_oslogin_key
+gcloud compute os-login ssh-keys add --key-file C:\Users\Administrator\.ssh\my_oslogin_key.pub
+ssh -i C:\Users\Administrator\.ssh\my_oslogin_key admin_glaciersprings_net@34.170.171.10
+
+gcloud compute os-login describe-profile
+gcloud compute os-login ssh-keys list
+gcloud compute os-login ssh-keys remove --key <fingerprint>
+
+
+
 SSH (Secure Shell) has long been the de facto standard for secure remote access to UNIX-based systems. Traditionally, SSH relies on key-based authentication, where a user's Public Key is stored on the server, and the corresponding Private Key is held by the user. When the user attempts to connect, the server challenges the user to prove they have the corresponding Private Key, ensuring a secure handshake.
 
 However, as cloud computing evolved and infrastructure scaled to unprecedented levels, managing individual SSH keys for each user and each server became a daunting task. The traditional method of manually placing Public keys in the ~/.ssh/authorized_keys file of each server was no longer feasible for large-scale deployments. There was a need for a more scalable, centralized, and automated solution.
