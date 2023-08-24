@@ -130,7 +130,7 @@ https://cloud.google.com/compute/docs/instances/ssh?_ga=2.263044300.-1952421504.
 
 # Persisting in Compute Engine VMs with "Block project-wide SSH keys" configurations 
 
-![2](https://drive.google.com/uc?id=1SwfGq0fzQmTnOJWWimcd06SNIT7YBkTv)
+![2](https://drive.google.com/uc?id=1VFBq2W14XQfuBcP5stQ0KpFMHGh5Uc_3)
 
 ### Method 1: Attacker Logs into the VM directly and adds Public Key(s) to be able to login later or persist.
 
@@ -227,7 +227,7 @@ https://cloud.google.com/compute/docs/instances/ssh?_ga=2.263044300.-1952421504.
 
 # Persisting in Compute Engine VMs with OS Login Enabled
 
-![3](https://drive.google.com/uc?id=1OD8bR-AdPF3RIMv-9J_QSRNUB2VMIC3X)
+![3](https://drive.google.com/uc?id=1BtgN1rPOh9wHA5SU-uFauv6a9NnB1pRi)
 
 # Handling SSH Logins in Compute Engine
 
