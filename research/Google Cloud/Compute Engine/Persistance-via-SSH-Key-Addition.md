@@ -128,7 +128,7 @@ https://cloud.google.com/compute/docs/instances/ssh?_ga=2.263044300.-1952421504.
     
 
 
-# Persisting in Compute Engine VMs with Metadata and "Block project-wide SSH keys" configurations 
+# Persisting in Compute Engine VMs with "Block project-wide SSH keys" configurations 
 
 ![2](https://drive.google.com/uc?id=1SwfGq0fzQmTnOJWWimcd06SNIT7YBkTv)
 
