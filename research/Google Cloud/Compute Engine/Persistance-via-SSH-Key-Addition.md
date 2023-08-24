@@ -146,7 +146,7 @@ https://cloud.google.com/compute/docs/instances/ssh?_ga=2.263044300.-1952421504.
 
     This will generate a Private Key `(~/.ssh/id_rsa)` and a Public Key `(~/.ssh/id_rsa.pub)`.
 
-2. Once inside, the Attacker can append their Public SSH key to the authorized_keys file.
+2. Attacker can append their Public SSH Key to the authorized_keys file.
 
     ```powershell
     echo "PUBLIC_KEY" >> ~/.ssh/authorized_keys
@@ -162,6 +162,8 @@ https://cloud.google.com/compute/docs/instances/ssh?_ga=2.263044300.-1952421504.
 
 - This method is direct and hands-on. The Attacker is manually adding their SSH key to the VM, bypassing GCP's key management mechanisms.
 - The "Block project-wide SSH keys" option have no effect on this method. This is because the Attacker isn't relying on GCP to propagate or manage the SSH key. They're adding it directly to the VM's file system.
+- Evades GCP-level logging associated with key additions, making their actions less visible in the platform's audit trails.
+- Leaves no trace of the added key in either the Instance or Project Metadata,
 
 ### Method 2: Attacker adds the Public Key(s) to the Project Metadata.
 
