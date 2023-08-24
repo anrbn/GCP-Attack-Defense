@@ -97,7 +97,7 @@ If an SSH key pair is not present, generate one using the ssh-keygen command:
 ```powershell
 ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 ```
-This will generate a private key (~/.ssh/id_rsa) and a public key (~/.ssh/id_rsa.pub).
+This will generate a private key `(~/.ssh/id_rsa)` and a public key `(~/.ssh/id_rsa.pub)`.
    
 ### 2. Add the Public Key to GCP:
    
