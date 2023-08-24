@@ -28,11 +28,7 @@ The beauty of OS Login lies in its ability to directly link SSH keys with user o
 
 Below is a attached Image which expalain the overall process discussed above.
 
-<p><img src="https://drive.google.com/uc?id=17zLXP9Y91QunzEBuU6LdNC4o7pMB4Z8k"></p> 
-
-
-
-
+![1](https://drive.google.com/uc?id=17zLXP9Y91QunzEBuU6LdNC4o7pMB4Z8k)
 
 
 CHECKTHIS
