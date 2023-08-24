@@ -46,96 +46,6 @@ Below is a attached Image which expalain the overall process discussed above.
 CHECKTHIS
 https://cloud.google.com/compute/docs/instances/ssh?_ga=2.263044300.-1952421504.1688797993
 
-## Managing SSH keys with OS Login for both User and Service accounts
-
-### User Account:
-
-1. Authenticate with Google Cloud:
-  
-     Use the gcloud auth login command to authenticate your user account.
-    
-    ```powershell
-    gcloud auth login
-    ```
-    
-    This will open a browser window for you to log in with your Google Cloud user account credentials.
-    
-2. Generate SSH Key Pair:
-    
-    Use the ssh-keygen tool to create a new SSH key pair.
-    
-    ```powershell
-    ssh-keygen -t rsa -f ~/.ssh/my_oslogin_key
-    ```
-    
-3. Associate Public Key with Google Cloud User Account:
-    
-    Use the gcloud compute os-login ssh-keys add command to associate the Public Key with your Google Cloud user account.
-    
-    ```powershell
-    gcloud compute os-login ssh-keys add --key-file ~/.ssh/my_oslogin_key.pub
-    ```
-    
-4. View SSH Keys Associated with User Account:
-    
-    Use the gcloud compute os-login describe-profile command to view the SSH keys associated with your user account.
-    
-    ```powershell
-    gcloud compute os-login describe-profile
-    ```
-    
-5. Revoke SSH Key:
-    
-    If you need to revoke an SSH key, you can use the gcloud compute os-login ssh-keys remove command.
-    
-    ```powershell
-    gcloud compute os-login ssh-keys remove --key KEY_TO_REMOVE
-    ```
-
-### Service Account:
-
-1. Authenticate with Google Cloud using Service Account:
-    
-    First, download the JSON key file for your service account from the Google Cloud Console.
-    
-2. Use the gcloud auth activate-service-account command to authenticate using the service account.
-    
-    ```powershell
-    gcloud auth activate-service-account --key-file=PATH_TO_YOUR_SERVICE_ACCOUNT_KEY.json
-    ```
-    
-3. Generate SSH Key Pair:
-    
-    Use the ssh-keygen tool to create a new SSH key pair.
-    
-    ```powershell
-    ssh-keygen -t rsa -f ~/.ssh/my_serviceaccount_oslogin_key
-    ```
-    
-4. Associate Public Key with Service Account:
-    
-    Use the gcloud compute os-login ssh-keys add command to associate the Public Key with the service account. You'll need to impersonate the service account.
-    
-    ```powershell
-    gcloud compute os-login ssh-keys add --key-file ~/.ssh/my_serviceaccount_oslogin_key.pub --impersonate-service-account=SERVICE_ACCOUNT_EMAIL
-    ```
-    
-5. View SSH Keys Associated with Service Account:
-    
-    Use the gcloud compute os-login ssh-keys list command to view the SSH keys associated with the service account.
-    
-    ```powershell
-    gcloud compute os-login ssh-keys list --impersonate-service-account=SERVICE_ACCOUNT_EMAIL
-    ```
-    
-6. Revoke SSH Key:
-    
-    If you need to revoke an SSH key from the service account, you can use the gcloud compute os-login ssh-keys remove command.
-    
-    ```powershell
-    gcloud compute os-login ssh-keys remove --key KEY_TO_REMOVE --impersonate-service-account=SERVICE_ACCOUNT_EMAIL
-    ```
-    Replace SERVICE_ACCOUNT_EMAIL with the email address of your service account and PATH_TO_YOUR_SERVICE_ACCOUNT_KEY.json with the path to your service account's JSON key file in the commands above.
     
 
 
@@ -330,7 +240,7 @@ https://cloud.google.com/compute/docs/instances/ssh?_ga=2.263044300.-1952421504.
     gcloud compute os-login ssh-keys remove --key KEY_TO_REMOVE --impersonate-service-account=SERVICE_ACCOUNT_EMAIL
     ```
     Replace SERVICE_ACCOUNT_EMAIL with the email address of your service account and PATH_TO_YOUR_SERVICE_ACCOUNT_KEY.json with the path to your service account's JSON key file in the commands above.
-    
+
 
 
 
