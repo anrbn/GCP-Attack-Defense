@@ -1,3 +1,22 @@
+<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+
+  * [Metadata: The Centralized Configuration Store](#metadata-the-centralized-configuration-store)
+  * [OS Login - A Modern Approach](#os-login---a-modern-approach)
+- [Persisting in Compute Engine VMs with "Block project-wide SSH keys" configurations ](#persisting-in-compute-engine-vms-with-block-project-wide-ssh-keys-configurations)
+    + [Method 1: Attacker Logs into the VM directly and adds Public Key(s) to be able to login later or persist.](#method-1-attacker-logs-into-the-vm-directly-and-adds-public-keys-to-be-able-to-login-later-or-persist)
+    + [Method 2: Attacker adds the Public Key(s) to the Project Metadata.](#method-2-attacker-adds-the-public-keys-to-the-project-metadata)
+    + [Method 3: Attacker adds the Public Key(s) to the Instance Metadata.](#method-3-attacker-adds-the-public-keys-to-the-instance-metadata)
+- [Persisting in Compute Engine VMs with OS Login Enabled](#persisting-in-compute-engine-vms-with-os-login-enabled)
+    + [Method 1: Attacker Logs into the VM (instance-1) directly via certain means, creates .ssh/authorized_keys file in HOME dir. and adds Public Key(s) to be able to login / persist.](#method-1-attacker-logs-into-the-vm-instance-1-directly-via-certain-means-creates-sshauthorized_keys-file-in-home-dir-and-adds-public-keys-to-be-able-to-login--persist)
+    + [Method 2: Attacker associates the Public Key with Google Cloud User Account.](#method-2-attacker-associates-the-public-key-with-google-cloud-user-account)
+    + [Method 3: Attacker associates the Public Key with Google Cloud Service Account.](#method-3-attacker-associates-the-public-key-with-google-cloud-service-account)
+
+<!-- TOC end -->
+
+
+
+
+
 SSH (Secure Shell) has long been the de facto standard for secure remote access to UNIX-based systems. Traditionally, SSH relies on key-based authentication, where a user's Public Key is stored on the server, and the corresponding Private Key is held by the user. When the user attempts to connect, the server challenges the user to prove they have the corresponding Private Key, ensuring a secure handshake.
 
 However, as cloud computing evolved and infrastructure scaled to unprecedented levels, managing individual SSH keys for each user and each server became a daunting task. The traditional method of manually placing Public keys in the ~/.ssh/authorized_keys file of each server was no longer feasible for large-scale deployments. There was a need for a more scalable, centralized, and automated solution.
