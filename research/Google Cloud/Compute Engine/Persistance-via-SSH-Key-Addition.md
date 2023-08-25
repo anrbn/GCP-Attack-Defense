@@ -1,4 +1,6 @@
-<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+# Persistance via SSH Key Addition (Block Project-wide SSH Keys & OS Login)
+
+<!-- TOC start -->
 
   * [Metadata: The Centralized Configuration Store](#metadata-the-centralized-configuration-store)
   * [OS Login - A Modern Approach](#os-login---a-modern-approach)
