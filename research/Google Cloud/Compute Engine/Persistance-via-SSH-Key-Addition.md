@@ -36,9 +36,17 @@ Below is a attached Image which expalain the overall process discussed above.
 
 ![2](https://drive.google.com/uc?id=1tQlyvvaqqb6gyIm0Ht_7pzFmEQxEVaQ6)
 
-Once the attacker has successfully associated their SSH public key with either a user or service account in GCP, they can use the corresponding Private Key to SSH into the VM from anywhere, without needing to authenticate with GCP again. 
+In the Image above, there are three methods listed attackers can use to Persist in a Environment with "Block Project-wide SSH Keys" Enabled / Disabled. The three methods are discussed in detail below. The goal of all the three methods is to directly or indirectly add the attacker generated Public SSH Key(s) to the ~/.ssh/authorized_keys file in Instance
 
-This is why it's considered a form of persistence; the attacker has essentially created a backdoor for themselves.
+Once the attacker has successfully added the Public SSH Key(s) to the ~/.ssh/authorized_keys file in Instance, they can use the corresponding Private Key to SSH into the VM from anywhere, without needing to authenticate with GCP again. This is why it's considered a form of persistence; the attacker has essentially created a backdoor for themselves.
+
+The attacker can disable "Block Project-wide SSH Key" option but we are avoiding that. This research focuses on operating in an environment with such restrictions enabled.
+
+- Disable "Block Project-wide SSH Key" for a specific instance
+
+    ```powershell
+    gcloud compute instances add-metadata [INSTANCE_NAME] --zone=[ZONE] --metadata=block-project-ssh-keys=FALSE
+    ```
 
 ### Method 1: Attacker Logs into the VM directly and adds Public Key(s) to be able to login later or persist.
 
@@ -140,9 +148,27 @@ This is why it's considered a form of persistence; the attacker has essentially 
 
 ![3](https://drive.google.com/uc?id=1BtgN1rPOh9wHA5SU-uFauv6a9NnB1pRi)
 
-Once the attacker has successfully associated their SSH public key with either a user or service account in GCP, they can use the corresponding Private Key to SSH into the VM from anywhere, without needing to authenticate with GCP again. 
+OS Login provides a more dynamic and secure method of handling SSH access, tying SSH keys directly to user or service accounts in GCP. This integration not only streamlines access management but also adds an additional layer of identity verification to the SSH process.
 
-This is why it's considered a form of persistence; the attacker has essentially created a backdoor for themselves.
+However, like any technology, while it's designed to enhance security, it can also be a double-edged sword. In the hands of a savvy attacker, the very mechanisms that are meant to protect can be leveraged for nefarious purposes. 
+
+In the Image above, there are three methods listed attackers can use to Persist in a Environment with OS Login Enabled. The three methods are discussed in detail below. The goal of all the three methods is to associated a attacker generated Public SSH Key with either a user or service account in GCP
+ 
+Once the attacker has successfully associated their SSH public key with either a user or service account in GCP, they can use the corresponding Private Key to SSH into the VM from anywhere, without needing to authenticate with GCP again. This is why it's considered a form of persistence; the attacker has essentially created a backdoor for themselves. 
+
+The attacker can disable "OS Login" from Project or Instance level by setting the environment variable "_enable-oslogin_" to "_FALSE_" and make their operation way easier to carry out, but we are avoiding that. This research focuses on operating in an environment with such restrictions enabled.
+
+- Disable OS Login at the instance level
+
+    ```powershell
+    gcloud compute instances add-metadata [INSTANCE_NAME] --zone=[ZONE] --metadata=enable-oslogin=FALSE
+    ```
+
+- Disable OS Login at the project level
+
+    ```powershell
+    gcloud compute project-info add-metadata --metadata=enable-oslogin=FALSE
+    ```
 
 ### Method 1: Attacker Logs into the VM (instance-1) directly via certain means, creates .ssh/authorized_keys file in HOME dir. and adds Public Key(s) to be able to login / persist.
 
