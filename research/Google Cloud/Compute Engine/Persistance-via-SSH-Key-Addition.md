@@ -82,9 +82,9 @@ https://cloud.google.com/compute/docs/instances/ssh?_ga=2.263044300.-1952421504.
 **Note:**
 
 - This method is direct and hands-on. The Attacker is manually adding their SSH key to the VM, bypassing GCP's key management mechanisms.
-- The "Block project-wide SSH keys" option have no effect on this method. This is because the Attacker isn't relying on GCP to propagate or manage the SSH key. They're adding it directly to the VM's file system.
+- The "Block project-wide SSH keys" option have no effect on this method. This is because the Attacker isn't relying on GCP to propagate or manage the SSH key. They're adding it directly to the ~/.ssh/authorized_keys file.
 - Evades GCP-level logging associated with key additions, making their actions less visible in the platform's audit trails.
-- Leaves no trace of the added key in either the Instance or Project Metadata,
+- Leaves no trace of the added key in either the Instance or Project Metadata.
 
 ### Method 2: Attacker adds the Public Key(s) to the Project Metadata.
 
@@ -115,6 +115,8 @@ https://cloud.google.com/compute/docs/instances/ssh?_ga=2.263044300.-1952421504.
 **Note:**
 
 - This key will be automatically added to the authorized_keys file of every VM in the project that have the "Block project-wide SSH keys" option disabled.
+- The "Block project-wide SSH keys" option can have effect on this method. If the option is enabled GCP won't propagate the SSH key to the VM's ~/.ssh/authorized_keys file.
+- Key additions in the Project Metadata is logged in the platform's audit trails.
 
 ### Method 3: Attacker adds the Public Key(s) to the Instance Metadata.
 
@@ -144,7 +146,8 @@ https://cloud.google.com/compute/docs/instances/ssh?_ga=2.263044300.-1952421504.
 
 **Note:**
 
-- Regardless of the "Block project-wide SSH keys" setting, the key added to the Instance metadata will be added to the VM's authorized_keys file.
+- The "Block project-wide SSH keys" option doesn't have effect on this method. Regardless of the option enabled or disabled, the key added to the Instance metadata will be added to the VM's ~/.ssh/authorized_keys file.
+- Key additions in the Project Metadata is logged in the platform's audit trails.
 
 # Persisting in Compute Engine VMs with OS Login Enabled
 
