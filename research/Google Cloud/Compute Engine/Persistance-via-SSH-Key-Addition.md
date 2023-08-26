@@ -2,16 +2,18 @@
 
 <!-- TOC start -->
 
-  * [Metadata: The Centralized Configuration Store](#metadata-the-centralized-configuration-store)
-  * [OS Login - A Modern Approach](#os-login---a-modern-approach)
-- [Persisting in Compute Engine VMs: Default & "Block Project-wide SSH Keys"](#persisting-in-compute-engine-vms-default--block-project-wide-ssh-keys)
-    + [Method 1: Attacker Logs into the VM directly and adds Public Key(s) to be able to login later or persist.](#method-1-attacker-logs-into-the-vm-directly-and-adds-public-keys-to-be-able-to-login-later-or-persist)
-    + [Method 2: Attacker adds the Public Key(s) to the Project Metadata.](#method-2-attacker-adds-the-public-keys-to-the-project-metadata)
-    + [Method 3: Attacker adds the Public Key(s) to the Instance Metadata.](#method-3-attacker-adds-the-public-keys-to-the-instance-metadata)
-- [Persisting in Compute Engine VMs: OS Login](#persisting-in-compute-engine-vms-os-login)
-    + [Method 1: Attacker Logs into the VM (instance-1) directly via certain means, creates .ssh/authorized_keys file in HOME dir. and adds Public Key(s) to be able to login / persist.](#method-1-attacker-logs-into-the-vm-instance-1-directly-via-certain-means-creates-sshauthorized_keys-file-in-home-dir-and-adds-public-keys-to-be-able-to-login--persist)
-    + [Method 2: Attacker associates the Public Key with Google Cloud User Account.](#method-2-attacker-associates-the-public-key-with-google-cloud-user-account)
-    + [Method 3: Attacker associates the Public Key with Google Cloud Service Account.](#method-3-attacker-associates-the-public-key-with-google-cloud-service-account)
+- [Metadata: The Centralized Configuration Store](#metadata-the-centralized-configuration-store)
+- [OS Login - A Modern Approach](#os-login---a-modern-approach)
+- [Attack](#attack)
+  - [Persisting in Compute Engine VMs: Default & "Block Project-wide SSH Keys"](#persisting-in-compute-engine-vms-default--block-project-wide-ssh-keys)
+    -  [Method 1: Attacker Logs into the VM directly and adds Public Key(s) to be able to login later or persist.](#method-1-attacker-logs-into-the-vm-directly-and-adds-public-keys-to-be-able-to-login-later-or-persist)
+    -  [Method 2: Attacker adds the Public Key(s) to the Project Metadata.](#method-2-attacker-adds-the-public-keys-to-the-project-metadata)
+    - [Method 3: Attacker adds the Public Key(s) to the Instance Metadata.](#method-3-attacker-adds-the-public-keys-to-the-instance-metadata)
+  - [Persisting in Compute Engine VMs: OS Login](#persisting-in-compute-engine-vms-os-login)
+    - [Method 1: Attacker Logs into the VM (instance-1) directly via certain means, creates .ssh/authorized_keys file in HOME dir. and adds Public Key(s) to be able to login / persist.](#method-1-attacker-logs-into-the-vm-instance-1-directly-via-certain-means-creates-sshauthorized_keys-file-in-home-dir-and-adds-public-keys-to-be-able-to-login--persist)
+    - [Method 2: Attacker associates the Public Key with Google Cloud User Account.](#method-2-attacker-associates-the-public-key-with-google-cloud-user-account)
+    - [Method 3: Attacker associates the Public Key with Google Cloud Service Account.](#method-3-attacker-associates-the-public-key-with-google-cloud-service-account)
+- [Detection](#detection)
 
 <!-- TOC end -->
 
