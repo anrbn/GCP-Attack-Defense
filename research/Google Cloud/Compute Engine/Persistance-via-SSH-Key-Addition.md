@@ -4,11 +4,11 @@
 
   * [Metadata: The Centralized Configuration Store](#metadata-the-centralized-configuration-store)
   * [OS Login - A Modern Approach](#os-login---a-modern-approach)
-- [Persisting in Compute Engine VMs with "Block project-wide SSH keys" configurations ](#persisting-in-compute-engine-vms-with-block-project-wide-ssh-keys-configurations)
+- [Persisting in Compute Engine VMs: Default & "Block Project-wide SSH Keys"](#persisting-in-compute-engine-vms-with-block-project-wide-ssh-keys-configurations)
     + [Method 1: Attacker Logs into the VM directly and adds Public Key(s) to be able to login later or persist.](#method-1-attacker-logs-into-the-vm-directly-and-adds-public-keys-to-be-able-to-login-later-or-persist)
     + [Method 2: Attacker adds the Public Key(s) to the Project Metadata.](#method-2-attacker-adds-the-public-keys-to-the-project-metadata)
     + [Method 3: Attacker adds the Public Key(s) to the Instance Metadata.](#method-3-attacker-adds-the-public-keys-to-the-instance-metadata)
-- [Persisting in Compute Engine VMs with OS Login Enabled](#persisting-in-compute-engine-vms-with-os-login-enabled)
+- [Persisting in Compute Engine VMs: OS Login](#persisting-in-compute-engine-vms-with-os-login-enabled)
     + [Method 1: Attacker Logs into the VM (instance-1) directly via certain means, creates .ssh/authorized_keys file in HOME dir. and adds Public Key(s) to be able to login / persist.](#method-1-attacker-logs-into-the-vm-instance-1-directly-via-certain-means-creates-sshauthorized_keys-file-in-home-dir-and-adds-public-keys-to-be-able-to-login--persist)
     + [Method 2: Attacker associates the Public Key with Google Cloud User Account.](#method-2-attacker-associates-the-public-key-with-google-cloud-user-account)
     + [Method 3: Attacker associates the Public Key with Google Cloud Service Account.](#method-3-attacker-associates-the-public-key-with-google-cloud-service-account)
@@ -53,7 +53,14 @@ Below is a attached Image which expalain the overall process discussed above.
 
 ![1](https://drive.google.com/uc?id=17zLXP9Y91QunzEBuU6LdNC4o7pMB4Z8k)
 
-# Persisting in Compute Engine VMs with "Block project-wide SSH keys" configurations 
+# Attack
+
+When it comes to securing Google Cloud Platform's Compute Engine VM instances, there are two key configurations that often come into play: "Block project-wide SSH keys" and "OS Login." While these settings are designed to enhance security, they can also be exploited if not properly managed. Below it has been explained how the VMs with both these configuration can be abused by attackers. 
+
+1. Persisting in Compute Engine VMs: Default & "Block Project-wide SSH Keys"
+2. Persisting in Compute Engine VMs: OS Login
+
+## Persisting in Compute Engine VMs: Default & "Block Project-wide SSH Keys"
 
 ![2](https://drive.google.com/uc?id=1tQlyvvaqqb6gyIm0Ht_7pzFmEQxEVaQ6)
 
@@ -165,7 +172,7 @@ The attacker can disable "Block Project-wide SSH Key" option but we are avoiding
 - The "Block project-wide SSH keys" option doesn't have effect on this method. Regardless of the option enabled or disabled, the key added to the Instance metadata will be added to the VM's ~/.ssh/authorized_keys file.
 - Key additions in the Project Metadata is logged in the platform's audit trails.
 
-# Persisting in Compute Engine VMs with OS Login Enabled
+## Persisting in Compute Engine VMs: OS Login
 
 ![3](https://drive.google.com/uc?id=1BtgN1rPOh9wHA5SU-uFauv6a9NnB1pRi)
 
@@ -339,3 +346,5 @@ The attacker can disable "OS Login" from Project or Instance level by setting th
 - The key is associated with a specific service account, making it traceable to that identity.
 - If the service account is deleted or its permissions are modified, the attacker might lose access.
 - Service accounts are not meant for direct human access. Associating SSH keys with service accounts is a deviation from best practices and could raise red flags if detected.
+
+# Detection
