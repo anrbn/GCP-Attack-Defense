@@ -14,6 +14,9 @@
     - [Method 2: Attacker associates the Public Key with Google Cloud User Account.](#method-2-attacker-associates-the-public-key-with-google-cloud-user-account)
     - [Method 3: Attacker associates the Public Key with Google Cloud Service Account.](#method-3-attacker-associates-the-public-key-with-google-cloud-service-account)
 - [Detection](#detection)
+  - [Detecting addition / modification in Project-level](#detecting-addition--modification-in-project-level)
+  - [Detecting addition / modification in Instance-level Metadata](#detecting-addition--modification-in-instance-level-metadata)
+  - [Detecting addition / modification in both Project-level and Instance-level Metadata](#detecting-addition--modification-in-both-project-level-and-instance-level-metadata)
 
 <!-- TOC end -->
 
