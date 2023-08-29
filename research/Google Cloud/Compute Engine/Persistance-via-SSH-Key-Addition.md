@@ -349,6 +349,40 @@ The attacker can disable "OS Login" from Project or Instance level by setting th
 
 # Detection
 
+## Detecting addition / modification in Project-level 
+
+The query below is designed to detect changes to SSH keys at the Project-level. It specifically looks for events triggered by the `compute.projects.setCommonInstanceMetadata` API method. Within this method, the query inspects the `addedMetadataKeys` and `modifiedMetadataKeys` fields to check for the term "ssh-keys". If either of these conditions is met, the event will be flagged. This could indicate that SSH keys have been added or modified at the Project-level, which may signify a configuration change or potentially suspicious activity.
+
+```bash
+(
+  protoPayload.methodName:"compute.projects.setCommonInstanceMetadata"
+)
+AND
+(
+  protoPayload.metadata.projectMetadataDelta.addedMetadataKeys:"ssh-keys"
+  OR
+  protoPayload.metadata.projectMetadataDelta.modifiedMetadataKeys:"ssh-keys"
+)
+```
+
+## Detecting addition / modification in Instance-level Metadata
+
+The query below is designed to detect changes to SSH keys at the Instance-level. It focuses on the `compute.instances.setMetadata` API method. Similar to the first query, it examines the `addedMetadataKeys` field for the presence of "ssh-keys". If this condition is met, the event will be flagged, indicating that SSH keys have been added at the Instance-level. This could be a sign of a configuration change or an action that requires further investigation for security reasons.
+
+```bash
+(
+  protoPayload.methodName:"compute.instances.setMetadata"
+)
+AND
+(
+  protoPayload.metadata.instanceMetadataDelta.addedMetadataKeys:"ssh-keys"
+)
+```
+
+## Detecting addition / modification in both Project-level and Instance-level Metadata
+
+Below is a GCP Query one can run in Log Explorer to detect any changes either addition or modification in both Project-level and Instance-level metadata. 
+
 ```bash
 (
   protoPayload.methodName:"compute.projects.setCommonInstanceMetadata"
@@ -364,25 +398,13 @@ AND
   protoPayload.metadata.projectMetadataDelta.modifiedMetadataKeys:"ssh-keys"
 )
 ```
-```bash
-(
-  protoPayload.methodName:"compute.projects.setCommonInstanceMetadata"
-)
-AND
-(
-  protoPayload.metadata.projectMetadataDelta.addedMetadataKeys:"ssh-keys"
-  OR
-  protoPayload.metadata.projectMetadataDelta.modifiedMetadataKeys:"ssh-keys"
-)
-```
-```bash
-(
-  protoPayload.methodName:"compute.instances.setMetadata"
-)
-AND
-(
-  protoPayload.metadata.instanceMetadataDelta.addedMetadataKeys:"ssh-keys"
-)
-```
-`protoPayload.authenticationInfo.serviceAccountDelegationInfo.firstPartyPrincipal.principalEmail`
-`protoPayload.authenticationInfo.principalEmail`
+
+The query focuses on two main API methods: `compute.projects.setCommonInstanceMetadata` for Project-level Metadata changes and `compute.instances.setMetadata` for Instance-level Metadata changes. Within these methods, the query examines the `addedMetadataKeys` and `modifiedMetadataKeys` fields for the presence of "ssh-keys". If any of these conditions are met, the query will flag the event, indicating that SSH keys were either added or modified, which could be a sign of a configuration change or potentially unauthorized activity.
+
+After filtering for changes to SSH keys at either the Project-level or Instance-level using the provided queries, you can further refine your investigation by identifying the responsible entity. To do this, you can look at the `protoPayload.authenticationInfo.serviceAccountDelegationInfo.firstPartyPrincipal.principalEmail` (if it exists) and `protoPayload.authenticationInfo.principalEmail` fields in the log data.
+
+The `protoPayload.authenticationInfo.principalEmail` field will show you the email of the Principal (either a user or a service account) that initiated the API call to add or modify the Project / Instance Metadata. This is useful for directly identifying who made the changes.
+
+If impersonation or delegation is involved, the `protoPayload.authenticationInfo.serviceAccountDelegationInfo.firstPartyPrincipal.principalEmail` field will reveal the email of the first-party principal that has been delegated permissions. This can help you understand if a service account was used to impersonate another entity to make these changes.
+
+By examining these fields, you can gain insights into who made the changes or if a service account was impersonated, which is crucial for security audits and investigations.
