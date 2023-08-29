@@ -350,7 +350,6 @@ The attacker can disable "OS Login" from Project or Instance level by setting th
 # Detection
 
 ```bash
-
 (
   protoPayload.methodName:"compute.projects.setCommonInstanceMetadata"
   OR
@@ -385,3 +384,5 @@ AND
   protoPayload.metadata.instanceMetadataDelta.addedMetadataKeys:"ssh-keys"
 )
 ```
+`protoPayload.authenticationInfo.serviceAccountDelegationInfo.firstPartyPrincipal.principalEmail`
+`protoPayload.authenticationInfo.principalEmail`
