@@ -14,7 +14,7 @@
     - [Method 2: Attacker associates the Public Key with Google Cloud User Account.](#method-2-attacker-associates-the-public-key-with-google-cloud-user-account)
     - [Method 3: Attacker associates the Public Key with Google Cloud Service Account.](#method-3-attacker-associates-the-public-key-with-google-cloud-service-account)
 - [Detection](#detection)
-  - [Detecting addition / modification in Project-level](#detecting-addition--modification-in-project-level)
+  - [Detecting addition / modification in Project-level Metadata](#detecting-addition--modification-in-project-level-metadata)
   - [Detecting addition / modification in Instance-level Metadata](#detecting-addition--modification-in-instance-level-metadata)
   - [Detecting addition / modification in both Project-level and Instance-level Metadata](#detecting-addition--modification-in-both-project-level-and-instance-level-metadata)
 
@@ -352,7 +352,7 @@ The attacker can disable "OS Login" from Project or Instance level by setting th
 
 # Detection
 
-### Detecting addition / modification in Project-level 
+### Detecting addition / modification in Project-level Metadata
 
 The query below is designed to detect changes to SSH keys at the Project-level. It specifically looks for events triggered by the `compute.projects.setCommonInstanceMetadata` API method. Within this method, the query inspects the `addedMetadataKeys` and `modifiedMetadataKeys` fields to check for the term "ssh-keys". If either of these conditions is met, the event will be flagged. This could indicate that SSH keys have been added or modified at the Project-level, which may signify a configuration change or potentially suspicious activity.
 
