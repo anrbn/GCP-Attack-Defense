@@ -349,7 +349,7 @@ The attacker can disable "OS Login" from Project or Instance level by setting th
 
 # Detection
 
-## Detecting addition / modification in Project-level 
+### Detecting addition / modification in Project-level 
 
 The query below is designed to detect changes to SSH keys at the Project-level. It specifically looks for events triggered by the `compute.projects.setCommonInstanceMetadata` API method. Within this method, the query inspects the `addedMetadataKeys` and `modifiedMetadataKeys` fields to check for the term "ssh-keys". If either of these conditions is met, the event will be flagged. This could indicate that SSH keys have been added or modified at the Project-level, which may signify a configuration change or potentially suspicious activity.
 
@@ -365,7 +365,7 @@ AND
 )
 ```
 
-## Detecting addition / modification in Instance-level Metadata
+### Detecting addition / modification in Instance-level Metadata
 
 The query below is designed to detect changes to SSH keys at the Instance-level. It focuses on the `compute.instances.setMetadata` API method. Similar to the first query, it examines the `addedMetadataKeys` field for the presence of "ssh-keys". If this condition is met, the event will be flagged, indicating that SSH keys have been added at the Instance-level. This could be a sign of a configuration change or an action that requires further investigation for security reasons.
 
@@ -379,7 +379,7 @@ AND
 )
 ```
 
-## Detecting addition / modification in both Project-level and Instance-level Metadata
+### Detecting addition / modification in both Project-level and Instance-level Metadata
 
 Below is a GCP Query one can run in Log Explorer to detect any changes either addition or modification in both Project-level and Instance-level metadata. 
 
