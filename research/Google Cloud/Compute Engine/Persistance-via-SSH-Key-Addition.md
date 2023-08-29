@@ -14,7 +14,7 @@
     - [Method 2: Attacker associates the Public Key with Google Cloud User Account.](#method-2-attacker-associates-the-public-key-with-google-cloud-user-account)
     - [Method 3: Attacker associates the Public Key with Google Cloud Service Account.](#method-3-attacker-associates-the-public-key-with-google-cloud-service-account)
 - [Detection](#detection)
-  - [Persisting in Compute Engine VMs: Default & "Block Project-wide SSH Keys"](#detecting-addition--modification-in-project-level-metadata)
+  - [Persisting in Compute Engine VMs: Default & "Block Project-wide SSH Keys"](#persisting-in-compute-engine-vms-default--block-project-wide-ssh-keys-1)
     - [Detecting addition / modification in Project-level Metadata](#detecting-addition--modification-in-project-level-metadata)
     - [Detecting addition / modification in Instance-level Metadata](#detecting-addition--modification-in-instance-level-metadata)
     - [Detecting addition / modification in both Project-level and Instance-level Metadata](#detecting-addition--modification-in-both-project-level-and-instance-level-metadata)
