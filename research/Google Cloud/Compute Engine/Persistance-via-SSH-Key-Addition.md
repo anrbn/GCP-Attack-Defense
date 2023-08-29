@@ -348,3 +348,40 @@ The attacker can disable "OS Login" from Project or Instance level by setting th
 - Service accounts are not meant for direct human access. Associating SSH keys with service accounts is a deviation from best practices and could raise red flags if detected.
 
 # Detection
+
+```bash
+
+(
+  protoPayload.methodName:"compute.projects.setCommonInstanceMetadata"
+  OR
+  protoPayload.methodName:"compute.instances.setMetadata"
+)
+AND
+(
+  protoPayload.metadata.instanceMetadataDelta.addedMetadataKeys:"ssh-keys"
+  OR
+  protoPayload.metadata.projectMetadataDelta.addedMetadataKeys:"ssh-keys"
+  OR
+  protoPayload.metadata.projectMetadataDelta.modifiedMetadataKeys:"ssh-keys"
+)
+```
+```bash
+(
+  protoPayload.methodName:"compute.projects.setCommonInstanceMetadata"
+)
+AND
+(
+  protoPayload.metadata.projectMetadataDelta.addedMetadataKeys:"ssh-keys"
+  OR
+  protoPayload.metadata.projectMetadataDelta.modifiedMetadataKeys:"ssh-keys"
+)
+```
+```bash
+(
+  protoPayload.methodName:"compute.instances.setMetadata"
+)
+AND
+(
+  protoPayload.metadata.instanceMetadataDelta.addedMetadataKeys:"ssh-keys"
+)
+```
