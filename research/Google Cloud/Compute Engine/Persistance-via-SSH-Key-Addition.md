@@ -18,7 +18,7 @@
     - [Detecting addition / modification in Project-level Metadata](#detecting-addition--modification-in-project-level-metadata)
     - [Detecting addition / modification in Instance-level Metadata](#detecting-addition--modification-in-instance-level-metadata)
     - [Detecting addition / modification in both Project-level and Instance-level Metadata](#detecting-addition--modification-in-both-project-level-and-instance-level-metadata)
-  - [Persisting via Direct SSH Key addition in the "authorized_keys" file](#persisting-in-compute-engine-vms-os-login-1)
+  - [Persisting via Direct SSH Key addition in the "authorized_keys" file](#persisting-via-direct-ssh-key-addition-in-the-authorized_keys-file)
   - [Persisting in Compute Engine VMs: OS Login](#persisting-in-compute-engine-vms-os-login-1)
 
 <!-- TOC end -->
