@@ -482,3 +482,9 @@ The `protoPayload.authenticationInfo.principalEmail` field will show you the ema
 If impersonation or delegation is involved, the `protoPayload.authenticationInfo.serviceAccountDelegationInfo.firstPartyPrincipal.principalEmail` field will reveal the email of the first-party principal that has been delegated permissions. This can help you understand if a service account was used to impersonate another entity to make these changes.
 
 By examining these fields, you can gain insights into who made the changes or if a service account was impersonated, which is crucial for security audits and investigations.
+
+## Persisting in Compute Engine VMs: OS Login
+
+One way to detect any Persistence in case of OS Login is to check the part where the Persistance vector is being added, in this case it's the Cloud User / Service Account profile. While GCP does log instances of users logging into a Instances when OS Login is enabled, it does not log the addition of SSH Public Keys to a Cloud User or Service Account profile. 
+
+This lack of logging creates a blind spot for defenders, making it difficult to track who has added an SSH key and potentially leaving the door open for unauthorized access. For attackers, this is a significant advantage, as they can add their SSH keys without triggering any alerts or logs, thereby gaining a stealthy pathway into the system. This is a considerable chokepoint for defenders and something that organizations should be aware of when configuring their GCP security settings.
