@@ -87,7 +87,7 @@ The attacker can disable "Block Project-wide SSH Key" option but we are avoiding
 
 **Steps:**
 
-1. In Attackers machine, the attacker generates SSH Public and Private Key pair with a random email.
+1. In Attackers machine, the attacker generates SSH Public and Private Key pair .
 
     ```powershell
     ssh-keygen -t rsa -C [USERNAME] -b 2048
@@ -120,7 +120,7 @@ The attacker can disable "Block Project-wide SSH Key" option but we are avoiding
 
 **Steps:**
 
-1. In Attackers machine, the attacker generates SSH Public and Private Key pair with a random email.
+1. In Attackers machine, the attacker generates SSH Public and Private Key pair .
 
     ```powershell
     ssh-keygen -t rsa -C [USERNAME] -b 2048
@@ -185,7 +185,7 @@ The attacker can disable "Block Project-wide SSH Key" option but we are avoiding
 
 **Steps:**
 
-1. In Attackers machine, the attacker generates SSH Public and Private Key pair with a random email.
+1. In Attackers machine, the attacker generates SSH Public and Private Key pair .
 
     ```powershell
     ssh-keygen -t rsa -C [USERNAME] -b 2048
@@ -242,7 +242,7 @@ The attacker can disable "OS Login" from Project or Instance level by setting th
 
 **Steps:**
 
-1. Generate SSH Public and Private Key pair with a random email.
+1. Generate SSH Public and Private Key pair .
 
     ```powershell
     ssh-keygen -t rsa -C [USERNAME] -b 2048
