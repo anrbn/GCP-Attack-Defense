@@ -128,11 +128,44 @@ The attacker can disable "Block Project-wide SSH Key" option but we are avoiding
 
     This will generate a Private Key `(~/.ssh/id_rsa)` and a Public Key `(~/.ssh/id_rsa.pub)`.
 
-2. Add the Public SSH key to the Project-wide Metadata.
+2. Add the Public SSH key to the Project-wide Metadata. Adding Public Keys to Project-wide Metadata is not that straight forward, one needs to follow certain steps to upload it. The steps are listed below.
 
-    ```powershell
-    gcloud compute project-info add-metadata --metadata-from-file ssh-keys=~/.ssh/id_rsa.pub
-    ```
+    - Check Existing SSH Keys in Project Metadata
+    
+      Before adding a new SSH key, it's essential to check for existing keys in your project's metadata. If you don't include these existing keys when adding a new one, they will be erased.
+      
+      Run the following command to list existing SSH keys:
+      
+      ```bash
+      gcloud compute project-info describe --format="value(commonInstanceMetadata[items][ssh-keys])"
+      ```
+      
+      Copy the output and save it into a text file, let's call it `sshkeys.txt`.
+    
+    - Generate a New SSH Key Pair
+          
+      ```bash
+      ssh-keygen -t rsa -C [USERNAME] -b 2048
+      ```
+      This will generate a new SSH key, saving it in the `.ssh/id_rsa` file within the user directory.
+    
+    - Append the New SSH Key to `sshkeys.txt`
+    
+      Open the newly generated public key file, usually located at `~/.ssh/id_rsa.pub`, and copy its contents.
+      
+      Open `sshkeys.txt` and append the new key at the end of the file in the following format:
+      
+      ```bash
+      [USERNAME]:<copied_public_key>
+      ```
+    
+    - Update Project Metadata with New SSH Keys
+    
+      Now that `sshkeys.txt` contains all the SSH keys (both existing and new), thge Project's Metadata can now be updated.
+      
+      ```bash
+      gcloud compute project-info add-metadata --metadata-from-file ssh-keys=sshkeys.txt
+      ```
 
 3. The Attacker can now login to the Instance without needing to authenticate to GCP or have access to a valid User / Service Account..
 
