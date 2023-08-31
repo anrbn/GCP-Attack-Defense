@@ -18,6 +18,7 @@
     - [Detecting addition / modification in Project-level Metadata](#detecting-addition--modification-in-project-level-metadata)
     - [Detecting addition / modification in Instance-level Metadata](#detecting-addition--modification-in-instance-level-metadata)
     - [Detecting addition / modification in both Project-level and Instance-level Metadata](#detecting-addition--modification-in-both-project-level-and-instance-level-metadata)
+  - [Persisting via Direct SSH Key addition in the "authorized_keys" file](#persisting-in-compute-engine-vms-os-login-1)
   - [Persisting in Compute Engine VMs: OS Login](#persisting-in-compute-engine-vms-os-login-1)
 
 <!-- TOC end -->
@@ -482,6 +483,10 @@ The `protoPayload.authenticationInfo.principalEmail` field will show you the ema
 If impersonation or delegation is involved, the `protoPayload.authenticationInfo.serviceAccountDelegationInfo.firstPartyPrincipal.principalEmail` field will reveal the email of the first-party principal that has been delegated permissions. This can help you understand if a service account was used to impersonate another entity to make these changes.
 
 By examining these fields, you can gain insights into who made the changes or if a service account was impersonated, which is crucial for security audits and investigations.
+
+## Persisting via Direct SSH Key addition in the "authorized_keys" file
+
+GCP doesn't log system-level changes or modifications like adding a Public SSH Key to the `~/.ssh/authorized_keys` file. However, this gap can be mitigated by using third-party logging agents that can capture system-level changes.
 
 ## Persisting in Compute Engine VMs: OS Login
 
