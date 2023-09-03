@@ -20,7 +20,7 @@
     - [Detecting addition / modification in both Project-level and Instance-level Metadata](#detecting-addition--modification-in-both-project-level-and-instance-level-metadata)
   - [Persisting via Direct SSH Key addition in the "authorized_keys" file](#persisting-via-direct-ssh-key-addition-in-the-authorized_keys-file)
   - [Persisting in Compute Engine VMs: OS Login](#persisting-in-compute-engine-vms-os-login-1)
-- [GATOR - How can it help?](#detection)
+- [GATOR - How can it help?](#gator---how-can-it-help)
 <!-- TOC end -->
 
 #
