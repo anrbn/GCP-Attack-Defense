@@ -20,7 +20,7 @@
     - [Detecting addition / modification in both Project-level and Instance-level Metadata](#detecting-addition--modification-in-both-project-level-and-instance-level-metadata)
   - [Persisting via Direct SSH Key addition in the "authorized_keys" file](#persisting-via-direct-ssh-key-addition-in-the-authorized_keys-file)
   - [Persisting in Compute Engine VMs: OS Login](#persisting-in-compute-engine-vms-os-login-1)
-
+- [GATOR - How can it help?](#detection)
 <!-- TOC end -->
 
 #
@@ -494,8 +494,30 @@ One way to detect any Persistence in case of OS Login is to check the part where
 
 This lack of logging creates a blind spot for defenders, making it difficult to track who has added an SSH key and potentially leaving the door open for unauthorized access. For attackers, this is a significant advantage, as they can add their SSH keys without triggering any alerts or logs, thereby gaining a stealthy pathway into the system. This is a considerable chokepoint for defenders and something that organizations should be aware of when configuring their GCP security settings.
 
+# GATOR - How can it help?
+
+GATOR can help by automating various steps discussed above. It can detect whether OS Login is Enabled or Disabled at either Instance or Project Level and Project-wide SSH Key is Enabled or Disabled at Instance Level and can take the steps accordingly.
+
+### OS Login - Associating the Public Key with Google Cloud User Account
+
+If OS Login is enabled, GATOR can exploit this feature to add SSH public keys directly to User Account profile depending on the user authenticated as.
 
 ![4](https://drive.google.com/uc?id=1ewi92Qv1ms_jHfttbozCSho2fpyAC5br)
+
+### OS Login - Associates the Public Key with Google Cloud Service Account
+
+If OS Login is enabled, GATOR can exploit this feature to add SSH public keys directly to Service Account profiles as well depending on the user authenticated as.
+
 ![5](https://drive.google.com/uc?id=1TYjlF6s5tf5VGONkmfDe5Cb2c79SpC3V)
+
+### Block Project-wide SSH Keys Enabled
+
+GATOR can identify if Project-wide SSH keys are enabled. In such cases, it can conveniently add public keys at the Instance level.
+
 ![6](https://drive.google.com/uc?id=1_QbVB_fCAzd3Hr710fGSZYd2-NTXetg_)
+
+### Block Project-wide SSH Keys Disabled
+
+GATOR can identify if Project-wide SSH keys are disabled. In such cases, it can conveniently add public keys at both Project and Instance level.
+
 ![7](https://drive.google.com/uc?id=1DJQXK9CZ7bQtLZCXprjPHrb6hpEDZMYT)
