@@ -25,12 +25,6 @@
 
 #
 
-> [!NOTE]
-> - This method is direct and hands-on. The Attacker is manually adding their SSH key to the VM, bypassing GCP's key management mechanisms.
-> - The "Block project-wide SSH keys" option have no effect on this method. This is because the Attacker isn't relying on GCP to propagate or manage the SSH key. They're adding it directly to the ~/.ssh/authorized_keys file.
-> - Evades GCP-level logging associated with key additions, making their actions less visible in the platform's audit trails.
-> - Leaves no trace of the added key in either the Instance or Project Metadata.
-
 SSH (Secure Shell) has long been the de facto standard for secure remote access to UNIX-based systems. Traditionally, SSH relies on key-based authentication, where a user's Public Key is stored on the server, and the corresponding Private Key is held by the user. When the user attempts to connect, the server challenges the user to prove they have the corresponding Private Key, ensuring a secure handshake.
 
 However, as cloud computing evolved and infrastructure scaled to unprecedented levels, managing individual SSH keys for each user and each server became a daunting task. The traditional method of manually placing Public keys in the ~/.ssh/authorized_keys file of each server was no longer feasible for large-scale deployments. There was a need for a more scalable, centralized, and automated solution.
@@ -114,12 +108,11 @@ The attacker can disable "Block Project-wide SSH Key" option but we are avoiding
     ssh -i ~/.ssh/id_rsa [USERNAME]@[EXTERNAL_IP]
     ```
 
-**Note:**
-
-- This method is direct and hands-on. The Attacker is manually adding their SSH key to the VM, bypassing GCP's key management mechanisms.
-- The "Block project-wide SSH keys" option have no effect on this method. This is because the Attacker isn't relying on GCP to propagate or manage the SSH key. They're adding it directly to the ~/.ssh/authorized_keys file.
-- Evades GCP-level logging associated with key additions, making their actions less visible in the platform's audit trails.
-- Leaves no trace of the added key in either the Instance or Project Metadata.
+> [!NOTE]
+> - This method is direct and hands-on. The Attacker is manually adding their SSH key to the VM, bypassing GCP's key management mechanisms.
+> - The "Block project-wide SSH keys" option have no effect on this method. This is because the Attacker isn't relying on GCP to propagate or manage the SSH key. They're adding it directly to the ~/.ssh/authorized_keys file.
+> - Evades GCP-level logging associated with key additions, making their actions less visible in the platform's audit trails.
+> - Leaves no trace of the added key in either the Instance or Project Metadata.
 
 ### Method 2: Attacker adds the Public Key(s) to the Project Metadata.
 
@@ -180,11 +173,10 @@ The attacker can disable "Block Project-wide SSH Key" option but we are avoiding
     ssh -i ~/.ssh/id_rsa [USERNAME]@[EXTERNAL_IP]
     ```
 
-**Note:**
-
-- This key will be automatically added to the authorized_keys file of every VM in the project that have the "Block project-wide SSH keys" option disabled.
-- The "Block project-wide SSH keys" option can have effect on this method. If the option is enabled GCP won't propagate the SSH key to the VM's ~/.ssh/authorized_keys file.
-- Key additions in the Project Metadata is logged in the platform's audit trails.
+> [!NOTE]
+> - This key will be automatically added to the authorized_keys file of every VM in the project that have the "Block project-wide SSH keys" option disabled.
+> - The "Block project-wide SSH keys" option can have effect on this method. If the option is enabled GCP won't propagate the SSH key to the VM's ~/.ssh/authorized_keys file.
+> - Key additions in the Project Metadata is logged in the platform's audit trails.
 
 ### Method 3: Attacker adds the Public Key(s) to the Instance Metadata.
 
@@ -246,10 +238,9 @@ The attacker can disable "Block Project-wide SSH Key" option but we are avoiding
     ssh -i ~/.ssh/id_rsa [USERNAME]@[EXTERNAL_IP]
     ```
 
-**Note:**
-
-- The "Block project-wide SSH keys" option doesn't have effect on this method. Regardless of the option enabled or disabled, the key added to the Instance metadata will be added to the VM's ~/.ssh/authorized_keys file.
-- Key additions in the Project Metadata is logged in the platform's audit trails.
+> [!NOTE]
+> - The "Block project-wide SSH keys" option doesn't have effect on this method. Regardless of the option enabled or disabled, the key added to the Instance metadata will be added to the VM's ~/.ssh/authorized_keys file.
+> - Key additions in the Project Metadata is logged in the platform's audit trails.
 
 ## Persisting in Compute Engine VMs: OS Login
 
@@ -309,10 +300,9 @@ The attacker can disable "OS Login" from Project or Instance level by setting th
     ssh -i ~/.ssh/id_rsa [USERNAME]@[EXTERNAL_IP]
     ```
 
-**Note:**
-
-- This method is direct and hands-on. The Attacker is manually adding their SSH key to the VM, bypassing GCP's key management mechanisms.
-- Evades GCP-level logging associated with key additions, making their actions less visible in the platform's audit trails.
+> [!NOTE]
+> - This method is direct and hands-on. The Attacker is manually adding their SSH key to the VM, bypassing GCP's key management mechanisms.
+> - Evades GCP-level logging associated with key additions, making their actions less visible in the platform's audit trails.
 
 ### Method 2: Attacker associates the Public Key with Google Cloud User Account.
 
@@ -364,11 +354,10 @@ The attacker can disable "OS Login" from Project or Instance level by setting th
     gcloud compute os-login ssh-keys remove --key [FINGERPRINT]
     ```
 
-**Note:**
-
-- Key association with a User Account is logged in the platform's audit trails.
-- The key is associated with a specific user account, making it traceable to that identity.
-- If the user account is deleted or suspended, the attacker will lose access.
+> [!NOTE]
+> - Key association with a User Account is logged in the platform's audit trails.
+> - The key is associated with a specific user account, making it traceable to that identity.
+> - If the user account is deleted or suspended, the attacker will lose access.
 
 ### Method 3: Attacker associates the Public Key with Google Cloud Service Account.
 
@@ -419,12 +408,11 @@ The attacker can disable "OS Login" from Project or Instance level by setting th
     gcloud compute os-login ssh-keys remove --key [FINGERPRINT]
     ```
 
-**Note:**
-
-- Key association with a Service Account is logged in the platform's audit trails.
-- The key is associated with a specific service account, making it traceable to that identity.
-- If the service account is deleted or its permissions are modified, the attacker might lose access.
-- Service accounts are not meant for direct human access. Associating SSH keys with service accounts is a deviation from best practices and could raise red flags if detected.
+> [!NOTE]
+> - Key association with a Service Account is logged in the platform's audit trails.
+> - The key is associated with a specific service account, making it traceable to that identity.
+> - If the service account is deleted or its permissions are modified, the attacker might lose access.
+> - Service accounts are not meant for direct human access. Associating SSH keys with service accounts is a deviation from best practices and could raise red flags if detected.
 
 # Detection
 
