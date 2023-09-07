@@ -41,6 +41,7 @@ Within this metadata framework, GCP offers two distinct levels:
 
 - **Instance Metadata**: For more granular control, GCP provides instance-specific metadata. This allows for VM-specific configurations, ensuring that particular settings or data are confined to a single VM, without affecting others in the project. If an SSH key is added to an instance's metadata, it will be populated into that specific VM's ~/.ssh/authorized_keys file. This is particularly useful for instances that require different access controls than the broader project.
 
+> [!Usecase]
 > **Usecase**: Consider a scenario where a project contains multiple VMs - some for development and testing, while others for production. The development team needs access to all VMs for updates and debugging, so their keys are added to the project metadata. However, a third-party auditor requires access only to a specific production VM to review system logs. In this case, the auditor's key would be added to the instance-specific metadata of that particular VM, ensuring restricted access.
 
 By leveraging these metadata levels, GCP offers a flexible and robust system that caters to both broad and specific configuration needs, ensuring that VMs are both accessible and secure.
