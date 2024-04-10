@@ -14,6 +14,8 @@
 
 # Attack
 
+>Note: This technique is only relevent to **Cloud Function Version-1**. With **Cloud Function Version-2** this is not possible.
+
 Cloud Functions are a prime target for Privilege Escalation which is evidently clear by past research "[Privilege Escalation via Cloud Functions](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/PrivEsc-via-CloudFunction.md)". One way to detect Cloud Function abuse was to download the source code from Cloud Storage, where it is saved following the Function Deployment or Update process and analyzing it. In this post, I will be introducing an interesting technique I came across while researching [Privilege Escalation via Cloud Functions](https://github.com/anrbn/GCP-Attack-Defense/blob/main/research/Google%20Cloud/Cloud%20Function/PrivEsc-via-CloudFunction.md) which can disrupt that detection technique and ultimately prevent any alert. I named this technique "Source Code Concealment".
 
 Cloud Function Source Code Concealment is a technique which enables an attacker to effectively Conceal or Hide malicious source code in Cloud Function by replacing it with non-malicious code. This technique ensures that no artifacts or traces are left behind that could potentially point to the malicious source code ever used, thus letting the attacker evade any security measures and maintain a stealthy presence within the Google Cloud Environment.
